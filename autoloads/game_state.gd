@@ -58,7 +58,7 @@ func _return_from_battle() -> void:
 func depart_university(area: AreaData) -> bool:
 	if area == null:
 		return false
-	var cost := InventoryManager.get_travel_cost(area, false)
+	var cost := InventoryManager.get_travel_cost(area)
 	if not InventoryManager.spend_supplies(cost):
 		return false
 	current_area = area
@@ -71,7 +71,7 @@ func depart_university(area: AreaData) -> bool:
 func return_to_university() -> bool:
 	if current_area == null:
 		return false
-	var cost := InventoryManager.get_travel_cost(current_area, true)
+	var cost := InventoryManager.get_travel_cost(current_area)
 	if not InventoryManager.spend_supplies(cost):
 		return false
 	EventBus.player_returned_to_university.emit()

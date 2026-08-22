@@ -56,7 +56,7 @@ func _on_depart_pressed() -> void:
 	if GameState.depart_university(area):
 		_status_label.text = "Departed for %s." % area.display_name
 	else:
-		_status_label.text = "Not enough supplies to depart (need %d)." % InventoryManager.get_travel_cost(area, false)
+		_status_label.text = "Not enough supplies to depart (need %d)." % InventoryManager.get_travel_cost(area)
 
 func _open_popup(kind: String) -> void:
 	for c in _popup_content.get_children():

@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1_xg5ek")
-skill_id = &"devon_kickflip_kick"
-display_name = "Kickflip Kick"
-description = "A flashy aerial kick, harder to pull off but it lands hard."
+skill_id = &"devon_kickflip"
+display_name = "Kickflip"
+description = "A flashy aerial kick. Hard to pull off but it hurts even harder."
 mp_cost = 7
-power = 1.3
-accuracy = 0.85
+power = 1.7
+accuracy = 0.55
 icon_color = Color(0.9490196, 0.6627451, 0.23529412, 1)
