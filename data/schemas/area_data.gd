@@ -19,9 +19,5 @@ extends Resource
 @export var encounter_table: Array[Dictionary] = []
 @export var encounter_rate: float = 0.15
 
-@export_group("Economy")
-@export var leave_cost_base: int = 5
-@export var return_cost_base: int = 5
-
 @export_group("Presentation")
 @export var visual_theme: DungeonVisualThemeData

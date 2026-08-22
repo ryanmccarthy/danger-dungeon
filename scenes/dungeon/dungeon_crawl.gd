@@ -8,6 +8,11 @@ extends Node3D
 const MOVE_TIME := 0.18
 const TURN_TIME := 0.13
 
+const EAST = Vector2i(1, 0)
+const WEST = Vector2i(-1, 0)
+const NORTH = Vector2i(0, -1)
+const SOUTH = Vector2i(0, 1)
+
 @onready var _player: CharacterBody3D = $Player
 @onready var _camera: Camera3D = $Player/Camera3D
 @onready var _geometry_root: Node3D = $GeometryRoot
@@ -93,8 +98,10 @@ func _turn(new_facing: Vector2i) -> void:
 	_busy = true
 	facing = new_facing
 	GameState.current_dungeon_facing = facing
+	var current_yaw := _player.rotation.y
+	var target_yaw := current_yaw + wrapf(_facing_to_yaw(facing) - current_yaw, -PI, PI)
 	var tween := create_tween()
-	tween.tween_property(_player, "rotation:y", _facing_to_yaw(facing), TURN_TIME)
+	tween.tween_property(_player, "rotation:y", target_yaw, TURN_TIME)
 	await tween.finished
 	_busy = false
 	_refresh_automap()
@@ -121,32 +128,35 @@ func _pick_weighted_enemy() -> StringName:
 func _world_pos(coord: Vector2i) -> Vector3:
 	return Vector3(coord.x * _tile_size, 0.0, coord.y * _tile_size)
 
-func _facing_to_yaw(f: Vector2i) -> float:
-	if f == Vector2i(0, -1):
+func _facing_to_yaw(dir: Vector2i) -> float:
+	if dir == NORTH:
 		return 0.0
-	if f == Vector2i(-1, 0):
+	if dir == WEST:
 		return PI / 2.0
-	if f == Vector2i(0, 1):
+	if dir == SOUTH:
 		return PI
-	return -PI / 2.0 # east (1, 0)
 
-func _turn_right(f: Vector2i) -> Vector2i:
-	if f == Vector2i(0, -1):
-		return Vector2i(1, 0)
-	if f == Vector2i(1, 0):
-		return Vector2i(0, 1)
-	if f == Vector2i(0, 1):
-		return Vector2i(-1, 0)
-	return Vector2i(0, -1)
+	return -PI / 2.0 # EAST
 
-func _turn_left(f: Vector2i) -> Vector2i:
-	if f == Vector2i(0, -1):
-		return Vector2i(-1, 0)
-	if f == Vector2i(-1, 0):
-		return Vector2i(0, 1)
-	if f == Vector2i(0, 1):
-		return Vector2i(1, 0)
-	return Vector2i(0, -1)
+func _turn_right(dir: Vector2i) -> Vector2i:
+	if dir == NORTH:
+		return EAST
+	if dir == EAST:
+		return SOUTH
+	if dir == SOUTH:
+		return WEST
+
+	return NORTH
+
+func _turn_left(dir: Vector2i) -> Vector2i:
+	if dir == NORTH:
+		return WEST
+	if dir == WEST:
+		return SOUTH
+	if dir == SOUTH:
+		return EAST
+
+	return NORTH
 
 func _place_player_instant() -> void:
 	_player.position = _world_pos(grid_position)

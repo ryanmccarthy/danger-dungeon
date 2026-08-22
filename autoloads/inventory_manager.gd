@@ -37,10 +37,9 @@ func remove_item(id: StringName, count: int = 1) -> bool:
 func has_item(id: StringName, count: int = 1) -> bool:
 	return items.get(id, 0) >= count
 
-func get_travel_cost(area: AreaData, is_return: bool) -> int:
+func get_travel_cost(area: AreaData) -> int:
 	if area == null:
 		return 0
-	var base: int = area.return_cost_base if is_return else area.leave_cost_base
-	var raw: float = float(base) + float(area.distance_from_university) * DISTANCE_MULT
-	var discount: float = UpgradeManager.get_bus_travel_discount()
-	return int(ceil(raw * (1.0 - discount)))
+
+	var discount: float = 1.0 - UpgradeManager.get_bus_travel_discount()
+	return int(ceil(area.distance_from_university * discount))
