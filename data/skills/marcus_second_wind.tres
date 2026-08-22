@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://d4kqh0vb6ih4h"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_jgt21"]
+
+[resource]
+script = ExtResource("1_jgt21")
+skill_id = &"marcus_second_wind"
+display_name = "Second Wind"
+description = "Marcus catches his breath and pushes on."
+mp_cost = 8
+target_type = 4
+power = 0.4
+effect_type = 1
+icon_color = Color(0.2901961, 0.5647059, 0.8509804, 1)

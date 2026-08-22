@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="StudentClassData" format=3 uid="uid://bd7peg0gf4kyb"]
+
+[ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1_l4e2r"]
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2_nrlu0"]
+[ext_resource type="Resource" uid="uid://n1oq2ps42pkh" path="res://data/skills/chloe_first_aid.tres" id="3_eg2e7"]
+[ext_resource type="Resource" uid="uid://0bkbv2wepwer" path="res://data/skills/chloe_rebuttal.tres" id="4_7mmjm"]
+[ext_resource type="Resource" uid="uid://2o1uyiofmirc" path="res://data/skills/chloe_group_study.tres" id="5_14ilg"]
+[ext_resource type="Resource" uid="uid://bkxc2ccby53da" path="res://data/skills/chloe_closing_argument.tres" id="6_48bgw"]
+
+[resource]
+script = ExtResource("1_l4e2r")
+class_id = &"debate_captain"
+class_name_display = "Debate Captain"
+archetype_tag = "Healer/Support"
+base_hp = 70
+base_mp = 45
+base_atk = 6
+base_def = 6
+base_mag = 13
+base_res = 11
+base_spd = 10
+base_luck = 9
+hp_per_level = 3.8
+mp_per_level = 3.0
+atk_per_level = 0.3
+def_per_level = 0.4
+mag_per_level = 0.8
+luck_per_level = 0.4
+preferred_row = 1
+skill_ids = Array[ExtResource("2_nrlu0")]([ExtResource("3_eg2e7"), ExtResource("4_7mmjm"), ExtResource("5_14ilg"), ExtResource("6_48bgw")])
+icon_color = Color(0.29803923, 0.7882353, 0.627451, 1)
+flavor_text = "Wins every argument, including the one with your wounds."

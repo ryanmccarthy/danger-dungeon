@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://d3d8bsa00mggl"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_5624w"]
+
+[resource]
+script = ExtResource("1_5624w")
+skill_id = &"devon_adrenaline_rush"
+display_name = "Adrenaline Rush"
+description = "Devon's heart rate spikes, and so does his speed."
+mp_cost = 5
+target_type = 4
+power = 0.0
+effect_type = 2
+stat_affected = "spd"
+buff_amount = 6.0
+buff_duration = 3
+icon_color = Color(0.9490196, 0.6627451, 0.23529412, 1)

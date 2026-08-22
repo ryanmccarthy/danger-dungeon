@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="StudentData" format=3 uid="uid://cklcs5fqam32f"]
+
+[ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_h6n4f"]
+[ext_resource type="Resource" uid="uid://bsem62bxrrio" path="res://data/classes/class_generalist.tres" id="2_rx11a"]
+
+[resource]
+script = ExtResource("1_h6n4f")
+student_id = &"student_016"
+display_name = "Skyler"
+student_class = ExtResource("2_rx11a")
+current_hp = 75
+max_hp = 75
+current_mp = 20
+max_mp = 20
+portrait_color = Color(0.6039216, 0.6039216, 0.6039216, 1)
+bio_flavor = "Somewhere on this bus, on this tour, in this nightmare."

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="StudentData" format=3 uid="uid://df0aplrp5cri8"]
+
+[ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_16uim"]
+[ext_resource type="Resource" uid="uid://fheqg3tkj5wi" path="res://data/classes/class_jock.tres" id="2_k1o7e"]
+
+[resource]
+script = ExtResource("1_16uim")
+student_id = &"student_002"
+display_name = "Marcus"
+student_class = ExtResource("2_k1o7e")
+current_hp = 130
+max_hp = 130
+current_mp = 15
+max_mp = 15
+portrait_color = Color(0.2901961, 0.5647059, 0.8509804, 1)
+bio_flavor = "Varsity everything. Has decided the fog is just a really bad away game."
+is_unique = true

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://kawoudcou6ai"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_ux2vd"]
+
+[resource]
+script = ExtResource("1_ux2vd")
+skill_id = &"tony_body_slam"
+display_name = "Body Slam"
+description = "The mascot suit takes another hit for the team — on someone else."
+mp_cost = 4
+power = 1.2
+accuracy = 0.95
+icon_color = Color(0.8509804, 0.30980393, 0.30980393, 1)

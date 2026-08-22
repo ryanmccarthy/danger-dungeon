@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://xhc2aj1nk6j1"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_w2jw7"]
+
+[resource]
+script = ExtResource("1_w2jw7")
+skill_id = &"marcus_shield_wall"
+display_name = "Shield Wall"
+description = "Marcus braces behind his arms, hardening his defense."
+mp_cost = 6
+target_type = 4
+power = 0.0
+effect_type = 2
+stat_affected = "def"
+buff_amount = 6.0
+buff_duration = 3
+icon_color = Color(0.2901961, 0.5647059, 0.8509804, 1)

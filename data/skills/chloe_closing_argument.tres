@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://bkxc2ccby53da"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_jq8y8"]
+
+[resource]
+script = ExtResource("1_jq8y8")
+skill_id = &"chloe_closing_argument"
+display_name = "Closing Argument"
+description = "Chloe delivers a devastating, unanswerable point."
+mp_cost = 10
+power = 1.4
+damage_school = 1
+accuracy = 0.95
+icon_color = Color(0.29803923, 0.7882353, 0.627451, 1)

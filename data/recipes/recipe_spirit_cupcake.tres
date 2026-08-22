@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="RecipeData" format=3 uid="uid://d2n3y78rxkuyk"]
+
+[ext_resource type="Resource" uid="uid://bdt4o6cgrpxxd" path="res://data/items/item_spirit_cupcake.tres" id="1_tlkqv"]
+[ext_resource type="Script" uid="uid://cb1jlf1ufeobp" path="res://data/schemas/recipe_data.gd" id="2_1ka0e"]
+
+[resource]
+script = ExtResource("2_1ka0e")
+recipe_id = &"recipe_spirit_cupcake"
+display_name = "Spirit Cupcake"
+ingredients = Array[Dictionary]([{
+"count": 1.0,
+"item_id": "ingredient_wisp_essence"
+}, {
+"count": 1.0,
+"item_id": "ingredient_stale_snack"
+}])
+result_item = ExtResource("1_tlkqv")

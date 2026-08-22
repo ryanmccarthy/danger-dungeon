@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://be61hca4xbunb"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_os3yh"]
+
+[resource]
+script = ExtResource("1_os3yh")
+skill_id = &"marcus_tackle"
+display_name = "Tackle"
+description = "A full-body varsity tackle."
+mp_cost = 3
+power = 1.1
+accuracy = 0.95
+icon_color = Color(0.2901961, 0.5647059, 0.8509804, 1)

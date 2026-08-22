@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://o0wuqrovrwin"]
+
+[ext_resource type="Script" uid="uid://dao4thtco7yfv" path="res://data/schemas/item_data.gd" id="1_n35ox"]
+
+[resource]
+script = ExtResource("1_n35ox")
+item_id = &"ingredient_stale_snack"
+display_name = "Stale Snack"
+description = "A vending-machine snack, decades expired but still recognizable. Edible if desperate."
+item_category = 0
+sell_price = 2
+stack_size = 20
+icon_color = Color(0.41960785, 0.3529412, 0.2901961, 1)

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://dqtfjkmdsvv6b"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_3qe2x"]
+
+[resource]
+script = ExtResource("1_3qe2x")
+skill_id = &"tony_bellyflop"
+display_name = "Bellyflop"
+description = "Tony flops. Everyone nearby regrets standing close."
+mp_cost = 9
+target_type = 1
+power = 0.5
+accuracy = 0.9
+icon_color = Color(0.8509804, 0.30980393, 0.30980393, 1)

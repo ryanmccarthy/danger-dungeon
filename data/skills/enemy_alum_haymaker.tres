@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://cs2c4vs3ixujf"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_aaeny"]
+
+[resource]
+script = ExtResource("1_aaeny")
+skill_id = &"enemy_alum_haymaker"
+display_name = "Haymaker"
+description = "A wild, corrupted swing."
+power = 1.1
+accuracy = 0.85
+icon_color = Color(0.41960785, 0.3529412, 0.2901961, 1)

@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="StudentClassData" format=3 uid="uid://fheqg3tkj5wi"]
+
+[ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1_disl1"]
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2_2ahgy"]
+[ext_resource type="Resource" uid="uid://xhc2aj1nk6j1" path="res://data/skills/marcus_shield_wall.tres" id="3_um4ke"]
+[ext_resource type="Resource" uid="uid://be61hca4xbunb" path="res://data/skills/marcus_tackle.tres" id="4_1do44"]
+[ext_resource type="Resource" uid="uid://b1tqbihnenhgr" path="res://data/skills/marcus_taunt.tres" id="5_e5b4e"]
+[ext_resource type="Resource" uid="uid://d4kqh0vb6ih4h" path="res://data/skills/marcus_second_wind.tres" id="6_78uxn"]
+
+[resource]
+script = ExtResource("1_disl1")
+class_id = &"jock"
+class_name_display = "Jock"
+archetype_tag = "Tank"
+base_hp = 130
+base_mp = 15
+base_atk = 12
+base_def = 16
+base_mag = 3
+base_res = 10
+base_spd = 6
+base_luck = 6
+hp_per_level = 8.0
+mp_per_level = 0.8
+atk_per_level = 0.7
+def_per_level = 1.1
+mag_per_level = 0.1
+spd_per_level = 0.3
+luck_per_level = 0.2
+preferred_row = 0
+skill_ids = Array[ExtResource("2_2ahgy")]([ExtResource("3_um4ke"), ExtResource("4_1do44"), ExtResource("5_e5b4e"), ExtResource("6_78uxn")])
+icon_color = Color(0.2901961, 0.5647059, 0.8509804, 1)
+flavor_text = "Soaks up hits so nobody else has to."

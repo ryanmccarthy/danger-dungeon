@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="StudentClassData" format=3 uid="uid://5x1lyykqilgi"]
+
+[ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1_uhg7g"]
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2_vv5cp"]
+[ext_resource type="Resource" uid="uid://dqent7fm6dk0x" path="res://data/skills/devon_quick_slash.tres" id="3_05r8p"]
+[ext_resource type="Resource" uid="uid://cblum5tmv0s0r" path="res://data/skills/devon_kickflip_kick.tres" id="4_bj4vm"]
+[ext_resource type="Resource" uid="uid://d3d8bsa00mggl" path="res://data/skills/devon_adrenaline_rush.tres" id="5_5ar5l"]
+[ext_resource type="Resource" uid="uid://cosm44djix2tx" path="res://data/skills/devon_grind_and_grab.tres" id="6_hewk5"]
+
+[resource]
+script = ExtResource("1_uhg7g")
+class_id = &"skater"
+class_name_display = "Skater"
+archetype_tag = "Rogue/Striker"
+base_hp = 85
+base_atk = 15
+base_def = 7
+base_mag = 4
+base_res = 6
+base_spd = 16
+base_luck = 12
+hp_per_level = 5.0
+mp_per_level = 1.2
+atk_per_level = 1.0
+def_per_level = 0.4
+mag_per_level = 0.2
+res_per_level = 0.3
+spd_per_level = 1.0
+luck_per_level = 0.5
+preferred_row = 0
+skill_ids = Array[ExtResource("2_vv5cp")]([ExtResource("3_05r8p"), ExtResource("4_bj4vm"), ExtResource("5_5ar5l"), ExtResource("6_hewk5")])
+icon_color = Color(0.9490196, 0.6627451, 0.23529412, 1)
+flavor_text = "Fast, reckless, first to the fight and first to flee."

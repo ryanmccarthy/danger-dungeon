@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://cmlvtivraiscw"]
+
+[ext_resource type="Script" uid="uid://ce6fkhgt8svek" path="res://data/schemas/enemy_data.gd" id="1_xbm8b"]
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2_sxd1n"]
+[ext_resource type="Resource" uid="uid://msssmr5me46r" path="res://data/skills/enemy_wisp_chill_touch.tres" id="3_lgwma"]
+[ext_resource type="Resource" uid="uid://b7khea77l0him" path="res://data/skills/enemy_wisp_flicker_strike.tres" id="4_65133"]
+
+[resource]
+script = ExtResource("1_xbm8b")
+enemy_id = &"fog_wisp"
+display_name = "Fog Wisp"
+max_hp = 18
+atk = 3
+def = 2
+mag = 9
+res = 6
+spd = 11
+skill_pool = Array[ExtResource("2_sxd1n")]([ExtResource("3_lgwma"), ExtResource("4_65133")])
+drop_table = Array[Dictionary]([{
+"chance": 0.8,
+"item_id": "ingredient_wisp_essence",
+"max_qty": 2.0,
+"min_qty": 1.0
+}])
+supply_reward = 2
+primitive_shape = 1
+icon_color = Color(0.49803922, 0.83137256, 1, 1)

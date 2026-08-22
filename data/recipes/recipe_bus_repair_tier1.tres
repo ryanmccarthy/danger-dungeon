@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RecipeData" format=3 uid="uid://db0ecs22k4olr"]
+
+[ext_resource type="Resource" uid="uid://iv58ns0kr0og" path="res://data/upgrades/upgrade_bus_repair_tier1.tres" id="1_ognjg"]
+[ext_resource type="Script" uid="uid://cb1jlf1ufeobp" path="res://data/schemas/recipe_data.gd" id="2_7koo3"]
+
+[resource]
+script = ExtResource("2_7koo3")
+recipe_id = &"recipe_bus_repair_tier1"
+display_name = "Bus Repair Manual: Tier 1"
+recipe_type = 1
+result_upgrade = ExtResource("1_ognjg")
+research_cost_supplies = 15

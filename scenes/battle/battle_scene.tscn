@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://bvkaumikcr7of"]
+
+[ext_resource type="Script" uid="uid://ca3ey3jh2stpc" path="res://scenes/battle/battle_scene.gd" id="1_3hov6"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_mhx8t"]
+
+[node name="BattleScene" type="Control" unique_id=1785201904]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_3hov6")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1762228323]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.101960786, 0.05882353, 0.07058824, 1)
+
+[node name="MainMargin" type="MarginContainer" parent="." unique_id=447556169]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 20
+
+[node name="MainVBox" type="VBoxContainer" parent="MainMargin" unique_id=487681930]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="RoundLabel" type="Label" parent="MainMargin/MainVBox" unique_id=640459971]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8784314, 0.75686276, 0.2901961, 1)
+theme_override_font_sizes/font_size = 20
+text = "Round 1"
+
+[node name="EnemyRow" type="HBoxContainer" parent="MainMargin/MainVBox" unique_id=991242268]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="PartyRow" type="HBoxContainer" parent="MainMargin/MainVBox" unique_id=1164145551]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="LogLabel" type="Label" parent="MainMargin/MainVBox" unique_id=665900191]
+custom_minimum_size = Vector2(0, 60)
+custom_maximum_size = Vector2(60, 120)
+propagate_maximum_size = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7882353, 0.76862746, 0.84705883, 1)
+text = "The fog thickens..."
+label_settings = SubResource("LabelSettings_mhx8t")
+autowrap_mode = 3
+max_lines_visible = 1
+
+[node name="ActionArea" type="VBoxContainer" parent="MainMargin/MainVBox" unique_id=860412087]
+layout_mode = 2
+theme_override_constants/separation = 8

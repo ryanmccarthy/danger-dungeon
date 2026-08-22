@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://j37v0qwf3iuy"]
+
+[ext_resource type="Script" uid="uid://dao4thtco7yfv" path="res://data/schemas/item_data.gd" id="1_hmj4s"]
+
+[resource]
+script = ExtResource("1_hmj4s")
+item_id = &"item_bandage"
+display_name = "Bandage"
+description = "Standard first-aid kit bandage. Restores HP."
+buy_price = 12
+sell_price = 4
+stack_size = 20
+use_effect = 1
+use_value = 30.0
+icon_color = Color(0.9098039, 0.9098039, 0.9098039, 1)

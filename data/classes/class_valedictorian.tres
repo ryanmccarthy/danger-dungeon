@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="StudentClassData" format=3 uid="uid://gbxjb7r2xnpm"]
+
+[ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1_ma6ux"]
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2_0wm8e"]
+[ext_resource type="Resource" uid="uid://vwbb5i2emdgu" path="res://data/skills/priya_arcane_bolt.tres" id="3_i64uq"]
+[ext_resource type="Resource" uid="uid://bsuocge6akl8i" path="res://data/skills/priya_analyze.tres" id="4_8g5cu"]
+[ext_resource type="Resource" uid="uid://6kh5ocosxdee" path="res://data/skills/priya_overload_zap.tres" id="5_qgcay"]
+[ext_resource type="Resource" uid="uid://u4314ovvpy5d" path="res://data/skills/priya_cold_focus.tres" id="6_sfx0o"]
+
+[resource]
+script = ExtResource("1_ma6ux")
+class_id = &"valedictorian"
+class_name_display = "Valedictorian"
+archetype_tag = "Mage/Debuffer"
+base_hp = 60
+base_mp = 55
+base_atk = 4
+base_def = 5
+base_mag = 16
+base_res = 12
+base_spd = 9
+hp_per_level = 3.2
+mp_per_level = 3.5
+atk_per_level = 0.2
+def_per_level = 0.3
+mag_per_level = 1.0
+res_per_level = 0.7
+preferred_row = 1
+skill_ids = Array[ExtResource("2_0wm8e")]([ExtResource("3_i64uq"), ExtResource("4_8g5cu"), ExtResource("5_qgcay"), ExtResource("6_sfx0o")])
+icon_color = Color(0.5568628, 0.37254903, 0.83137256, 1)
+flavor_text = "Bookish, precise, and quietly terrifying in a fight."

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://dqent7fm6dk0x"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_sva41"]
+
+[resource]
+script = ExtResource("1_sva41")
+skill_id = &"devon_quick_slash"
+display_name = "Quick Slash"
+description = "A fast, low-effort slash off a skateboard's edge."
+mp_cost = 3
+accuracy = 0.97
+icon_color = Color(0.9490196, 0.6627451, 0.23529412, 1)

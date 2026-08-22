@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="StudentData" format=3 uid="uid://d3ajxo8dvro1f"]
+
+[ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_8kbfp"]
+[ext_resource type="Resource" uid="uid://bd7peg0gf4kyb" path="res://data/classes/class_debate_captain.tres" id="2_exj0v"]
+
+[resource]
+script = ExtResource("1_8kbfp")
+student_id = &"student_005"
+display_name = "Chloe"
+student_class = ExtResource("2_exj0v")
+current_hp = 70
+max_hp = 70
+current_mp = 45
+max_mp = 45
+portrait_color = Color(0.29803923, 0.7882353, 0.627451, 1)
+bio_flavor = "Has already opened a formal motion to leave the fog dimension."
+is_unique = true

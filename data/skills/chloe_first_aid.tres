@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://n1oq2ps42pkh"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_ug6pk"]
+
+[resource]
+script = ExtResource("1_ug6pk")
+skill_id = &"chloe_first_aid"
+display_name = "First Aid"
+description = "A calm, well-rehearsed patch-up."
+mp_cost = 5
+target_type = 2
+power = 0.6
+effect_type = 1
+icon_color = Color(0.29803923, 0.7882353, 0.627451, 1)

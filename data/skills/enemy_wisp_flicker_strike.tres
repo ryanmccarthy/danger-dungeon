@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://b7khea77l0him"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_lyp0k"]
+
+[resource]
+script = ExtResource("1_lyp0k")
+skill_id = &"enemy_wisp_flicker_strike"
+display_name = "Flicker Strike"
+description = "The wisp flickers and jabs."
+power = 0.6
+accuracy = 0.9
+icon_color = Color(0.49803922, 0.83137256, 1, 1)

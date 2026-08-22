@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://b7gcvq51qadvx"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_8tkra"]
+
+[resource]
+script = ExtResource("1_8tkra")
+skill_id = &"sasha_encore"
+display_name = "Encore"
+description = "The crowd demands one more song — mends the whole squad."
+mp_cost = 12
+target_type = 3
+power = 0.5
+effect_type = 1
+icon_color = Color(1, 0.43529412, 0.68235296, 1)

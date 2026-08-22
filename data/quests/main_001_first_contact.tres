@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="QuestData" format=3 uid="uid://xoa37we3i6kv"]
+
+[ext_resource type="Script" uid="uid://dao4thtco7yfv" path="res://data/schemas/item_data.gd" id="1_efave"]
+[ext_resource type="Script" uid="uid://xbujovrb718e" path="res://data/schemas/quest_data.gd" id="2_odqig"]
+
+[resource]
+script = ExtResource("2_odqig")
+quest_id = &"main_001_first_contact"
+display_name = "First Contact"
+description = "Something out in the fog is watching the bus. Clear three fog wisps to prove the road is survivable."
+objective_target_id = &"fog_wisp"
+objective_count = 3
+reward_supplies = 20

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://bvhvvkr1atxht"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_716ga"]
+
+[resource]
+script = ExtResource("1_716ga")
+skill_id = &"tony_mascot_dance"
+display_name = "Mascot Dance"
+description = "An unreasonably energetic dance number that lifts spirits (and HP)."
+mp_cost = 6
+target_type = 2
+power = 0.3
+effect_type = 1
+icon_color = Color(0.8509804, 0.30980393, 0.30980393, 1)

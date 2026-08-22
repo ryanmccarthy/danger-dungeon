@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bdt4o6cgrpxxd"]
+
+[ext_resource type="Script" uid="uid://dao4thtco7yfv" path="res://data/schemas/item_data.gd" id="1_wj0yc"]
+
+[resource]
+script = ExtResource("1_wj0yc")
+item_id = &"item_spirit_cupcake"
+display_name = "Spirit Cupcake"
+description = "A cafeteria creation baked from questionable ingredients. Temporarily boosts attack."
+sell_price = 8
+stack_size = 10
+use_effect = 4
+use_value = 5.0
+icon_color = Color(1, 0.7137255, 0.8509804, 1)

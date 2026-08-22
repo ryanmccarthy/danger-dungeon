@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="StudentClassData" format=3 uid="uid://bsem62bxrrio"]
+
+[ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1_f38rp"]
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2_7qx1m"]
+[ext_resource type="Resource" uid="uid://nhyptts8lvqb" path="res://data/skills/generalist_struggle_punch.tres" id="3_0xjfq"]
+[ext_resource type="Resource" uid="uid://b078flmbvnq7q" path="res://data/skills/generalist_brace.tres" id="4_hd8js"]
+
+[resource]
+script = ExtResource("1_f38rp")
+class_id = &"generalist"
+class_name_display = "Generalist"
+archetype_tag = "Unspecialized"
+base_hp = 75
+atk_per_level = 0.5
+def_per_level = 0.5
+mag_per_level = 0.5
+res_per_level = 0.5
+luck_per_level = 0.4
+skill_ids = Array[ExtResource("2_7qx1m")]([ExtResource("3_0xjfq"), ExtResource("4_hd8js")])
+icon_color = Color(0.6039216, 0.6039216, 0.6039216, 1)
+flavor_text = "Hasn't found their class yet. Still counts."

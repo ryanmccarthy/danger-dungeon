@@ -1,0 +1,149 @@
+[gd_scene format=3 uid="uid://ddgtuk62pce5n"]
+
+[ext_resource type="Script" uid="uid://bnbqjxm4ve5kl" path="res://scenes/hub/university_hub.gd" id="1_5b25d"]
+
+[node name="UniversityHub" type="Control" unique_id=1142938538]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_5b25d")
+
+[node name="Background" type="ColorRect" parent="." unique_id=315926601]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.078431375, 0.07058824, 0.101960786, 1)
+
+[node name="MainMargin" type="MarginContainer" parent="." unique_id=1756087279]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 24
+
+[node name="MainVBox" type="VBoxContainer" parent="MainMargin" unique_id=497657940]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="TitleLabel" type="Label" parent="MainMargin/MainVBox" unique_id=1528411219]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8784314, 0.75686276, 0.2901961, 1)
+theme_override_font_sizes/font_size = 28
+text = "University of Fog Ridge — Home Base"
+
+[node name="HUDLabel" type="Label" parent="MainMargin/MainVBox" unique_id=701131592]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7882353, 0.76862746, 0.84705883, 1)
+theme_override_font_sizes/font_size = 16
+text = "Supplies: 50   |   Roster: 26 / 26 alive"
+
+[node name="FacilityGrid" type="GridContainer" parent="MainMargin/MainVBox" unique_id=371273203]
+layout_mode = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 4
+
+[node name="BtnCafeteria" type="Button" parent="MainMargin/MainVBox/FacilityGrid" unique_id=2030761011]
+custom_minimum_size = Vector2(220, 56)
+layout_mode = 2
+text = "Cafeteria"
+
+[node name="BtnNurse" type="Button" parent="MainMargin/MainVBox/FacilityGrid" unique_id=1603694577]
+custom_minimum_size = Vector2(220, 56)
+layout_mode = 2
+text = "Nurse's Office"
+
+[node name="BtnLibrary" type="Button" parent="MainMargin/MainVBox/FacilityGrid" unique_id=1913410454]
+custom_minimum_size = Vector2(220, 56)
+layout_mode = 2
+text = "Library"
+
+[node name="BtnShop" type="Button" parent="MainMargin/MainVBox/FacilityGrid" unique_id=1775443240]
+custom_minimum_size = Vector2(220, 56)
+layout_mode = 2
+text = "Shop"
+
+[node name="BtnDorm" type="Button" parent="MainMargin/MainVBox/FacilityGrid" unique_id=606950005]
+custom_minimum_size = Vector2(220, 56)
+layout_mode = 2
+text = "Dorm"
+
+[node name="BtnGarage" type="Button" parent="MainMargin/MainVBox/FacilityGrid" unique_id=1178587075]
+custom_minimum_size = Vector2(220, 56)
+layout_mode = 2
+text = "Garage"
+
+[node name="BtnQuestBoard" type="Button" parent="MainMargin/MainVBox/FacilityGrid" unique_id=519103213]
+custom_minimum_size = Vector2(220, 56)
+layout_mode = 2
+text = "Quest Board"
+
+[node name="BtnDepart" type="Button" parent="MainMargin/MainVBox/FacilityGrid" unique_id=1161857833]
+custom_minimum_size = Vector2(220, 56)
+layout_mode = 2
+text = "Depart: Fog-Wreathed Approach"
+
+[node name="StatusLabel" type="Label" parent="MainMargin/MainVBox" unique_id=1419259943]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.56078434, 0.83137256, 0.56078434, 1)
+
+[node name="PopupLayer" type="CanvasLayer" parent="." unique_id=1245266952]
+
+[node name="PopupRoot" type="Control" parent="PopupLayer" unique_id=686020838]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+
+[node name="PopupBackdrop" type="ColorRect" parent="PopupLayer/PopupRoot" unique_id=2066330328]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.6901961)
+
+[node name="PopupPanel" type="Panel" parent="PopupLayer/PopupRoot" unique_id=125177834]
+custom_minimum_size = Vector2(680, 480)
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+
+[node name="PopupMargin" type="MarginContainer" parent="PopupLayer/PopupRoot/PopupPanel" unique_id=877078473]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="PopupVBox" type="VBoxContainer" parent="PopupLayer/PopupRoot/PopupPanel/PopupMargin" unique_id=854130189]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PopupTitle" type="Label" parent="PopupLayer/PopupRoot/PopupPanel/PopupMargin/PopupVBox" unique_id=294668692]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8784314, 0.75686276, 0.2901961, 1)
+theme_override_font_sizes/font_size = 22
+text = "Facility"
+
+[node name="PopupScroll" type="ScrollContainer" parent="PopupLayer/PopupRoot/PopupPanel/PopupMargin/PopupVBox" unique_id=1178287296]
+custom_minimum_size = Vector2(0, 320)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PopupContent" type="VBoxContainer" parent="PopupLayer/PopupRoot/PopupPanel/PopupMargin/PopupVBox/PopupScroll" unique_id=866754275]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="PopupCloseButton" type="Button" parent="PopupLayer/PopupRoot/PopupPanel/PopupMargin/PopupVBox" unique_id=2074098871]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Close"

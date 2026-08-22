@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://btcftp1e6t74c"]
+
+[ext_resource type="Script" uid="uid://ce6fkhgt8svek" path="res://data/schemas/enemy_data.gd" id="1_5xsdn"]
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2_cj3vv"]
+[ext_resource type="Resource" uid="uid://cs2c4vs3ixujf" path="res://data/skills/enemy_alum_haymaker.tres" id="3_d3ptn"]
+[ext_resource type="Resource" uid="uid://bwvr4o2xvh0uc" path="res://data/skills/enemy_alum_groan.tres" id="4_7juog"]
+
+[resource]
+script = ExtResource("1_5xsdn")
+enemy_id = &"hollow_alum"
+display_name = "Hollow Alum"
+max_hp = 34
+atk = 9
+def = 6
+mag = 2
+res = 4
+skill_pool = Array[ExtResource("2_cj3vv")]([ExtResource("3_d3ptn"), ExtResource("4_7juog")])
+drop_table = Array[Dictionary]([{
+"chance": 0.8,
+"item_id": "ingredient_stale_snack",
+"max_qty": 2.0,
+"min_qty": 1.0
+}])
+supply_reward = 3
+primitive_shape = 2
+icon_color = Color(0.41960785, 0.3529412, 0.2901961, 1)

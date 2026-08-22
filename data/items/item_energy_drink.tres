@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dm0ge3ykaiqv6"]
+
+[ext_resource type="Script" uid="uid://dao4thtco7yfv" path="res://data/schemas/item_data.gd" id="1_p25fq"]
+
+[resource]
+script = ExtResource("1_p25fq")
+item_id = &"item_energy_drink"
+display_name = "Energy Drink"
+description = "Deeply unhealthy. Restores MP."
+buy_price = 15
+sell_price = 5
+stack_size = 20
+use_effect = 2
+use_value = 20.0
+icon_color = Color(0.7764706, 0.9490196, 0.2901961, 1)

@@ -4,6 +4,8 @@
 
 # Godot-specific ignores
 .import/
+addons/
+.editorconfig
 export.cfg
 export_credentials.cfg
 *.tmp

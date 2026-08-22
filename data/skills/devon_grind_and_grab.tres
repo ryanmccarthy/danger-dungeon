@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://cosm44djix2tx"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_pk3l5"]
+
+[resource]
+script = ExtResource("1_pk3l5")
+skill_id = &"devon_grind_and_grab"
+display_name = "Grind & Grab"
+description = "Devon grinds past a foe, snatching a hit and whatever isn't nailed down."
+mp_cost = 5
+power = 0.9
+accuracy = 0.95
+icon_color = Color(0.9490196, 0.6627451, 0.23529412, 1)

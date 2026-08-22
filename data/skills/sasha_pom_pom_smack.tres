@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://clhimp4tol5t2"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_ddxy4"]
+
+[resource]
+script = ExtResource("1_ddxy4")
+skill_id = &"sasha_pom_pom_smack"
+display_name = "Pom-Pom Smack"
+description = "A surprisingly stinging bop with a pair of pom-poms."
+mp_cost = 2
+power = 0.8
+accuracy = 0.95
+icon_color = Color(1, 0.43529412, 0.68235296, 1)

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://2o1uyiofmirc"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_o51xu"]
+
+[resource]
+script = ExtResource("1_o51xu")
+skill_id = &"chloe_group_study"
+display_name = "Group Study"
+description = "Chloe organizes a quick recovery session for everyone."
+mp_cost = 12
+target_type = 3
+power = 0.3
+effect_type = 1
+icon_color = Color(0.29803923, 0.7882353, 0.627451, 1)

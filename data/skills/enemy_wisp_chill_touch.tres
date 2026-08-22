@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://msssmr5me46r"]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1_eic4u"]
+
+[resource]
+script = ExtResource("1_eic4u")
+skill_id = &"enemy_wisp_chill_touch"
+display_name = "Chill Touch"
+description = "A freezing, insubstantial touch."
+power = 0.9
+damage_school = 1
+accuracy = 0.95
+icon_color = Color(0.49803922, 0.83137256, 1, 1)

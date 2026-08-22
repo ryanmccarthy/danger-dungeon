@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://ba7222nap8rtt"]
+
+[ext_resource type="Script" uid="uid://dao4thtco7yfv" path="res://data/schemas/item_data.gd" id="1_ebcm3"]
+
+[resource]
+script = ExtResource("1_ebcm3")
+item_id = &"ingredient_wisp_essence"
+display_name = "Wisp Essence"
+description = "A faintly glowing residue left behind by a fog wisp. Cool to the touch."
+item_category = 0
+sell_price = 3
+stack_size = 20
+icon_color = Color(0.49803922, 0.83137256, 1, 1)

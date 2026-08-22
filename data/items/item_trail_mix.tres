@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cw25cmtrw27hf"]
+
+[ext_resource type="Script" uid="uid://dao4thtco7yfv" path="res://data/schemas/item_data.gd" id="1_c2sg5"]
+
+[resource]
+script = ExtResource("1_c2sg5")
+item_id = &"item_trail_mix"
+display_name = "Trail Mix"
+description = "A resealable bag of trail mix. Restores hunger."
+buy_price = 10
+sell_price = 3
+stack_size = 20
+use_effect = 3
+use_value = 40.0
+icon_color = Color(0.7882353, 0.5921569, 0.35686275, 1)
