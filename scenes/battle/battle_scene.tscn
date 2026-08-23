@@ -40,17 +40,13 @@ text = "Round 1"
 
 [node name="EnemyRow" type="HBoxContainer" parent="MainMargin/MainVBox" unique_id=991242268]
 layout_mode = 2
-theme_override_constants/separation = 16
-alignment = 1
-
-[node name="PartyRow" type="HBoxContainer" parent="MainMargin/MainVBox" unique_id=1164145551]
-layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/separation = 16
 alignment = 1
 
 [node name="LogLabel" type="Label" parent="MainMargin/MainVBox" unique_id=665900191]
-custom_minimum_size = Vector2(0, 60)
-custom_maximum_size = Vector2(60, 120)
+custom_minimum_size = Vector2(0, 40)
+custom_maximum_size = Vector2(60, 80)
 propagate_maximum_size = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7882353, 0.76862746, 0.84705883, 1)
@@ -59,6 +55,28 @@ label_settings = SubResource("LabelSettings_mhx8t")
 autowrap_mode = 3
 max_lines_visible = 1
 
-[node name="ActionArea" type="VBoxContainer" parent="MainMargin/MainVBox" unique_id=860412087]
+[node name="BottomRow" type="HBoxContainer" parent="MainMargin/MainVBox" unique_id=302981447]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 170)
+theme_override_constants/separation = 14
+
+[node name="ActionPanel" type="PanelContainer" parent="MainMargin/MainVBox/BottomRow" unique_id=302981448]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.2
+
+[node name="ActionArea" type="VBoxContainer" parent="MainMargin/MainVBox/BottomRow/ActionPanel" unique_id=860412087]
 layout_mode = 2
 theme_override_constants/separation = 8
+
+[node name="PortraitPanel" type="PanelContainer" parent="MainMargin/MainVBox/BottomRow" unique_id=302981449]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.4
+
+[node name="RosterPanel" type="PanelContainer" parent="MainMargin/MainVBox/BottomRow" unique_id=302981450]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.0

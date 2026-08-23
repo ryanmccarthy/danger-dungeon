@@ -8,11 +8,6 @@ extends Node3D
 const MOVE_TIME := 0.18
 const TURN_TIME := 0.13
 
-const EAST = Vector2i(1, 0)
-const WEST = Vector2i(-1, 0)
-const NORTH = Vector2i(0, -1)
-const SOUTH = Vector2i(0, 1)
-
 @onready var _player: CharacterBody3D = $Player
 @onready var _camera: Camera3D = $Player/Camera3D
 @onready var _geometry_root: Node3D = $GeometryRoot
@@ -60,14 +55,14 @@ func _is_walkable(coord: Vector2i) -> bool:
 	var row: String = area.grid_layout[coord.y]
 	if coord.x < 0 or coord.x >= row.length():
 		return false
-	return row[coord.x] != "#"
+	return row[coord.x] != TileTypes.WALL
 
 func _tile_char(coord: Vector2i) -> String:
 	if coord.y < 0 or coord.y >= area.grid_layout.size():
-		return "#"
+		return TileTypes.WALL
 	var row: String = area.grid_layout[coord.y]
 	if coord.x < 0 or coord.x >= row.length():
-		return "#"
+		return TileTypes.WALL
 	return row[coord.x]
 
 func _try_move(direction: Vector2i) -> void:
@@ -88,10 +83,10 @@ func _try_move(direction: Vector2i) -> void:
 	if PartyManager.is_party_wiped():
 		return # GameState's own listener handles the forced switch to Hub.
 	var ch := _tile_char(grid_position)
-	if ch == "U":
+	if ch == TileTypes.RETURN:
 		GameState.return_to_university()
 		return
-	if ch == "E" and randf() < area.encounter_rate:
+	if ch == TileTypes.ENCOUNTER and randf() < area.encounter_rate:
 		_start_encounter()
 
 func _turn(new_facing: Vector2i) -> void:
@@ -129,34 +124,34 @@ func _world_pos(coord: Vector2i) -> Vector3:
 	return Vector3(coord.x * _tile_size, 0.0, coord.y * _tile_size)
 
 func _facing_to_yaw(dir: Vector2i) -> float:
-	if dir == NORTH:
+	if dir == CompassDirection.NORTH:
 		return 0.0
-	if dir == WEST:
+	if dir == CompassDirection.WEST:
 		return PI / 2.0
-	if dir == SOUTH:
+	if dir == CompassDirection.SOUTH:
 		return PI
 
 	return -PI / 2.0 # EAST
 
 func _turn_right(dir: Vector2i) -> Vector2i:
-	if dir == NORTH:
-		return EAST
-	if dir == EAST:
-		return SOUTH
-	if dir == SOUTH:
-		return WEST
+	if dir == CompassDirection.NORTH:
+		return CompassDirection.EAST
+	if dir == CompassDirection.EAST:
+		return CompassDirection.SOUTH
+	if dir == CompassDirection.SOUTH:
+		return CompassDirection.WEST
 
-	return NORTH
+	return CompassDirection.NORTH
 
 func _turn_left(dir: Vector2i) -> Vector2i:
-	if dir == NORTH:
-		return WEST
-	if dir == WEST:
-		return SOUTH
-	if dir == SOUTH:
-		return EAST
+	if dir == CompassDirection.NORTH:
+		return CompassDirection.WEST
+	if dir == CompassDirection.WEST:
+		return CompassDirection.SOUTH
+	if dir == CompassDirection.SOUTH:
+		return CompassDirection.EAST
 
-	return NORTH
+	return CompassDirection.NORTH
 
 func _place_player_instant() -> void:
 	_player.position = _world_pos(grid_position)

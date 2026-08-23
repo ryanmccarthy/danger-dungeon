@@ -2,8 +2,8 @@
 class_name AreaData
 extends Resource
 
-## grid_layout: array of equal-length row strings. '#'=wall '.'=floor
-## 'E'=encounter-eligible floor 'U'=return-to-university exit tile.
+## grid_layout: array of equal-length row strings. 
+## See TileTypes for possible values
 ## encounter_table entries: {"enemy": EnemyData, "weight": float}
 
 @export var area_id: StringName
@@ -11,7 +11,7 @@ extends Resource
 @export var distance_from_university: int = 1
 
 @export_group("Layout")
-@export var grid_layout: Array[String] = []
+@export var grid_layout: Array[String] = [] # see above
 @export var spawn_coord: Vector2i = Vector2i.ZERO
 @export var spawn_facing: Vector2i = Vector2i.UP
 

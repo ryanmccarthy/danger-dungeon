@@ -21,7 +21,7 @@ static func build(parent: Node3D, area: AreaData) -> void:
 			else:
 				_add_floor(parent, world_pos, tile_size, theme)
 				_add_ceiling(parent, world_pos, tile_size, theme)
-				if ch == "U":
+				if ch == "R":
 					_add_exit_marker(parent, world_pos, tile_size, theme)
 
 static func _add_wall(parent: Node3D, pos: Vector3, size: float, theme: DungeonVisualThemeData) -> void:

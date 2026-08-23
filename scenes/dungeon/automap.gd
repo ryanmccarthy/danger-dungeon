@@ -29,9 +29,9 @@ func _draw() -> void:
 				continue
 			var ch := row[x]
 			var color := Color("#2a2733") if ch == "#" else Color("#5c5468")
-			if ch == "U":
+			if ch == "R":
 				color = Color("#e0c14a")
-			elif ch == "E":
+			elif ch == ".":
 				color = Color("#7a4a4a")
 			draw_rect(Rect2(x * CELL + 8, y * CELL + 8, CELL - 1, CELL - 1), color)
 	if visited.has(player_coord):

@@ -9,6 +9,7 @@ enum PrimitiveShape { BOX, SPHERE, CAPSULE }
 
 @export var enemy_id: StringName
 @export var display_name: String
+@export var enemy_portrait: CompressedTexture2D = preload("res://data/assets/enemies/generic.png")
 
 @export_group("Stats")
 @export var max_hp: int = 20

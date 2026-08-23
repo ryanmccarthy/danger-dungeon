@@ -7,9 +7,15 @@ extends Control
 
 @onready var _round_label: Label = $MainMargin/MainVBox/RoundLabel
 @onready var _enemy_row: HBoxContainer = $MainMargin/MainVBox/EnemyRow
-@onready var _party_row: HBoxContainer = $MainMargin/MainVBox/PartyRow
 @onready var _log_label: Label = $MainMargin/MainVBox/LogLabel
-@onready var _action_area: VBoxContainer = $MainMargin/MainVBox/ActionArea
+@onready var _action_panel: PanelContainer = $MainMargin/MainVBox/BottomRow/ActionPanel
+@onready var _action_area: VBoxContainer = $MainMargin/MainVBox/BottomRow/ActionPanel/ActionArea
+@onready var _portrait_panel: PanelContainer = $MainMargin/MainVBox/BottomRow/PortraitPanel
+@onready var _roster_panel: PanelContainer = $MainMargin/MainVBox/BottomRow/RosterPanel
+
+const CARD_SIZE := Vector2(140, 96)
+const NEUTRAL_BORDER := Color(0.32, 0.29, 0.31, 1)
+const HIGHLIGHT_COLOR := Color(0.8784314, 0.75686276, 0.2901961, 1)
 
 var enemies: Array = []
 var party_ids: Array = []
@@ -19,6 +25,17 @@ var _turn_order: Array = []
 var _turn_cursor: int = 0
 var _round_num: int = 1
 var _resolved: bool = false
+var _current_actor_ref = null
+
+func _ready() -> void:
+	# The action menu and roster list keep a bordered panel (for now);
+	# portraits (enemy cards + the current-actor panel) are transparent
+	_action_panel.add_theme_stylebox_override("panel", _neutral_style())
+	_portrait_panel.add_theme_stylebox_override("panel", _transparent_style())
+	_roster_panel.add_theme_stylebox_override("panel", _neutral_style())
+
+func _log(msg: String) -> void:
+	_log_label.text = msg
 
 func enter_state(_context: Dictionary = {}) -> void:
 	_resolved = false
@@ -26,20 +43,24 @@ func enter_state(_context: Dictionary = {}) -> void:
 	enemies.clear()
 	_defending.clear()
 	_cards.clear()
+
 	var enemy_ids: Array = GameState.pending_encounter.get("enemy_ids", [])
 	for id in enemy_ids:
 		var data: EnemyData = ContentDatabase.get_enemy(id)
 		if data == null:
 			continue
 		enemies.append({"data": data, "hp": data.max_hp, "name": data.display_name})
+
 	party_ids.clear()
 	for id in PartyManager.get_active_party_ids():
 		var s := PartyManager.get_student(id)
 		if s != null and s.status == StudentData.Status.ACTIVE:
 			party_ids.append(id)
+
 	var names: Array = []
 	for e in enemies:
 		names.append(e["name"])
+
 	_log("A wild encounter: %s!" % ", ".join(names))
 	_build_cards()
 	_start_round()
@@ -47,42 +68,74 @@ func enter_state(_context: Dictionary = {}) -> void:
 func _build_cards() -> void:
 	for c in _enemy_row.get_children():
 		c.queue_free()
-	for c in _party_row.get_children():
-		c.queue_free()
+	_cards.clear()
+
 	for i in enemies.size():
-		_enemy_row.add_child(_make_card(i, enemies[i]["name"], false, null))
-	for id in party_ids:
-		var s := PartyManager.get_student(id)
-		_party_row.add_child(_make_card(id, s.display_name, true, s.student_portrait))
+		_enemy_row.add_child(_make_enemy_card(i))
 	_refresh_cards()
 
-func _make_card(ref, display_name: String, is_party: bool, portrait: Texture2D) -> Control:
+func _neutral_style() -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.07, 0.07, 0.08, 1.0)
+	sb.set_border_width_all(2)
+	sb.border_color = NEUTRAL_BORDER
+	sb.set_corner_radius_all(10)
+	sb.set_content_margin_all(6)
+
+	return sb
+
+func _transparent_style() -> StyleBoxEmpty:
+	var sb := StyleBoxEmpty.new()
+	sb.set_content_margin_all(6)
+
+	return sb
+
+func _make_portrait(texture: Texture2D, portrait_size: float = 64.0) -> TextureRect:
+	var portrait_rect := TextureRect.new()
+	portrait_rect.texture = texture
+	portrait_rect.custom_minimum_size = Vector2(portrait_size, portrait_size)
+	portrait_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	portrait_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	portrait_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+
+	return portrait_rect
+
+func _make_fitted_portrait(texture: Texture2D) -> TextureRect:
+	# Fills whatever container it's placed in,
+	# unlike _make_portrait's fixed small size.
+	var portrait_rect := TextureRect.new()
+	portrait_rect.texture = texture
+	portrait_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+	portrait_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	portrait_rect.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	portrait_rect.size_flags_vertical = Control.SIZE_EXPAND_FILL
+
+	return portrait_rect
+
+func _make_enemy_card(idx: int) -> Control:
+	var data: EnemyData = enemies[idx]["data"]
+
+	var panel := PanelContainer.new()
+	panel.custom_minimum_size = CARD_SIZE
+	panel.add_theme_stylebox_override("panel", _transparent_style())
+
 	var box := VBoxContainer.new()
-	box.custom_minimum_size = Vector2(150, 70)
 	box.alignment = BoxContainer.ALIGNMENT_CENTER
-	var portrait_rect: TextureRect = null
-	if portrait != null:
-		portrait_rect = TextureRect.new()
-		portrait_rect.texture = portrait
-		portrait_rect.custom_minimum_size = Vector2(72, 72)
-		portrait_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		portrait_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		portrait_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		box.add_child(portrait_rect)
+	panel.add_child(box)
+
 	var name_lbl := Label.new()
-	name_lbl.text = display_name
+	name_lbl.text = enemies[idx]["name"]
 	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(name_lbl)
+	box.add_child(_make_portrait(data.enemy_portrait))
+
 	var hp_lbl := Label.new()
 	hp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(hp_lbl)
-	var mp_lbl: Label = null
-	if is_party:
-		mp_lbl = Label.new()
-		mp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		box.add_child(mp_lbl)
-	_cards[ref] = {"hp": hp_lbl, "mp": mp_lbl, "name_label": name_lbl, "portrait": portrait_rect}
-	return box
+
+	_cards[idx] = {"root": panel, "hp": hp_lbl}
+
+	return panel
 
 func _refresh_cards() -> void:
 	for i in enemies.size():
@@ -90,27 +143,57 @@ func _refresh_cards() -> void:
 		var card = _cards.get(i)
 		if card == null:
 			continue
-		card["hp"].text = "HP %d / %d" % [max(0, e["hp"]), e["data"].max_hp]
-		var e_tint := Color(1, 1, 1, 1) if e["hp"] > 0 else Color(0.4, 0.4, 0.4, 1)
-		card["name_label"].modulate = e_tint
-		if card["portrait"]:
-			card["portrait"].modulate = e_tint
-	for id in party_ids:
-		var s := PartyManager.get_student(id)
-		var card = _cards.get(id)
-		if card == null or s == null:
-			continue
-		card["hp"].text = "HP %d / %d" % [s.current_hp, s.max_hp]
-		if card["mp"]:
-			card["mp"].text = "MP %d / %d" % [s.current_mp, s.max_mp]
-		var alive := s.status == StudentData.Status.ACTIVE
-		var s_tint := Color(1, 1, 1, 1) if alive else Color(0.4, 0.4, 0.4, 1)
-		card["name_label"].modulate = s_tint
-		if card["portrait"]:
-			card["portrait"].modulate = s_tint
 
-func _log(msg: String) -> void:
-	_log_label.text = msg
+		card["hp"].text = "HP %d / %d" % [max(0, e["hp"]), e["data"].max_hp]
+		card["root"].modulate = Color(1, 1, 1, 1) if e["hp"] > 0 else Color(0.4, 0.4, 0.4, 0.7)
+
+	_show_roster_list()
+
+func _set_current_actor_portrait(ref) -> void:
+	# Only called for party turns; the panel goes fully transparent on enemy
+	# turns instead (see _next_turn).
+	_clear_current_actor_portrait()
+
+	var student := PartyManager.get_student(ref)
+	var texture: Texture2D = student.student_portrait if student else null
+	_portrait_panel.add_child(_make_fitted_portrait(texture))
+
+func _clear_current_actor_portrait() -> void:
+	for c in _portrait_panel.get_children():
+		c.queue_free()
+
+func _show_roster_list() -> void:
+	for c in _roster_panel.get_children():
+		c.queue_free()
+
+	var list := VBoxContainer.new()
+	list.add_theme_constant_override("separation", 6)
+	_roster_panel.add_child(list)
+
+	var current_party_ref = _current_actor_ref if not _is_enemy_ref(_current_actor_ref) else null
+	for id in party_ids:
+		var student := PartyManager.get_student(id)
+		if student == null:
+			continue
+
+		var row := VBoxContainer.new()
+		row.add_theme_constant_override("separation", 0)
+
+		var name_lbl := Label.new()
+		name_lbl.text = student.display_name
+		if id == current_party_ref:
+			name_lbl.add_theme_color_override("font_color", HIGHLIGHT_COLOR)
+		row.add_child(name_lbl)
+
+		var stat_lbl := Label.new()
+		stat_lbl.text = "HP %d/%d  MP %d/%d" % [student.current_hp, student.max_hp,
+												student.current_mp, student.max_mp]
+		stat_lbl.add_theme_font_size_override("font_size", 13)
+		row.add_child(stat_lbl)
+
+		var alive := student.status == StudentData.Status.ACTIVE
+		row.modulate = Color(1, 1, 1, 1) if alive else Color(0.4, 0.4, 0.4, 0.7)
+		list.add_child(row)
 
 # ------------------------------------------------------------ turn queue
 func _start_round() -> void:
@@ -141,9 +224,21 @@ func _next_turn() -> void:
 	if not _is_alive(ref):
 		_next_turn()
 		return
+	_current_actor_ref = ref
 	if _is_enemy_ref(ref):
+		# Action menu and portrait go fully transparent (not hidden/resized)
+		# on the enemy's turn; the roster list stays up throughout.
+		_action_panel.modulate.a = 0.0
+		_portrait_panel.modulate.a = 0.0
+		_clear_action_area()
+		_clear_current_actor_portrait()
+		_show_roster_list()
 		_enemy_act(ref)
 	else:
+		_action_panel.modulate.a = 1.0
+		_portrait_panel.modulate.a = 1.0
+		_set_current_actor_portrait(ref)
+		_show_roster_list()
 		_player_command_menu(ref)
 
 func _check_battle_end() -> bool:
@@ -171,8 +266,10 @@ func _check_battle_end() -> bool:
 func _resolve(result: String) -> void:
 	if _resolved:
 		return
+
 	_resolved = true
 	_clear_action_area()
+
 	if result == "WON":
 		var rewards := _roll_rewards()
 		_log("Victory! Found: " + rewards.get("log", "nothing"))
@@ -182,6 +279,7 @@ func _resolve(result: String) -> void:
 
 func _roll_rewards() -> Dictionary:
 	var log_parts: Array[String] = []
+
 	for e in enemies:
 		var data: EnemyData = e["data"]
 		InventoryManager.add_supplies(data.supply_reward)
@@ -191,6 +289,7 @@ func _roll_rewards() -> Dictionary:
 				InventoryManager.add_item(drop["item_id"], qty)
 				var item := ContentDatabase.get_item(drop["item_id"])
 				log_parts.append("%s x%d" % [item.display_name, qty])
+
 	return {"log": ", ".join(log_parts)}
 
 # --------------------------------------------------------- combatant helpers
@@ -200,12 +299,14 @@ func _is_enemy_ref(ref) -> bool:
 func _is_alive(ref) -> bool:
 	if _is_enemy_ref(ref):
 		return enemies[ref]["hp"] > 0
+
 	var s := PartyManager.get_student(ref)
 	return s != null and s.status == StudentData.Status.ACTIVE
 
 func _get_spd(ref) -> int:
 	if _is_enemy_ref(ref):
 		return enemies[ref]["data"].spd
+
 	var s := PartyManager.get_student(ref)
 	return s.student_class.base_spd + int(s.student_class.spd_per_level * (s.level - 1))
 
@@ -217,25 +318,31 @@ func _get_stat(ref, stat: String) -> int:
 			"def": return d.def
 			"mag": return d.mag
 			"res": return d.res
+
 		return 0
+
 	var s := PartyManager.get_student(ref)
 	var c := s.student_class
 	var lvl := s.level - 1
+
 	match stat:
 		"atk": return c.base_atk + int(c.atk_per_level * lvl)
 		"def": return c.base_def + int(c.def_per_level * lvl)
 		"mag": return c.base_mag + int(c.mag_per_level * lvl)
 		"res": return c.base_res + int(c.res_per_level * lvl)
+
 	return 0
 
 func _in_back_row(ref) -> bool:
 	if _is_enemy_ref(ref):
 		return false
+
 	return PartyManager.is_in_back_row(ref)
 
 func _display_name(ref) -> String:
 	if _is_enemy_ref(ref):
 		return enemies[ref]["name"]
+
 	var s := PartyManager.get_student(ref)
 	return s.display_name if s else "???"
 
@@ -243,8 +350,10 @@ func _deal_damage(attacker, defender, power: float, school: int) -> int:
 	var atk_stat := _get_stat(attacker, "atk" if school == SkillData.DamageSchool.PHYSICAL else "mag")
 	var def_stat := _get_stat(defender, "def" if school == SkillData.DamageSchool.PHYSICAL else "res")
 	var dmg := CombatMath.compute_damage(atk_stat, def_stat, power, school, _in_back_row(attacker), _in_back_row(defender))
+
 	if _defending.get(defender, false):
 		dmg = int(dmg * 0.6)
+
 	_apply_damage(defender, dmg)
 	return dmg
 
@@ -253,6 +362,7 @@ func _apply_damage(ref, amount: int) -> void:
 		enemies[ref]["hp"] = max(0, enemies[ref]["hp"] - amount)
 	else:
 		PartyManager.apply_damage(ref, amount, false)
+
 	_refresh_cards()
 
 func _apply_heal(ref, amount: int) -> void:
@@ -261,6 +371,7 @@ func _apply_heal(ref, amount: int) -> void:
 		e["hp"] = min(e["data"].max_hp, e["hp"] + amount)
 	else:
 		PartyManager.heal_student(ref, amount)
+
 	_refresh_cards()
 
 func _living_enemies() -> Array:
@@ -268,6 +379,7 @@ func _living_enemies() -> Array:
 	for i in enemies.size():
 		if enemies[i]["hp"] > 0:
 			out.append(i)
+
 	return out
 
 func _living_party() -> Array:
@@ -275,6 +387,7 @@ func _living_party() -> Array:
 	for id in party_ids:
 		if _is_alive(id):
 			out.append(id)
+
 	return out
 
 # -------------------------------------------------------------- enemy AI
@@ -284,6 +397,7 @@ func _enemy_act(ref: int) -> void:
 	if targets.is_empty():
 		_next_turn()
 		return
+
 	var target = targets[randi() % targets.size()]
 	if data.skill_pool.is_empty():
 		var dmg := _deal_damage(ref, target, 1.0, SkillData.DamageSchool.PHYSICAL)
@@ -297,6 +411,7 @@ func _enemy_act(ref: int) -> void:
 		else:
 			var dmg := _deal_damage(ref, target, skill.power, skill.damage_school)
 			_log("%s uses %s on %s for %d." % [_display_name(ref), skill.display_name, _display_name(target), dmg])
+
 	await get_tree().create_timer(0.5).timeout
 	_next_turn()
 
@@ -318,7 +433,7 @@ func _player_command_menu(actor: StringName) -> void:
 	_add_action_button(row, "Skill", func(): _show_skill_menu(actor))
 	_add_action_button(row, "Item", func(): _show_item_menu(actor))
 	_add_action_button(row, "Defend", func(): _do_defend(actor))
-	_add_action_button(row, "Flee", func(): _do_flee(actor))
+	_add_action_button(row, "Flee", func(): _do_flee())
 
 func _add_action_button(parent: Control, text: String, cb: Callable) -> void:
 	var btn := Button.new()
@@ -336,13 +451,15 @@ func _do_defend(actor) -> void:
 	_log("%s braces for impact." % _display_name(actor))
 	_end_player_turn()
 
-func _do_flee(actor) -> void:
+func _do_flee() -> void:
 	var party_spd := 0
 	for id in _living_party():
 		party_spd += _get_spd(id)
+
 	var enemy_spd := 0
 	for i in _living_enemies():
 		enemy_spd += _get_spd(i)
+
 	var chance: float = clamp(0.5 + float(party_spd - enemy_spd) * 0.01, 0.1, 0.9)
 	if randf() < chance:
 		_log("The party flees!")
@@ -355,23 +472,28 @@ func _do_flee(actor) -> void:
 
 func _show_skill_menu(actor: StringName) -> void:
 	_clear_action_area()
-	var s := PartyManager.get_student(actor)
+
+	var student := PartyManager.get_student(actor)
 	var back := Button.new()
 	back.text = "< Back"
 	back.pressed.connect(func(): _player_command_menu(actor))
 	_action_area.add_child(back)
-	for skill: SkillData in s.student_class.skill_ids:
-		var can_afford: bool = s.current_mp >= skill.mp_cost
+	var desc_lbl := _make_description_label()
+	for skill: SkillData in student.student_class.skill_ids:
+		var can_afford: bool = student.current_mp >= skill.mp_cost
 		var btn := Button.new()
 		btn.text = "%s (MP %d)" % [skill.display_name, skill.mp_cost]
 		btn.disabled = not can_afford
 		btn.pressed.connect(func(): _use_skill(actor, skill))
+		btn.mouse_entered.connect(func(): desc_lbl.text = skill.description)
 		_action_area.add_child(btn)
+	_action_area.add_child(desc_lbl)
 
 func _use_skill(actor: StringName, skill: SkillData) -> void:
 	var s := PartyManager.get_student(actor)
 	if s.current_mp < skill.mp_cost:
 		return
+
 	match skill.target_type:
 		SkillData.TargetType.SINGLE_ENEMY:
 			_begin_target_select(actor, func(t): _cast_skill(actor, skill, [t]), _living_enemies())
@@ -388,6 +510,7 @@ func _cast_skill(actor: StringName, skill: SkillData, targets: Array) -> void:
 	var s := PartyManager.get_student(actor)
 	if s.current_mp < skill.mp_cost:
 		return
+
 	s.current_mp -= skill.mp_cost
 	for t in targets:
 		match skill.effect_type:
@@ -400,30 +523,50 @@ func _cast_skill(actor: StringName, skill: SkillData, targets: Array) -> void:
 				_log("%s uses %s, healing %s for %d." % [_display_name(actor), skill.display_name, _display_name(t), amount])
 			SkillData.EffectType.BUFF, SkillData.EffectType.DEBUFF:
 				_log("%s uses %s on %s." % [_display_name(actor), skill.display_name, _display_name(t)])
+
 	_end_player_turn()
 
 func _show_item_menu(actor: StringName) -> void:
 	_clear_action_area()
+
 	var back := Button.new()
 	back.text = "< Back"
 	back.pressed.connect(func(): _player_command_menu(actor))
 	_action_area.add_child(back)
+
+	var desc_lbl := _make_description_label()
 	var usable_ids: Array = [&"item_bandage", &"item_energy_drink", &"item_trail_mix"]
 	var any := false
+
 	for id in usable_ids:
 		var have: int = InventoryManager.items.get(id, 0)
 		if have <= 0:
 			continue
+
 		any = true
 		var item := ContentDatabase.get_item(id)
 		var btn := Button.new()
 		btn.text = "%s x%d" % [item.display_name, have]
 		btn.pressed.connect(func(): _use_item(actor, id))
+		btn.mouse_entered.connect(func(): desc_lbl.text = item.description)
+
 		_action_area.add_child(btn)
+
 	if not any:
 		var lbl := Label.new()
 		lbl.text = "No usable items."
 		_action_area.add_child(lbl)
+
+	_action_area.add_child(desc_lbl)
+
+func _make_description_label() -> Label:
+	var desc_lbl := Label.new()
+	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	desc_lbl.custom_minimum_size = Vector2(0, 36)
+	desc_lbl.add_theme_font_size_override("font_size", 13)
+	desc_lbl.add_theme_color_override("font_color", Color(0.7, 0.68, 0.72, 1))
+
+	return desc_lbl
 
 func _use_item(actor: StringName, item_id: StringName) -> void:
 	var item := ContentDatabase.get_item(item_id)
@@ -432,6 +575,7 @@ func _use_item(actor: StringName, item_id: StringName) -> void:
 func _apply_item(actor: StringName, item_id: StringName, item: ItemData, target) -> void:
 	if not InventoryManager.remove_item(item_id):
 		return
+
 	match item.use_effect:
 		ItemData.UseEffect.HEAL_HP:
 			_apply_heal(target, int(item.use_value))
@@ -441,17 +585,21 @@ func _apply_item(actor: StringName, item_id: StringName, item: ItemData, target)
 				s.current_mp = min(s.max_mp, s.current_mp + int(item.use_value))
 		ItemData.UseEffect.CURE_HUNGER:
 			HungerSystem.restore_hunger(target, item.use_value)
+
 	_log("%s uses %s on %s." % [_display_name(actor), item.display_name, _display_name(target)])
 	_end_player_turn()
 
 func _begin_target_select(actor, on_pick: Callable, pool: Array = []) -> void:
 	if pool.is_empty():
 		pool = _living_enemies()
+
 	_clear_action_area()
+
 	var back := Button.new()
 	back.text = "< Back"
 	back.pressed.connect(func(): _player_command_menu(actor))
 	_action_area.add_child(back)
+
 	for ref in pool:
 		var btn := Button.new()
 		btn.text = "Target: %s" % _display_name(ref)
@@ -461,7 +609,9 @@ func _begin_target_select(actor, on_pick: Callable, pool: Array = []) -> void:
 func _end_player_turn() -> void:
 	_clear_action_area()
 	_refresh_cards()
+
 	if _check_battle_end():
 		return
+
 	await get_tree().create_timer(0.3).timeout
 	_next_turn()
