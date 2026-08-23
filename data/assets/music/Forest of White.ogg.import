@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bl2kbs5y6dplk"
+path="res://.godot/imported/Forest of White.ogg-fe603ba28a6f55fa791f6bc7f2000d51.oggvorbisstr"
+
+[deps]
+
+source_file="res://data/assets/music/Forest of White.ogg"
+dest_files=["res://.godot/imported/Forest of White.ogg-fe603ba28a6f55fa791f6bc7f2000d51.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

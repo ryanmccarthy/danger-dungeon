@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bv2rnxrj82al5" path="res://scenes/dungeon/dungeon_crawl.gd" id="1_orpjh"]
 [ext_resource type="Environment" uid="uid://eptm4p0w8vxp" path="res://materials/fog_environment.tres" id="2_0oasr"]
 [ext_resource type="Script" uid="uid://d16jqiojykmtl" path="res://scenes/dungeon/automap.gd" id="3_wqcs3"]
+[ext_resource type="AudioStream" uid="uid://bl2kbs5y6dplk" path="res://data/assets/music/Forest of White.ogg" id="4_0oasr"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5x0sj"]
 radius = 0.4
@@ -65,3 +66,7 @@ offset_top = 16.0
 offset_right = -16.0
 offset_bottom = 16.0
 script = ExtResource("3_wqcs3")
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=560179020]
+stream = ExtResource("4_0oasr")
+volume_db = -6.0

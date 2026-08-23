@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ddgtuk62pce5n"]
 
 [ext_resource type="Script" uid="uid://bnbqjxm4ve5kl" path="res://scenes/hub/university_hub.gd" id="1_5b25d"]
+[ext_resource type="AudioStream" uid="uid://n4cy8pwacvc1" path="res://data/assets/music/hub.ogg" id="2_4bkps"]
 
 [node name="UniversityHub" type="Control" unique_id=1142938538]
 layout_mode = 3
@@ -151,3 +152,7 @@ theme_override_constants/separation = 6
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "Close"
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1830748198]
+stream = ExtResource("2_4bkps")
+volume_db = -6.0

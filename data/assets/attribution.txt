@@ -1,1 +1,4 @@
-title: "Stars" - Makoto Hiramatsu (https://makotohiramatsu.itch.io/lost)
+title: "My Demons" - Melancholy Marionette (https://melancholy-marionette.itch.io/love-terror-vol-01-bgm-pack)
+dungeon: "White" - Crow Shade (https://crowshade.itch.io/horror-music-pack)
+hub: "Stars" - Makoto Hiramatsu (https://makotohiramatsu.itch.io/lost)
+battle: "The Walking Weird" - Melancholy Marionette (https://melancholy-marionette.itch.io/love-terror-bgm-pack-vol-02)

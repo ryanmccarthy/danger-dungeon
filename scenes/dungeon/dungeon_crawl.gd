@@ -8,6 +8,7 @@ extends Node3D
 const MOVE_TIME := 0.18
 const TURN_TIME := 0.13
 
+@onready var _music: AudioStreamPlayer = $MusicPlayer
 @onready var _player: CharacterBody3D = $Player
 @onready var _camera: Camera3D = $Player/Camera3D
 @onready var _geometry_root: Node3D = $GeometryRoot
@@ -20,6 +21,10 @@ var facing: Vector2i
 var visited: Dictionary = {}
 var _busy: bool = false
 var _tile_size: float = 4.0
+
+func _ready() -> void:
+	_music.finished.connect(func(): _music.play())
+	_music.play()
 
 func enter_state(_context: Dictionary = {}) -> void:
 	area = GameState.current_area

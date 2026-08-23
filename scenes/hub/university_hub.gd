@@ -12,6 +12,7 @@ const FEED_COST := 6
 
 const HOME_AREA_ID := &"forest_approach"
 
+@onready var _music: AudioStreamPlayer = $MusicPlayer
 @onready var _hud_label: Label = $MainMargin/MainVBox/HUDLabel
 @onready var _status_label: Label = $MainMargin/MainVBox/StatusLabel
 @onready var _popup_root: Control = $PopupLayer/PopupRoot
@@ -35,6 +36,9 @@ func _ready() -> void:
 	EventBus.student_died.connect(func(_id): _refresh_hud())
 	EventBus.student_revived.connect(func(_id): _refresh_hud())
 	EventBus.party_wiped.connect(_on_party_wiped)
+
+	_music.finished.connect(func(): _music.play())
+	_music.play()
 
 	_refresh_hud()
 

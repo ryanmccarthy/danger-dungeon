@@ -5,6 +5,7 @@ extends Control
 ## a single row in this slice (documented future extension). A combatant
 ## "ref" is a StringName (party student_id) or an int (index into `enemies`).
 
+@onready var _music: AudioStreamPlayer = $MusicPlayer
 @onready var _round_label: Label = $MainMargin/MainVBox/RoundLabel
 @onready var _enemy_row: HBoxContainer = $MainMargin/MainVBox/EnemyRow
 @onready var _log_label: Label = $MainMargin/MainVBox/LogLabel
@@ -33,6 +34,9 @@ func _ready() -> void:
 	_action_panel.add_theme_stylebox_override("panel", _neutral_style())
 	_portrait_panel.add_theme_stylebox_override("panel", _transparent_style())
 	_roster_panel.add_theme_stylebox_override("panel", _neutral_style())
+
+	_music.finished.connect(func(): _music.play())
+	_music.play()
 
 func _log(msg: String) -> void:
 	_log_label.text = msg

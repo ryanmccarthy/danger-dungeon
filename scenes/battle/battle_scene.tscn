@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bvkaumikcr7of"]
 
 [ext_resource type="Script" uid="uid://ca3ey3jh2stpc" path="res://scenes/battle/battle_scene.gd" id="1_3hov6"]
+[ext_resource type="AudioStream" uid="uid://1yau26b4fj5m" path="res://data/assets/music/battle.ogg" id="2_6iigb"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_mhx8t"]
 
@@ -79,4 +80,7 @@ size_flags_stretch_ratio = 1.4
 custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.0
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1428113610]
+stream = ExtResource("2_6iigb")
+volume_db = -6.0
