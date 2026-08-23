@@ -2,16 +2,18 @@
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_k8n5y"]
 [ext_resource type="Resource" uid="uid://gxe5aki6op3s" path="res://data/classes/class_mascot.tres" id="2_ldgmk"]
+[ext_resource type="CompressedTexture2D" uid="uid://btjueb4rcwma" path="res://data/assets/portraits/tony.png" id="3_tony"]
 
 [resource]
 script = ExtResource("1_k8n5y")
 student_id = &"student_006"
 display_name = "Big Tony"
 student_class = ExtResource("2_ldgmk")
+student_portrait = ExtResource("3_tony")
 current_hp = 160
 max_hp = 160
 current_mp = 25
 max_mp = 25
 portrait_color = Color(0.8509804, 0.30980393, 0.30980393, 1)
 bio_flavor = "Never took the mascot suit off. Nobody has ever seen his face."
-is_unique = true
+is_starter = true

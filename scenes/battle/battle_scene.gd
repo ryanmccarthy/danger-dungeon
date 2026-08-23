@@ -50,25 +50,38 @@ func _build_cards() -> void:
 	for c in _party_row.get_children():
 		c.queue_free()
 	for i in enemies.size():
-		_enemy_row.add_child(_make_card(i, enemies[i]["name"], false))
+		_enemy_row.add_child(_make_card(i, enemies[i]["name"], false, null))
 	for id in party_ids:
 		var s := PartyManager.get_student(id)
-		_party_row.add_child(_make_card(id, s.display_name, true))
+		_party_row.add_child(_make_card(id, s.display_name, true, s.student_portrait))
 	_refresh_cards()
 
-func _make_card(ref, display_name: String, is_party: bool) -> Control:
+func _make_card(ref, display_name: String, is_party: bool, portrait: Texture2D) -> Control:
 	var box := VBoxContainer.new()
 	box.custom_minimum_size = Vector2(150, 70)
+	box.alignment = BoxContainer.ALIGNMENT_CENTER
+	var portrait_rect: TextureRect = null
+	if portrait != null:
+		portrait_rect = TextureRect.new()
+		portrait_rect.texture = portrait
+		portrait_rect.custom_minimum_size = Vector2(72, 72)
+		portrait_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		portrait_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		portrait_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		box.add_child(portrait_rect)
 	var name_lbl := Label.new()
 	name_lbl.text = display_name
+	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(name_lbl)
 	var hp_lbl := Label.new()
+	hp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(hp_lbl)
 	var mp_lbl: Label = null
 	if is_party:
 		mp_lbl = Label.new()
+		mp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		box.add_child(mp_lbl)
-	_cards[ref] = {"hp": hp_lbl, "mp": mp_lbl, "name_label": name_lbl}
+	_cards[ref] = {"hp": hp_lbl, "mp": mp_lbl, "name_label": name_lbl, "portrait": portrait_rect}
 	return box
 
 func _refresh_cards() -> void:
@@ -78,7 +91,10 @@ func _refresh_cards() -> void:
 		if card == null:
 			continue
 		card["hp"].text = "HP %d / %d" % [max(0, e["hp"]), e["data"].max_hp]
-		card["name_label"].modulate = Color(1, 1, 1, 1) if e["hp"] > 0 else Color(0.4, 0.4, 0.4, 1)
+		var e_tint := Color(1, 1, 1, 1) if e["hp"] > 0 else Color(0.4, 0.4, 0.4, 1)
+		card["name_label"].modulate = e_tint
+		if card["portrait"]:
+			card["portrait"].modulate = e_tint
 	for id in party_ids:
 		var s := PartyManager.get_student(id)
 		var card = _cards.get(id)
@@ -88,7 +104,10 @@ func _refresh_cards() -> void:
 		if card["mp"]:
 			card["mp"].text = "MP %d / %d" % [s.current_mp, s.max_mp]
 		var alive := s.status == StudentData.Status.ACTIVE
-		card["name_label"].modulate = Color(1, 1, 1, 1) if alive else Color(0.4, 0.4, 0.4, 1)
+		var s_tint := Color(1, 1, 1, 1) if alive else Color(0.4, 0.4, 0.4, 1)
+		card["name_label"].modulate = s_tint
+		if card["portrait"]:
+			card["portrait"].modulate = s_tint
 
 func _log(msg: String) -> void:
 	_log_label.text = msg

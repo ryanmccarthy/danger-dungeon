@@ -21,7 +21,7 @@ func _default_formation() -> void:
 	front_row_ids.clear()
 	back_row_ids.clear()
 	for s in roster:
-		if not s.is_unique:
+		if not s.is_starter:
 			continue
 		var pref: int = s.student_class.preferred_row
 		if pref == StudentClassData.RowPreference.BACK and back_row_ids.size() < MAX_BACK:

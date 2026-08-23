@@ -2,16 +2,18 @@
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_8kbfp"]
 [ext_resource type="Resource" uid="uid://bd7peg0gf4kyb" path="res://data/classes/class_debate_captain.tres" id="2_exj0v"]
+[ext_resource type="CompressedTexture2D" uid="uid://bv7xu4iwh37n1" path="res://data/assets/portraits/generic.png" id="3_chloe"]
 
 [resource]
 script = ExtResource("1_8kbfp")
 student_id = &"student_005"
 display_name = "Chloe"
 student_class = ExtResource("2_exj0v")
+student_portrait = ExtResource("3_chloe")
 current_hp = 70
 max_hp = 70
 current_mp = 45
 max_mp = 45
 portrait_color = Color(0.29803923, 0.7882353, 0.627451, 1)
 bio_flavor = "Has already opened a formal motion to leave the fog dimension."
-is_unique = true
+is_starter = true

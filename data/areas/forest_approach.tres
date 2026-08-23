@@ -8,7 +8,17 @@ script = ExtResource("1_vqq4m")
 area_id = &"forest_approach"
 display_name = "The Fog-Wreathed Approach"
 distance_from_university = 3
-grid_layout = Array[String](["#########", "#U......#", "#.#####.#", "#.#...#.#", "#.#.#.#.#", "#.#.E.#.#", "#.#...#.#", "#E.....E#", "#########"])
+grid_layout = Array[String](
+    ["#########",
+     "#U......#", 
+     "#.#####.#", 
+     "#.#...#.#", 
+     "#.#.#.#.#", 
+     "#.#.E.#.#", 
+     "#.#...#.#", 
+     "#E.....E#", 
+     "#########"]
+)
 spawn_coord = Vector2i(2, 1)
 spawn_facing = Vector2i(1, 0)
 encounter_table = Array[Dictionary]([{

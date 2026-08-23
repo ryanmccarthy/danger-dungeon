@@ -2,16 +2,18 @@
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_j0ui2"]
 [ext_resource type="Resource" uid="uid://5x1lyykqilgi" path="res://data/classes/class_skater.tres" id="2_4mjax"]
+[ext_resource type="CompressedTexture2D" uid="uid://bv7xu4iwh37n1" path="res://data/assets/portraits/generic.png" id="3_devon"]
 
 [resource]
 script = ExtResource("1_j0ui2")
 student_id = &"student_004"
 display_name = "Devon"
 student_class = ExtResource("2_4mjax")
+student_portrait = ExtResource("3_devon")
 current_hp = 85
 max_hp = 85
 current_mp = 20
 max_mp = 20
 portrait_color = Color(0.9490196, 0.6627451, 0.23529412, 1)
 bio_flavor = "Brought a skateboard on a campus tour. No regrets."
-is_unique = true
+is_starter = true

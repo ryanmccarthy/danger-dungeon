@@ -12,6 +12,7 @@ enum Status { ACTIVE, DOWNED, DEAD }
 @export var display_name: String
 @export var student_class: StudentClassData
 @export var level: int = 1
+@export var student_portrait: CompressedTexture2D = preload("res://data/assets/portraits/generic.png")
 
 @export_group("Vitals")
 @export var current_hp: int = 1
@@ -25,7 +26,7 @@ enum Status { ACTIVE, DOWNED, DEAD }
 @export var status: Status = Status.ACTIVE
 @export var portrait_color: Color = Color.WHITE
 @export_multiline var bio_flavor: String = ""
-@export var is_unique: bool = false
+@export var is_starter: bool = false
 
 func is_usable() -> bool:
 	return status == Status.ACTIVE or status == Status.DOWNED
