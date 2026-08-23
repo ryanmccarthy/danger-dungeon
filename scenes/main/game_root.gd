@@ -5,6 +5,7 @@ extends Node
 ## scene becomes active. Nothing else in the project holds a cross
 ## reference between those three scenes.
 
+const TITLE_SCENE := preload("res://scenes/title/title_screen.tscn")
 const HUB_SCENE := preload("res://scenes/hub/university_hub.tscn")
 const DUNGEON_SCENE := preload("res://scenes/dungeon/dungeon_crawl.tscn")
 const BATTLE_SCENE := preload("res://scenes/battle/battle_scene.tscn")
@@ -30,6 +31,8 @@ func _swap_to(mode: int, context: Dictionary) -> void:
 		_current = null
 	var scene: PackedScene
 	match mode:
+		GameState.GameMode.TITLE:
+			scene = TITLE_SCENE
 		GameState.GameMode.HUB:
 			scene = HUB_SCENE
 		GameState.GameMode.DUNGEON:

@@ -2,7 +2,7 @@
 class_name AreaData
 extends Resource
 
-## grid_layout: array of equal-length row strings. 
+## grid_layout: array of equal-length row strings.
 ## See TileTypes for possible values
 ## encounter_table entries: {"enemy": EnemyData, "weight": float}
 

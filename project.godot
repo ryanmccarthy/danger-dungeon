@@ -10,14 +10,13 @@ config_version=5
 
 [application]
 
-config/name="Dungeon Danger"
+config/name="The Last Year of Our Lives"
 run/main_scene="uid://c7p3wj05xh1wx"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 ContentDatabase="*res://autoloads/content_database.gd"
 EventBus="*res://autoloads/event_bus.gd"
 PartyManager="*res://autoloads/party_manager.gd"
@@ -27,6 +26,7 @@ QuestManager="*res://autoloads/quest_manager.gd"
 UpgradeManager="*res://autoloads/upgrade_manager.gd"
 GameState="*res://autoloads/game_state.gd"
 SaveManager="*res://autoloads/save_manager.gd"
+_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [display]
 

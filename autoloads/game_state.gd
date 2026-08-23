@@ -3,11 +3,11 @@ extends Node
 ## Central mode switch (Hub/Dungeon/Battle) and the depart/return/battle
 ## round-trip flow. GameRoot listens to mode_changed to swap scenes.
 
-enum GameMode { HUB, DUNGEON, BATTLE }
+enum GameMode { TITLE, HUB, DUNGEON, BATTLE }
 
 signal mode_changed(old_mode: GameMode, new_mode: GameMode, context: Dictionary)
 
-var current_mode: GameMode = GameMode.HUB
+var current_mode: GameMode = GameMode.TITLE
 var current_area: AreaData
 var current_dungeon_position: Vector2i
 var current_dungeon_facing: Vector2i
