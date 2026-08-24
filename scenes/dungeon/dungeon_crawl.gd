@@ -10,7 +10,7 @@ const TURN_TIME := 0.13
 
 @onready var _music: AudioStreamPlayer = $MusicPlayer
 @onready var _player: CharacterBody3D = $Player
-@onready var _camera: Camera3D = $Player/Camera3D
+#@onready var _camera: Camera3D = $Player/Camera3D
 @onready var _geometry_root: Node3D = $GeometryRoot
 @onready var _info_label: Label = $UILayer/HUD/InfoLabel
 @onready var _automap: Control = $UILayer/HUD/AutoMapPanel

@@ -1,8 +1,11 @@
 [gd_scene format=3 uid="uid://c7p3wj05xh1wx"]
 
 [ext_resource type="Script" uid="uid://duo2fon0v6e18" path="res://scenes/main/game_root.gd" id="1_xdano"]
+[ext_resource type="PackedScene" uid="uid://bbaulgiodka6f" path="res://scenes/ui/pause_menu.tscn" id="2_658pv"]
 
 [node name="GameRoot" type="Node" unique_id=888107828]
 script = ExtResource("1_xdano")
 
 [node name="CurrentSceneHolder" type="Node" parent="." unique_id=1741171338]
+
+[node name="PauseMenu" parent="." unique_id=1230286664 instance=ExtResource("2_658pv")]

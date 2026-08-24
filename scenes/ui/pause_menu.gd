@@ -1,0 +1,558 @@
+extends CanvasLayer
+
+## Global Esc-menu overlay: party roster + six nav buttons that open
+## Inventory / Equipment (stub) / Status / Requests / Facilities (stub) /
+## Options sub-screens. Lives directly under GameRoot (a sibling of
+## CurrentSceneHolder) so it survives Hub<->Dungeon scene swaps instead of
+## being freed on every mode change. Only opens in HUB and DUNGEON modes;
+## pauses the tree while open so it behaves as a real pause menu (blocks
+## dungeon movement input and Hub facility buttons underneath it).
+
+const OPEN_MODES := [GameState.GameMode.HUB, GameState.GameMode.DUNGEON]
+
+const GOLD := Color(0.8784314, 0.75686276, 0.2901961, 1)
+const BODY_TEXT := Color(0.7882353, 0.76862746, 0.84705883, 1)
+const DIM_TEXT := Color(0.7, 0.68, 0.72, 1)
+const GOOD_TEXT := Color(0.56078434, 0.83137256, 0.56078434, 1)
+const CARD_BORDER := Color(0.55, 0.16, 0.16, 1)
+const ROW_BORDER := Color(0.32, 0.29, 0.31, 1)
+
+@onready var _root: Control = $Root
+@onready var _main_panel: Panel = $Root/MainPanel
+@onready var _party_grid: GridContainer = $Root/MainPanel/MainMargin/MainVBox/PartyGrid
+@onready var _nav_grid: GridContainer = $Root/MainPanel/MainMargin/MainVBox/NavGrid
+@onready var _sub_panel: Panel = $Root/SubPanel
+@onready var _sub_title: Label = $Root/SubPanel/SubMargin/SubVBox/SubHeaderRow/SubTitleLabel
+@onready var _sub_body: VBoxContainer = $Root/SubPanel/SubMargin/SubVBox/SubBody
+@onready var _back_button: Button = $Root/SubPanel/SubMargin/SubVBox/SubHeaderRow/BackButton
+
+var _is_open: bool = false
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	_root.process_mode = Node.PROCESS_MODE_ALWAYS
+	_root.visible = false
+	_sub_panel.visible = false
+
+	for btn: Button in _nav_grid.get_children():
+		_style_nav_button(btn)
+
+	_nav_grid.get_node("BtnInventory").pressed.connect(func(): _open_sub("inventory"))
+	_nav_grid.get_node("BtnEquipment").pressed.connect(func(): _open_sub("equipment"))
+	_nav_grid.get_node("BtnStatus").pressed.connect(func(): _open_sub("status"))
+	_nav_grid.get_node("BtnRequests").pressed.connect(func(): _open_sub("requests"))
+	_nav_grid.get_node("BtnFacilities").pressed.connect(func(): _open_sub("facilities"))
+	_nav_grid.get_node("BtnOptions").pressed.connect(func(): _open_sub("options"))
+	_back_button.pressed.connect(_show_main)
+
+	GameState.mode_changed.connect(_on_mode_changed)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not event.is_action_pressed("ui_cancel"):
+		return
+
+	if _is_open:
+		_close()
+		get_viewport().set_input_as_handled()
+	elif GameState.current_mode in OPEN_MODES:
+		_open()
+		get_viewport().set_input_as_handled()
+
+func _on_mode_changed(_old_mode, new_mode, _context: Dictionary) -> void:
+	if _is_open and not (new_mode in OPEN_MODES):
+		_close()
+
+func _open() -> void:
+	_is_open = true
+	_root.visible = true
+	_show_main()
+	get_tree().paused = true
+
+func _close() -> void:
+	_is_open = false
+	_root.visible = false
+	get_tree().paused = false
+
+func _show_main() -> void:
+	_sub_panel.visible = false
+	_main_panel.visible = true
+	_refresh_party_grid()
+
+# --------------------------------------------------------------- party grid
+func _refresh_party_grid() -> void:
+	for c in _party_grid.get_children():
+		c.queue_free()
+
+	for id in PartyManager.get_active_party_ids():
+		var s := PartyManager.get_student(id)
+		if s != null:
+			_party_grid.add_child(_make_party_card(s))
+
+func _make_party_card(s: StudentData) -> Control:
+	var card := PanelContainer.new()
+	card.custom_minimum_size = Vector2(320, 140)
+	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	card.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	card.add_theme_stylebox_override("panel", _card_style())
+	if s.status == StudentData.Status.DOWNED:
+		card.modulate = Color(1, 1, 1, 0.6)
+
+	var hbox := HBoxContainer.new()
+	hbox.add_theme_constant_override("separation", 24)
+	card.add_child(hbox)
+	hbox.add_child(_make_card_portrait(s.student_portrait))
+
+	var info := VBoxContainer.new()
+	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	info.size_flags_stretch_ratio = 1.6
+	info.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	info.alignment = BoxContainer.ALIGNMENT_CENTER
+	hbox.add_child(info)
+
+	var name_lbl := Label.new()
+	name_lbl.text = s.display_name
+	name_lbl.add_theme_font_size_override("font_size", 30)
+	info.add_child(name_lbl)
+
+	var class_lbl := Label.new()
+	class_lbl.text = "%s — Lv %d" % [s.student_class.class_name_display, s.level]
+	class_lbl.add_theme_font_size_override("font_size", 20)
+	class_lbl.add_theme_color_override("font_color", BODY_TEXT)
+	info.add_child(class_lbl)
+
+	var stat_lbl := Label.new()
+	stat_lbl.text = "HP %d/%d   MP %d/%d" % [s.current_hp, s.max_hp, s.current_mp, s.max_mp]
+	stat_lbl.add_theme_font_size_override("font_size", 20)
+	info.add_child(stat_lbl)
+
+	return card
+
+func _make_portrait_frame(texture: Texture2D, box_size: float) -> Control:
+	var frame := PanelContainer.new()
+	frame.custom_minimum_size = Vector2(box_size, box_size)
+	frame.add_theme_stylebox_override("panel", _portrait_style())
+
+	var portrait := TextureRect.new()
+	portrait.texture = texture
+	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	frame.add_child(portrait)
+
+	return frame
+
+func _make_card_portrait(texture: Texture2D) -> TextureRect:
+	# Borderless, no background box — scales to fill the card's full height
+	# (and whatever width share the HBoxContainer stretch ratio gives it)
+	# while keeping the texture's own aspect ratio, instead of being boxed
+	# into a fixed square. Both size flags must be EXPAND_FILL or the
+	# container never grants it space to begin with (Control's horizontal
+	# flag defaults to FILL, not EXPAND) — same pattern as
+	# battle_scene.gd's _make_fitted_portrait.
+	var portrait := TextureRect.new()
+	portrait.texture = texture
+	portrait.expand_mode = TextureRect.EXPAND_FIT_HEIGHT_PROPORTIONAL
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	portrait.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	portrait.size_flags_vertical = Control.SIZE_EXPAND_FILL
+
+	return portrait
+
+# --------------------------------------------------------------- sub-screens
+func _open_sub(kind: String) -> void:
+	_main_panel.visible = false
+	_sub_panel.visible = true
+	for c in _sub_body.get_children():
+		c.queue_free()
+
+	match kind:
+		"inventory":
+			_sub_title.text = "Inventory"
+			_build_inventory()
+		"equipment":
+			_sub_title.text = "Equipment"
+			_build_stub("Equipment loadouts aren't in yet — coming in a future update.")
+		"status":
+			_sub_title.text = "Status"
+			_build_status()
+		"requests":
+			_sub_title.text = "Requests"
+			_build_requests()
+		"facilities":
+			_sub_title.text = "Facilities"
+			_build_stub("A campus facilities overview is coming soon.")
+		"options":
+			_sub_title.text = "Options"
+			_build_options()
+
+func _build_stub(text: String) -> void:
+	var lbl := Label.new()
+	lbl.text = text
+	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	lbl.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	lbl.add_theme_color_override("font_color", BODY_TEXT)
+	lbl.add_theme_font_size_override("font_size", 24)
+	_sub_body.add_child(lbl)
+
+# ----------------------------------------------------------------- Inventory
+func _build_inventory() -> void:
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_sub_body.add_child(scroll)
+
+	var list := VBoxContainer.new()
+	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	list.add_theme_constant_override("separation", 10)
+	scroll.add_child(list)
+
+	var supplies_lbl := Label.new()
+	supplies_lbl.text = "Supplies: %d" % InventoryManager.supplies
+	supplies_lbl.add_theme_color_override("font_color", GOLD)
+	supplies_lbl.add_theme_font_size_override("font_size", 24)
+	list.add_child(supplies_lbl)
+	list.add_child(HSeparator.new())
+
+	var ids: Array = InventoryManager.items.keys()
+	ids.sort()
+	var any := false
+	for id in ids:
+		var count: int = InventoryManager.items.get(id, 0)
+		if count <= 0:
+			continue
+
+		var item: ItemData = ContentDatabase.get_item(id)
+		if item == null:
+			continue
+
+		any = true
+		list.add_child(_make_inventory_row(item, count))
+
+	if not any:
+		var lbl := Label.new()
+		lbl.text = "No items."
+		lbl.add_theme_color_override("font_color", DIM_TEXT)
+		list.add_child(lbl)
+
+func _make_inventory_row(item: ItemData, count: int) -> Control:
+	var row := PanelContainer.new()
+	row.add_theme_stylebox_override("panel", _row_style())
+
+	var box := VBoxContainer.new()
+	row.add_child(box)
+
+	var head_lbl := Label.new()
+	head_lbl.text = "%s x%d" % [item.display_name, count]
+	head_lbl.add_theme_font_size_override("font_size", 20)
+	box.add_child(head_lbl)
+
+	if item.description != "":
+		var desc_lbl := Label.new()
+		desc_lbl.text = item.description
+		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		desc_lbl.add_theme_font_size_override("font_size", 16)
+		desc_lbl.add_theme_color_override("font_color", DIM_TEXT)
+		box.add_child(desc_lbl)
+
+	return row
+
+# -------------------------------------------------------------------- Status
+func _build_status() -> void:
+	var hbox := HBoxContainer.new()
+	hbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hbox.add_theme_constant_override("separation", 20)
+	_sub_body.add_child(hbox)
+
+	var left_scroll := ScrollContainer.new()
+	left_scroll.custom_minimum_size = Vector2(220, 0)
+	left_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hbox.add_child(left_scroll)
+
+	var left_list := VBoxContainer.new()
+	left_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	left_list.add_theme_constant_override("separation", 6)
+	left_scroll.add_child(left_list)
+
+	var detail := VBoxContainer.new()
+	detail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	detail.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	detail.add_theme_constant_override("separation", 8)
+	hbox.add_child(detail)
+
+	var roster := PartyManager.get_usable_roster()
+	if roster.is_empty():
+		var lbl := Label.new()
+		lbl.text = "No party members available."
+		detail.add_child(lbl)
+		return
+
+	for s in roster:
+		var btn := Button.new()
+		btn.text = s.display_name
+		btn.add_theme_font_size_override("font_size", 18)
+		btn.pressed.connect(func(): _fill_status_detail(detail, s))
+		left_list.add_child(btn)
+
+	_fill_status_detail(detail, roster[0])
+
+func _fill_status_detail(detail: VBoxContainer, s: StudentData) -> void:
+	for c in detail.get_children():
+		c.queue_free()
+
+	var top := HBoxContainer.new()
+	top.add_theme_constant_override("separation", 16)
+	detail.add_child(top)
+	top.add_child(_make_portrait_frame(s.student_portrait, 96.0))
+
+	var head_box := VBoxContainer.new()
+	top.add_child(head_box)
+
+	var name_lbl := Label.new()
+	name_lbl.text = s.display_name
+	name_lbl.add_theme_font_size_override("font_size", 30)
+	name_lbl.add_theme_color_override("font_color", GOLD)
+	head_box.add_child(name_lbl)
+
+	var class_lbl := Label.new()
+	class_lbl.text = "%s — Level %d" % [s.student_class.class_name_display, s.level]
+	class_lbl.add_theme_font_size_override("font_size", 18)
+	head_box.add_child(class_lbl)
+
+	var status_lbl := Label.new()
+	status_lbl.text = "Status: %s" % StudentData.Status.keys()[s.status]
+	status_lbl.add_theme_font_size_override("font_size", 18)
+	head_box.add_child(status_lbl)
+
+	detail.add_child(HSeparator.new())
+
+	var stats_lbl := Label.new()
+	stats_lbl.text = "HP %d / %d      MP %d / %d\nHunger %d / %d" % [
+		s.current_hp, s.max_hp, s.current_mp, s.max_mp,
+		int(s.current_hunger), int(s.max_hunger)]
+	stats_lbl.add_theme_font_size_override("font_size", 20)
+	detail.add_child(stats_lbl)
+
+	if s.bio_flavor != "":
+		detail.add_child(HSeparator.new())
+		var bio_hdr := Label.new()
+		bio_hdr.text = "About:"
+		bio_hdr.add_theme_font_size_override("font_size", 16)
+		bio_hdr.add_theme_color_override("font_color", DIM_TEXT)
+		detail.add_child(bio_hdr)
+
+		var bio_lbl := Label.new()
+		bio_lbl.text = s.bio_flavor
+		bio_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		bio_lbl.add_theme_font_size_override("font_size", 18)
+		detail.add_child(bio_lbl)
+
+# ------------------------------------------------------------------ Requests
+func _build_requests() -> void:
+	var hbox := HBoxContainer.new()
+	hbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hbox.add_theme_constant_override("separation", 20)
+	_sub_body.add_child(hbox)
+
+	var left_scroll := ScrollContainer.new()
+	left_scroll.custom_minimum_size = Vector2(240, 0)
+	left_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hbox.add_child(left_scroll)
+
+	var left_list := VBoxContainer.new()
+	left_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	left_list.add_theme_constant_override("separation", 6)
+	left_scroll.add_child(left_list)
+
+	var detail := VBoxContainer.new()
+	detail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	detail.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	detail.add_theme_constant_override("separation", 8)
+	hbox.add_child(detail)
+
+	var first_quest: QuestData = null
+	var first_complete := false
+
+	var accepted_hdr := Label.new()
+	accepted_hdr.text = "Accepted"
+	accepted_hdr.add_theme_color_override("font_color", GOLD)
+	accepted_hdr.add_theme_font_size_override("font_size", 20)
+	left_list.add_child(accepted_hdr)
+
+	if QuestManager.active_quest_ids.is_empty():
+		left_list.add_child(_make_dim_label("(none)"))
+
+	for id in QuestManager.active_quest_ids:
+		var q: QuestData = ContentDatabase.get_quest(id)
+		if q == null:
+			continue
+		if first_quest == null:
+			first_quest = q
+			first_complete = false
+		var btn := Button.new()
+		btn.text = q.display_name
+		btn.add_theme_font_size_override("font_size", 18)
+		btn.pressed.connect(func(): _fill_quest_detail(detail, q, false))
+		left_list.add_child(btn)
+
+	left_list.add_child(HSeparator.new())
+
+	var completed_hdr := Label.new()
+	completed_hdr.text = "Completed"
+	completed_hdr.add_theme_color_override("font_color", GOLD)
+	completed_hdr.add_theme_font_size_override("font_size", 20)
+	left_list.add_child(completed_hdr)
+
+	if QuestManager.completed_quest_ids.is_empty():
+		left_list.add_child(_make_dim_label("(none)"))
+
+	for id in QuestManager.completed_quest_ids:
+		var q: QuestData = ContentDatabase.get_quest(id)
+		if q == null:
+			continue
+		if first_quest == null:
+			first_quest = q
+			first_complete = true
+		var btn := Button.new()
+		btn.text = q.display_name
+		btn.add_theme_font_size_override("font_size", 18)
+		btn.pressed.connect(func(): _fill_quest_detail(detail, q, true))
+		left_list.add_child(btn)
+
+	if first_quest != null:
+		_fill_quest_detail(detail, first_quest, first_complete)
+	else:
+		detail.add_child(_make_dim_label("No quests yet."))
+
+func _make_dim_label(text: String) -> Label:
+	var lbl := Label.new()
+	lbl.text = text
+	lbl.add_theme_color_override("font_color", DIM_TEXT)
+	lbl.add_theme_font_size_override("font_size", 16)
+	return lbl
+
+func _fill_quest_detail(detail: VBoxContainer, q: QuestData, is_complete: bool) -> void:
+	for c in detail.get_children():
+		c.queue_free()
+
+	var name_lbl := Label.new()
+	name_lbl.text = q.display_name
+	name_lbl.add_theme_font_size_override("font_size", 30)
+	name_lbl.add_theme_color_override("font_color", GOLD)
+	detail.add_child(name_lbl)
+
+	var type_lbl := Label.new()
+	var type_str := "Main" if q.quest_type == QuestData.QuestType.MAIN else "Side"
+	var state_str := "Completed" if is_complete else "In Progress"
+	type_lbl.text = "%s Quest — %s" % [type_str, state_str]
+	type_lbl.add_theme_font_size_override("font_size", 18)
+	type_lbl.add_theme_color_override("font_color", GOOD_TEXT if is_complete else BODY_TEXT)
+	detail.add_child(type_lbl)
+
+	detail.add_child(HSeparator.new())
+
+	if q.description != "":
+		var desc_lbl := Label.new()
+		desc_lbl.text = q.description
+		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		desc_lbl.add_theme_font_size_override("font_size", 20)
+		detail.add_child(desc_lbl)
+
+	var progress_lbl := Label.new()
+	var progress: int = q.objective_count if is_complete else QuestManager.get_quest_progress(q.quest_id)
+	progress_lbl.text = "Progress: %d / %d" % [progress, q.objective_count]
+	progress_lbl.add_theme_font_size_override("font_size", 20)
+	detail.add_child(progress_lbl)
+
+	if q.reward_supplies > 0 or not q.reward_items.is_empty():
+		detail.add_child(HSeparator.new())
+		var reward_parts: Array[String] = []
+		if q.reward_supplies > 0:
+			reward_parts.append("%d supplies" % q.reward_supplies)
+		for item: ItemData in q.reward_items:
+			reward_parts.append(item.display_name)
+		var reward_lbl := Label.new()
+		reward_lbl.text = "Reward: %s" % ", ".join(reward_parts)
+		reward_lbl.add_theme_font_size_override("font_size", 20)
+		detail.add_child(reward_lbl)
+
+# -------------------------------------------------------------------Options
+func _build_options() -> void:
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 12)
+	vbox.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	vbox.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_sub_body.add_child(vbox)
+
+	var note := Label.new()
+	note.text = "Audio and gameplay settings are coming soon."
+	note.add_theme_color_override("font_color", DIM_TEXT)
+	note.add_theme_font_size_override("font_size", 18)
+	vbox.add_child(note)
+
+	var title_btn := Button.new()
+	title_btn.text = "Quit to Title Screen"
+	title_btn.custom_minimum_size = Vector2(320, 56)
+	title_btn.add_theme_font_size_override("font_size", 20)
+	title_btn.pressed.connect(_on_quit_to_title)
+	vbox.add_child(title_btn)
+
+	var quit_btn := Button.new()
+	quit_btn.text = "Quit to Desktop"
+	quit_btn.custom_minimum_size = Vector2(320, 56)
+	quit_btn.add_theme_font_size_override("font_size", 20)
+	quit_btn.pressed.connect(func(): get_tree().quit())
+	vbox.add_child(quit_btn)
+
+func _on_quit_to_title() -> void:
+	_close()
+	GameState.change_mode(GameState.GameMode.TITLE)
+
+# --------------------------------------------------------------------styles
+func _card_style() -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.07, 0.07, 0.08, 1.0)
+	sb.set_border_width_all(2)
+	sb.border_color = CARD_BORDER
+	sb.set_corner_radius_all(10)
+	sb.set_content_margin_all(10)
+	return sb
+
+func _portrait_style() -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0, 0, 0, 1)
+	sb.set_border_width_all(2)
+	sb.border_color = Color.WHITE
+	sb.set_corner_radius_all(8)
+	sb.set_content_margin_all(2)
+	return sb
+
+func _row_style() -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.07, 0.07, 0.08, 1.0)
+	sb.set_border_width_all(1)
+	sb.border_color = ROW_BORDER
+	sb.set_corner_radius_all(6)
+	sb.set_content_margin_all(8)
+	return sb
+
+func _style_nav_button(btn: Button) -> void:
+	btn.add_theme_font_size_override("font_size", 26)
+
+	var normal := StyleBoxFlat.new()
+	normal.bg_color = Color(0.07, 0.07, 0.08, 1.0)
+	normal.set_border_width_all(2)
+	normal.border_color = GOLD
+	normal.set_corner_radius_all(10)
+	btn.add_theme_stylebox_override("normal", normal)
+
+	var hover: StyleBoxFlat = normal.duplicate()
+	hover.bg_color = Color(0.16, 0.14, 0.08, 1.0)
+	btn.add_theme_stylebox_override("hover", hover)
+
+	var pressed_sb: StyleBoxFlat = normal.duplicate()
+	pressed_sb.bg_color = Color(0.22, 0.19, 0.1, 1.0)
+	btn.add_theme_stylebox_override("pressed", pressed_sb)

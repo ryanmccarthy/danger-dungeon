@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://bbaulgiodka6f"]
+
+[ext_resource type="Script" uid="uid://da5xc0e3cxoh5" path="res://scenes/ui/pause_menu.gd" id="1_6tw0m"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1230286664]
+layer = 50
+script = ExtResource("1_6tw0m")
+
+[node name="Root" type="Control" parent="." unique_id=1002995430]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Backdrop" type="ColorRect" parent="Root" unique_id=584996493]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.75)
+
+[node name="MainPanel" type="Panel" parent="Root" unique_id=1048462072]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMargin" type="MarginContainer" parent="Root/MainPanel" unique_id=497050138]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 28
+
+[node name="MainVBox" type="VBoxContainer" parent="Root/MainPanel/MainMargin" unique_id=1979366306]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="PartyGrid" type="GridContainer" parent="Root/MainPanel/MainMargin/MainVBox" unique_id=370370155]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.5
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+columns = 3
+
+[node name="NavGrid" type="GridContainer" parent="Root/MainPanel/MainMargin/MainVBox" unique_id=1004098504]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+columns = 3
+
+[node name="BtnInventory" type="Button" parent="Root/MainPanel/MainMargin/MainVBox/NavGrid" unique_id=1687833527]
+custom_minimum_size = Vector2(260, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Inventory"
+
+[node name="BtnEquipment" type="Button" parent="Root/MainPanel/MainMargin/MainVBox/NavGrid" unique_id=857170486]
+custom_minimum_size = Vector2(260, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Equipment"
+
+[node name="BtnStatus" type="Button" parent="Root/MainPanel/MainMargin/MainVBox/NavGrid" unique_id=1392075704]
+custom_minimum_size = Vector2(260, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Status"
+
+[node name="BtnRequests" type="Button" parent="Root/MainPanel/MainMargin/MainVBox/NavGrid" unique_id=831507692]
+custom_minimum_size = Vector2(260, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Requests"
+
+[node name="BtnFacilities" type="Button" parent="Root/MainPanel/MainMargin/MainVBox/NavGrid" unique_id=1079492128]
+custom_minimum_size = Vector2(260, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Facilities"
+
+[node name="BtnOptions" type="Button" parent="Root/MainPanel/MainMargin/MainVBox/NavGrid" unique_id=1475917155]
+custom_minimum_size = Vector2(260, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Options"
+
+[node name="SubPanel" type="Panel" parent="Root" unique_id=370439927]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubMargin" type="MarginContainer" parent="Root/SubPanel" unique_id=356456460]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 28
+
+[node name="SubVBox" type="VBoxContainer" parent="Root/SubPanel/SubMargin" unique_id=712380279]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SubHeaderRow" type="HBoxContainer" parent="Root/SubPanel/SubMargin/SubVBox" unique_id=1948513589]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BackButton" type="Button" parent="Root/SubPanel/SubMargin/SubVBox/SubHeaderRow" unique_id=1607746046]
+custom_minimum_size = Vector2(110, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "< Back"
+
+[node name="SubTitleLabel" type="Label" parent="Root/SubPanel/SubMargin/SubVBox/SubHeaderRow" unique_id=1615898700]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8784314, 0.75686276, 0.2901961, 1)
+theme_override_font_sizes/font_size = 34
+text = "Title"
+
+[node name="SubBody" type="VBoxContainer" parent="Root/SubPanel/SubMargin/SubVBox" unique_id=1849969502]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
