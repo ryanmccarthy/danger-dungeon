@@ -1,3 +1,13 @@
 [gd_resource type="StandardMaterial3D" format=3 uid="uid://bej2v61qvwpds"]
 
+[ext_resource type="Texture2D" uid="uid://b52m5us0p22w" path="res://data/assets/images/forest/wall_treeline.png" id="1_uddby"]
+
 [resource]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("1_uddby")
+roughness = 0.9
+uv1_scale = Vector3(0.2083, 0.2083, 0.2083)
+uv1_triplanar = true
+uv1_world_triplanar = true
