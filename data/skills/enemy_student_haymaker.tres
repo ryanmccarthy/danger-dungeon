@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_aaeny")
-skill_id = &"enemy_alum_haymaker"
+skill_id = &"enemy_student_haymaker"
 display_name = "Haymaker"
 description = "A wild, corrupted swing."
 power = 1.1

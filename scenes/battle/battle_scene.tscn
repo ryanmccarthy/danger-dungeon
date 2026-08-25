@@ -47,7 +47,7 @@ alignment = 1
 
 [node name="LogLabel" type="Label" parent="MainMargin/MainVBox" unique_id=665900191]
 custom_minimum_size = Vector2(0, 40)
-custom_maximum_size = Vector2(60, 80)
+custom_maximum_size = Vector2(-1, 80)
 propagate_maximum_size = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7882353, 0.76862746, 0.84705883, 1)

@@ -25,7 +25,7 @@ encounter_table = Array[Dictionary]([{
     "enemy_id": "fog_wisp",
     "weight": 0.6
 }, {
-    "enemy_id": "hollow_alum",
+    "enemy_id": "hollow_student",
     "weight": 0.4
 }])
 encounter_rate = 0.2

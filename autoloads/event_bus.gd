@@ -2,6 +2,7 @@ extends Node
 
 ## Signal-only hub. No state. Decouples the dungeon/battle/hub scenes so
 ## none of them needs a direct reference to another.
+@warning_ignore_start("unused_signal")
 
 signal encounter_triggered(enemy_ids: Array, is_fixed: bool)
 signal battle_won(rewards: Dictionary)

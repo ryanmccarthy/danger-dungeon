@@ -2,18 +2,18 @@
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_rnotf"]
 [ext_resource type="Resource" uid="uid://cjcakymr4drnj" path="res://data/classes/class_cheerleader.tres" id="2_tl5yq"]
-[ext_resource type="CompressedTexture2D" uid="uid://duymev0gbtw8d" path="res://data/assets/portraits/sasha.png" id="3_sasha"]
+[ext_resource type="Texture2D" uid="uid://duymev0gbtw8d" path="res://data/assets/portraits/sasha.png" id="3_sasha"]
 
 [resource]
 script = ExtResource("1_rnotf")
 student_id = &"student_001"
-display_name = "Sasha"
-student_portrait = ExtResource("3_sasha")
 student_class = ExtResource("2_tl5yq")
 current_hp = 80
-max_hp = 80
 current_mp = 40
-max_mp = 40
 portrait_color = Color(1, 0.43529412, 0.68235296, 1)
 bio_flavor = "Cheer captain. Refuses to believe the fog changes the game plan."
 is_starter = true
+portrait = ExtResource("3_sasha")
+display_name = "Sasha"
+max_hp = 80
+max_mp = 40

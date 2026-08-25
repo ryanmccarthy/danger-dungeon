@@ -100,12 +100,11 @@ func _make_party_card(s: StudentData) -> Control:
 	var hbox := HBoxContainer.new()
 	hbox.add_theme_constant_override("separation", 24)
 	card.add_child(hbox)
-	hbox.add_child(_make_card_portrait(s.student_portrait))
+	hbox.add_child(_make_card_portrait(s.portrait))
+	hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
 
 	var info := VBoxContainer.new()
-	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	info.size_flags_stretch_ratio = 1.6
-	info.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	info.alignment = BoxContainer.ALIGNMENT_CENTER
 	hbox.add_child(info)
 
@@ -124,6 +123,11 @@ func _make_party_card(s: StudentData) -> Control:
 	stat_lbl.text = "HP %d/%d   MP %d/%d" % [s.current_hp, s.max_hp, s.current_mp, s.max_mp]
 	stat_lbl.add_theme_font_size_override("font_size", 20)
 	info.add_child(stat_lbl)
+
+	var status_lbl := Label.new()
+	status_lbl.text = "Status: %s" % ", ".join(s.status_effects)
+	status_lbl.add_theme_font_size_override("font_size", 20)
+	info.add_child(status_lbl)
 
 	return card
 
@@ -305,7 +309,7 @@ func _fill_status_detail(detail: VBoxContainer, s: StudentData) -> void:
 	var top := HBoxContainer.new()
 	top.add_theme_constant_override("separation", 16)
 	detail.add_child(top)
-	top.add_child(_make_portrait_frame(s.student_portrait, 96.0))
+	top.add_child(_make_portrait_frame(s.portrait, 96.0))
 
 	var head_box := VBoxContainer.new()
 	top.add_child(head_box)

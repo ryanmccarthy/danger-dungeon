@@ -1,6 +1,6 @@
 [gd_resource type="StandardMaterial3D" format=3 uid="uid://bkeee0orfj0gh"]
 
-[ext_resource type="Texture2D" uid="uid://dq5qfh6gwdfl5" path="res://data/assets/images/forest/sky1.jpg" id="1_6hs40"]
+[ext_resource type="Texture2D" uid="uid://ckfp6kckkcqhl" path="res://data/assets/images/forest/sky1.jpg" id="1_6hs40"]
 
 [resource]
 shading_mode = 0

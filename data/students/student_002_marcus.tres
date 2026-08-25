@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_16uim"]
 [ext_resource type="Resource" uid="uid://fheqg3tkj5wi" path="res://data/classes/class_jock.tres" id="2_k1o7e"]
-[ext_resource type="CompressedTexture2D" uid="uid://bv7xu4iwh37n1" path="res://data/assets/portraits/generic.png" id="3_marcus"]
+[ext_resource type="CompressedTexture2D" uid="uid://btvau550g8gwp" path="res://data/assets/portraits/marcus.png" id="3_marcus"]
 
 [resource]
 script = ExtResource("1_16uim")
 student_id = &"student_002"
 display_name = "Marcus"
 student_class = ExtResource("2_k1o7e")
-student_portrait = ExtResource("3_marcus")
+portrait = ExtResource("3_marcus")
 current_hp = 130
 max_hp = 130
 current_mp = 15

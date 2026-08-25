@@ -117,8 +117,6 @@ func _make_fitted_portrait(texture: Texture2D) -> TextureRect:
 	return portrait_rect
 
 func _make_enemy_card(idx: int) -> Control:
-	var data: EnemyData = enemies[idx]["data"]
-
 	var panel := PanelContainer.new()
 	panel.custom_minimum_size = CARD_SIZE
 	panel.add_theme_stylebox_override("panel", _transparent_style())
@@ -131,13 +129,14 @@ func _make_enemy_card(idx: int) -> Control:
 	name_lbl.text = enemies[idx]["name"]
 	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(name_lbl)
-	box.add_child(_make_portrait(data.enemy_portrait))
+	# box.add_child(_make_portrait(enemies[idx]["data"].portrait))
+	box.add_child(_make_fitted_portrait(enemies[idx]["data"].portrait))
 
-	var hp_lbl := Label.new()
-	hp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	box.add_child(hp_lbl)
+	# var hp_lbl := Label.new()
+	# hp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	# box.add_child(hp_lbl)
 
-	_cards[idx] = {"root": panel, "hp": hp_lbl}
+	_cards[idx] = {"root": panel} #, "hp": hp_lbl}
 
 	return panel
 
@@ -148,7 +147,7 @@ func _refresh_cards() -> void:
 		if card == null:
 			continue
 
-		card["hp"].text = "HP %d / %d" % [max(0, e["hp"]), e["data"].max_hp]
+		# card["hp"].text = "HP %d / %d" % [max(0, e["hp"]), e["data"].max_hp]
 		card["root"].modulate = Color(1, 1, 1, 1) if e["hp"] > 0 else Color(0.4, 0.4, 0.4, 0.7)
 
 	_show_roster_list()
@@ -159,7 +158,7 @@ func _set_current_actor_portrait(ref) -> void:
 	_clear_current_actor_portrait()
 
 	var student := PartyManager.get_student(ref)
-	var texture: Texture2D = student.student_portrait if student else null
+	var texture: Texture2D = student.portrait if student else null
 	_portrait_panel.add_child(_make_fitted_portrait(texture))
 
 func _clear_current_actor_portrait() -> void:

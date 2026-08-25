@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_m4qod")
-skill_id = &"enemy_alum_groan"
+skill_id = &"enemy_student_groan"
 display_name = "Hollow Groan"
 description = "A bone-rattling groan that shakes the whole party."
 target_type = 1
