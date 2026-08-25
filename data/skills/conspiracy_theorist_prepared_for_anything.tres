@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"conspiracy_theorist_prepared_for_anything"
+display_name = "Prepared for Anything"
+description = "Has, in fact, prepared for exactly this."
+mp_cost = 6
+target_type = 4
+power = 0.0
+effect_type = 2
+stat_affected = "res"
+buff_amount = 6.0
+buff_duration = 3
+icon_color = Color(0.65, 0.75, 0.3, 1.0)

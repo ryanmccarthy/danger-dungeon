@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"choir_kid_full_choir"
+display_name = "Full Choir"
+description = "The whole section, full voice."
+mp_cost = 14
+target_type = 3
+power = 0.5
+effect_type = 1
+icon_color = Color(0.9, 0.9, 0.7, 1.0)

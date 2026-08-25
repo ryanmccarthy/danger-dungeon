@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"emo_emotional_damage"
+display_name = "Emotional Damage"
+description = "All of it, at once, on someone else."
+mp_cost = 13
+power = 1.5
+damage_school = 1
+accuracy = 0.85
+icon_color = Color(0.4, 0.05, 0.1, 1.0)

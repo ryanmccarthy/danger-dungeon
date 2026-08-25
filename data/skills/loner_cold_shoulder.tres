@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"loner_cold_shoulder"
+display_name = "Cold Shoulder"
+description = "Freezes a foe out, guard and all."
+mp_cost = 5
+power = 0.0
+effect_type = 3
+stat_affected = "def"
+buff_amount = -4.0
+buff_duration = 3
+icon_color = Color(0.25, 0.28, 0.35, 1.0)

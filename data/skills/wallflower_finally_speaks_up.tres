@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"wallflower_finally_speaks_up"
+display_name = "Finally Speaks Up"
+description = "Says one thing. Everyone listens."
+mp_cost = 11
+target_type = 3
+power = 0.0
+effect_type = 2
+stat_affected = "res"
+buff_amount = 4.0
+buff_duration = 3
+icon_color = Color(0.55, 0.5, 0.6, 1.0)

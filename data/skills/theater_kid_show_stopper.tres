@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"theater_kid_show_stopper"
+display_name = "Show-Stopper"
+description = "A number so big it stops the whole scene."
+mp_cost = 13
+target_type = 1
+power = 0.6
+damage_school = 1
+accuracy = 0.85
+icon_color = Color(0.75, 0.2, 0.55, 1.0)

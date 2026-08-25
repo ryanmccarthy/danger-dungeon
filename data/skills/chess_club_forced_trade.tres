@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"chess_club_forced_trade"
+display_name = "Forced Trade"
+description = "Sacrifices the foe's offense for a clean opening."
+mp_cost = 5
+power = 0.0
+effect_type = 3
+stat_affected = "atk"
+buff_amount = -5.0
+buff_duration = 3
+icon_color = Color(0.15, 0.2, 0.45, 1.0)

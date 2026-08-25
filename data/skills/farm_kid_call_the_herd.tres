@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"farm_kid_call_the_herd"
+display_name = "Call the Herd"
+description = "Something answers the call. It's a lot of somethings."
+mp_cost = 12
+target_type = 1
+power = 0.6
+accuracy = 0.88
+icon_color = Color(0.45, 0.6, 0.25, 1.0)

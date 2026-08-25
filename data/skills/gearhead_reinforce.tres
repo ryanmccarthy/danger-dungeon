@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"gearhead_reinforce"
+display_name = "Reinforce"
+description = "Bolts on some scrap plating."
+mp_cost = 6
+target_type = 4
+power = 0.0
+effect_type = 2
+stat_affected = "def"
+buff_amount = 6.0
+buff_duration = 3
+icon_color = Color(0.55, 0.35, 0.15, 1.0)

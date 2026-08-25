@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"burnout_nothing_left_to_lose"
+display_name = "Nothing Left to Lose"
+description = "Genuinely does not care what happens next."
+mp_cost = 5
+target_type = 4
+power = 0.0
+effect_type = 2
+stat_affected = "atk"
+buff_amount = 7.0
+buff_duration = 3
+icon_color = Color(0.35, 0.4, 0.3, 1.0)

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"class_clown_whoopee_cushion_ambush"
+display_name = "Whoopee Cushion Ambush"
+description = "Deploys chaos in every direction."
+mp_cost = 11
+target_type = 1
+power = 0.55
+accuracy = 0.85
+icon_color = Color(0.95, 0.85, 0.15, 1.0)

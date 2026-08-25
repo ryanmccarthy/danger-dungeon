@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"stuco_pres_gavel_strike"
+display_name = "Gavel Strike"
+description = "Calls the meeting, and the fight, to order."
+mp_cost = 3
+power = 0.85
+accuracy = 0.93
+icon_color = Color(0.5, 0.08, 0.2, 1.0)

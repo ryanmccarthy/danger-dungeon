@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"goth_hex_touch"
+display_name = "Hex Touch"
+description = "A cold, whispering touch that saps warmth."
+mp_cost = 3
+power = 0.9
+damage_school = 1
+accuracy = 0.95
+icon_color = Color(0.35, 0.05, 0.45, 1.0)

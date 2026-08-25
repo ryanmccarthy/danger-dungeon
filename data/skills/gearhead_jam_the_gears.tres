@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"gearhead_jam_the_gears"
+display_name = "Jam the Gears"
+description = "Throws a wrench directly into the works."
+mp_cost = 5
+power = 0.0
+effect_type = 3
+stat_affected = "spd"
+buff_amount = -4.0
+buff_duration = 3
+icon_color = Color(0.55, 0.35, 0.15, 1.0)

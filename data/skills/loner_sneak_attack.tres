@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"loner_sneak_attack"
+display_name = "Sneak Attack"
+description = "One shot. Has to count."
+mp_cost = 8
+power = 1.8
+accuracy = 0.6
+icon_color = Color(0.25, 0.28, 0.35, 1.0)

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"gearhead_wrench_swing"
+display_name = "Wrench Swing"
+description = "A heavy tool, swung with real intent."
+mp_cost = 3
+power = 1.1
+accuracy = 0.92
+icon_color = Color(0.55, 0.35, 0.15, 1.0)

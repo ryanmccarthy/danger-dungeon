@@ -1,16 +1,16 @@
 [gd_resource type="Resource" script_class="StudentData" format=3 uid="uid://bsiae84o6xirp"]
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_y23xq"]
-[ext_resource type="Resource" uid="uid://bsem62bxrrio" path="res://data/classes/class_generalist.tres" id="2_0hy4b"]
+[ext_resource type="Resource" path="res://data/classes/class_conspiracy_theorist.tres" id="2_0hy4b"]
 
 [resource]
 script = ExtResource("1_y23xq")
 student_id = &"student_024"
 display_name = "Sawyer"
 student_class = ExtResource("2_0hy4b")
-current_hp = 75
-max_hp = 75
-current_mp = 20
-max_mp = 20
-portrait_color = Color(0.6039216, 0.6039216, 0.6039216, 1)
+current_hp = 38
+max_hp = 38
+current_mp = 30
+max_mp = 30
+portrait_color = Color(0.65, 0.75, 0.3, 1.0)
 bio_flavor = "Somewhere on this bus, on this tour, in this nightmare."

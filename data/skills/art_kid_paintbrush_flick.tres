@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"art_kid_paintbrush_flick"
+display_name = "Paintbrush Flick"
+description = "Flings a stripe of something caustic off the brush."
+mp_cost = 3
+power = 0.8
+damage_school = 1
+accuracy = 0.9
+icon_color = Color(0.95, 0.45, 0.15, 1.0)

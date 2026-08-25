@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"gamer_min_max_build"
+display_name = "Min-Max Build"
+description = "Dumps every stat point into one stat."
+mp_cost = 7
+target_type = 4
+power = 0.0
+effect_type = 2
+stat_affected = "mag"
+buff_amount = 6.0
+buff_duration = 3
+icon_color = Color(0.3, 0.9, 0.4, 1.0)

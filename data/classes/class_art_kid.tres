@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="StudentClassData" format=3]
+
+[ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/skills/art_kid_paintbrush_flick.tres" id="3"]
+[ext_resource type="Resource" path="res://data/skills/art_kid_blinding_splatter.tres" id="4"]
+[ext_resource type="Resource" path="res://data/skills/art_kid_inspired_streak.tres" id="5"]
+[ext_resource type="Resource" path="res://data/skills/art_kid_mural_of_dread.tres" id="6"]
+
+[resource]
+script = ExtResource("1")
+class_id = &"art_kid"
+class_name_display = "Art Kid"
+archetype_tag = "Painter"
+base_hp = 36
+base_mp = 34
+base_atk = 6
+base_def = 6
+base_mag = 12
+base_res = 9
+base_spd = 10
+base_luck = 10
+hp_per_level = 3.4
+mp_per_level = 2.6
+atk_per_level = 0.3
+def_per_level = 0.3
+mag_per_level = 0.7
+res_per_level = 0.5
+spd_per_level = 0.4
+luck_per_level = 0.4
+preferred_row = 1
+skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
+icon_color = Color(0.95, 0.45, 0.15, 1.0)
+flavor_text = "Sketches everyone they meet. The fog monsters, too, unfortunately."

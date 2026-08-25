@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"class_clown_heckle"
+display_name = "Heckle"
+description = "An extremely specific, extremely rude observation."
+mp_cost = 4
+power = 0.0
+effect_type = 3
+stat_affected = "atk"
+buff_amount = -5.0
+buff_duration = 2
+accuracy = 0.9
+icon_color = Color(0.95, 0.85, 0.15, 1.0)

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"prep_family_connections"
+display_name = "Family Connections"
+description = "Knows someone who knows someone. Somehow that helps here."
+mp_cost = 7
+target_type = 2
+power = 0.6
+effect_type = 1
+icon_color = Color(0.95, 0.85, 0.55, 1.0)

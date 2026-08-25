@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"chess_club_calculated_jab"
+display_name = "Calculated Jab"
+description = "Exactly the right hit, at exactly the right time."
+mp_cost = 3
+power = 0.85
+accuracy = 0.95
+icon_color = Color(0.15, 0.2, 0.45, 1.0)

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"band_geek_warmup_scales"
+display_name = "Warm-Up Scales"
+description = "Runs the whole squad through their scales."
+mp_cost = 9
+target_type = 3
+power = 0.0
+effect_type = 2
+stat_affected = "atk"
+buff_amount = 3.0
+buff_duration = 3
+icon_color = Color(0.85, 0.7, 0.25, 1.0)

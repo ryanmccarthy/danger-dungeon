@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"theater_kid_melodramatic_slap"
+display_name = "Melodramatic Slap"
+description = "A slap performed with real commitment to the bit."
+mp_cost = 3
+power = 0.9
+accuracy = 0.9
+icon_color = Color(0.75, 0.2, 0.55, 1.0)

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"choir_kid_harmonize"
+display_name = "Harmonize"
+description = "Everyone finds the same key."
+mp_cost = 10
+target_type = 3
+power = 0.0
+effect_type = 2
+stat_affected = "res"
+buff_amount = 4.0
+buff_duration = 3
+icon_color = Color(0.9, 0.9, 0.7, 1.0)

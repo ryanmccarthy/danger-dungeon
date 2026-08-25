@@ -1,16 +1,16 @@
 [gd_resource type="Resource" script_class="StudentData" format=3 uid="uid://cotgjvsucy22b"]
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_5rwbr"]
-[ext_resource type="Resource" uid="uid://bsem62bxrrio" path="res://data/classes/class_generalist.tres" id="2_4d1sh"]
+[ext_resource type="Resource" path="res://data/classes/class_stoner.tres" id="2_4d1sh"]
 
 [resource]
 script = ExtResource("1_5rwbr")
 student_id = &"student_008"
 display_name = "Jordan"
 student_class = ExtResource("2_4d1sh")
-current_hp = 75
-max_hp = 75
-current_mp = 20
-max_mp = 20
-portrait_color = Color(0.6039216, 0.6039216, 0.6039216, 1)
+current_hp = 45
+max_hp = 45
+current_mp = 30
+max_mp = 30
+portrait_color = Color(0.5, 0.75, 0.35, 1.0)
 bio_flavor = "Somewhere on this bus, on this tour, in this nightmare."

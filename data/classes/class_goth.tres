@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="StudentClassData" format=3]
+
+[ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/skills/goth_hex_touch.tres" id="3"]
+[ext_resource type="Resource" path="res://data/skills/goth_evil_eye.tres" id="4"]
+[ext_resource type="Resource" path="res://data/skills/goth_ritual_ward.tres" id="5"]
+[ext_resource type="Resource" path="res://data/skills/goth_summon_dread.tres" id="6"]
+
+[resource]
+script = ExtResource("1")
+class_id = &"goth"
+class_name_display = "Goth"
+archetype_tag = "Occultist"
+base_hp = 35
+base_mp = 40
+base_atk = 6
+base_def = 6
+base_mag = 15
+base_res = 12
+base_spd = 9
+base_luck = 8
+hp_per_level = 3.5
+mp_per_level = 3.0
+atk_per_level = 0.3
+def_per_level = 0.4
+mag_per_level = 0.9
+res_per_level = 0.6
+spd_per_level = 0.4
+luck_per_level = 0.3
+preferred_row = 1
+skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
+icon_color = Color(0.35, 0.05, 0.45, 1.0)
+flavor_text = "Reads tarot at lunch. The cards are never wrong about Tuesdays."

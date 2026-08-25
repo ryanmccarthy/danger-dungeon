@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"conspiracy_theorist_theyre_onto_us"
+display_name = "They're Onto Us"
+description = "Everyone within earshot gets pulled into the theory."
+mp_cost = 13
+target_type = 1
+power = 0.6
+damage_school = 1
+accuracy = 0.8
+icon_color = Color(0.65, 0.75, 0.3, 1.0)

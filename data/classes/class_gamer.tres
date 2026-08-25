@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="StudentClassData" format=3]
+
+[ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/skills/gamer_keyboard_smash.tres" id="3"]
+[ext_resource type="Resource" path="res://data/skills/gamer_exploit_weakness.tres" id="4"]
+[ext_resource type="Resource" path="res://data/skills/gamer_min_max_build.tres" id="5"]
+[ext_resource type="Resource" path="res://data/skills/gamer_overclock.tres" id="6"]
+
+[resource]
+script = ExtResource("1")
+class_id = &"gamer"
+class_name_display = "Gamer"
+archetype_tag = "Tactician"
+base_hp = 32
+base_mp = 42
+base_atk = 5
+base_def = 5
+base_mag = 14
+base_res = 8
+base_spd = 13
+base_luck = 10
+hp_per_level = 3.0
+mp_per_level = 3.2
+atk_per_level = 0.2
+def_per_level = 0.3
+mag_per_level = 0.9
+res_per_level = 0.5
+spd_per_level = 0.6
+luck_per_level = 0.4
+preferred_row = 1
+skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
+icon_color = Color(0.3, 0.9, 0.4, 1.0)
+flavor_text = "Has a build for every fight. This dimension was not in the patch notes."

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"class_clown_pie_in_the_face"
+display_name = "Pie in the Face"
+description = "A classic. Still works."
+mp_cost = 2
+power = 0.8
+accuracy = 0.92
+icon_color = Color(0.95, 0.85, 0.15, 1.0)

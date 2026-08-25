@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"photographer_front_page"
+display_name = "Front Page"
+description = "This is definitely making the cover."
+mp_cost = 12
+target_type = 3
+power = 0.0
+effect_type = 2
+stat_affected = "atk"
+buff_amount = 4.0
+buff_duration = 3
+icon_color = Color(0.8, 0.8, 0.85, 1.0)

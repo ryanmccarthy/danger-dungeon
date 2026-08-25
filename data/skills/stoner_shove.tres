@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"stoner_shove"
+display_name = "Shove"
+description = "A half-hearted push. Still counts."
+mp_cost = 2
+power = 0.6
+accuracy = 0.85
+icon_color = Color(0.5, 0.75, 0.35, 1.0)
