@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 ## Global Esc-menu overlay: party roster + six nav buttons that open
-## Inventory / Equipment (stub) / Status / Requests / Facilities (stub) /
+## Inventory / Equipment (stub) / Status / Requests / Save+Load /
 ## Options sub-screens. Lives directly under GameRoot (a sibling of
 ## CurrentSceneHolder) so it survives Hub<->Dungeon scene swaps instead of
 ## being freed on every mode change. Only opens in HUB and DUNGEON modes;
@@ -14,8 +14,11 @@ const GOLD := Color(0.8784314, 0.75686276, 0.2901961, 1)
 const BODY_TEXT := Color(0.7882353, 0.76862746, 0.84705883, 1)
 const DIM_TEXT := Color(0.7, 0.68, 0.72, 1)
 const GOOD_TEXT := Color(0.56078434, 0.83137256, 0.56078434, 1)
+const BAD_TEXT := Color(0.83137256, 0.42, 0.42, 1)
 const CARD_BORDER := Color(0.55, 0.16, 0.16, 1)
 const ROW_BORDER := Color(0.32, 0.29, 0.31, 1)
+
+const SAVE_SLOT_COUNT := 3
 
 @onready var _root: Control = $Root
 @onready var _main_panel: Panel = $Root/MainPanel
@@ -27,6 +30,8 @@ const ROW_BORDER := Color(0.32, 0.29, 0.31, 1)
 @onready var _back_button: Button = $Root/SubPanel/SubMargin/SubVBox/SubHeaderRow/BackButton
 
 var _is_open: bool = false
+var _save_load_status_text: String = ""
+var _save_load_status_ok: bool = true
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -41,7 +46,7 @@ func _ready() -> void:
 	_nav_grid.get_node("BtnEquipment").pressed.connect(func(): _open_sub("equipment"))
 	_nav_grid.get_node("BtnStatus").pressed.connect(func(): _open_sub("status"))
 	_nav_grid.get_node("BtnRequests").pressed.connect(func(): _open_sub("requests"))
-	_nav_grid.get_node("BtnFacilities").pressed.connect(func(): _open_sub("facilities"))
+	_nav_grid.get_node("BtnSaveLoad").pressed.connect(func(): _open_sub("saveload"))
 	_nav_grid.get_node("BtnOptions").pressed.connect(func(): _open_sub("options"))
 	_back_button.pressed.connect(_show_main)
 
@@ -181,9 +186,9 @@ func _open_sub(kind: String) -> void:
 		"requests":
 			_sub_title.text = "Requests"
 			_build_requests()
-		"facilities":
-			_sub_title.text = "Facilities"
-			_build_stub("A campus facilities overview is coming soon.")
+		"saveload":
+			_sub_title.text = "Save/Load"
+			_build_save_load()
 		"options":
 			_sub_title.text = "Options"
 			_build_options()
@@ -482,6 +487,94 @@ func _fill_quest_detail(detail: VBoxContainer, q: QuestData, is_complete: bool) 
 		reward_lbl.text = "Reward: %s" % ", ".join(reward_parts)
 		reward_lbl.add_theme_font_size_override("font_size", 20)
 		detail.add_child(reward_lbl)
+
+# -------------------------------------------------------------------Save/Load
+func _build_save_load() -> void:
+	var vbox := VBoxContainer.new()
+	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	vbox.add_theme_constant_override("separation", 10)
+	_sub_body.add_child(vbox)
+
+	for slot in range(SAVE_SLOT_COUNT):
+		vbox.add_child(_make_save_slot_row(slot))
+
+	if _save_load_status_text != "":
+		vbox.add_child(HSeparator.new())
+		var status_lbl := Label.new()
+		status_lbl.text = _save_load_status_text
+		status_lbl.add_theme_color_override("font_color", GOOD_TEXT if _save_load_status_ok else BAD_TEXT)
+		status_lbl.add_theme_font_size_override("font_size", 18)
+		vbox.add_child(status_lbl)
+
+func _make_save_slot_row(slot: int) -> Control:
+	var row := PanelContainer.new()
+	row.add_theme_stylebox_override("panel", _row_style())
+
+	var hbox := HBoxContainer.new()
+	hbox.add_theme_constant_override("separation", 16)
+	row.add_child(hbox)
+
+	var info := VBoxContainer.new()
+	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hbox.add_child(info)
+
+	var name_lbl := Label.new()
+	name_lbl.text = "Slot %d" % (slot + 1)
+	name_lbl.add_theme_font_size_override("font_size", 22)
+	name_lbl.add_theme_color_override("font_color", GOLD)
+	info.add_child(name_lbl)
+
+	var path := SaveManager.SAVE_DIR + "slot_%d.json" % slot
+	var has_save := FileAccess.file_exists(path)
+
+	var detail_lbl := Label.new()
+	if has_save:
+		var ts := Time.get_datetime_string_from_unix_time(FileAccess.get_modified_time(path), true)
+		detail_lbl.text = "Saved: %s" % ts.replace("T", "  ")
+	else:
+		detail_lbl.text = "Empty"
+	detail_lbl.add_theme_font_size_override("font_size", 16)
+	detail_lbl.add_theme_color_override("font_color", DIM_TEXT)
+	info.add_child(detail_lbl)
+
+	var save_btn := Button.new()
+	save_btn.text = "Save"
+	save_btn.custom_minimum_size = Vector2(110, 44)
+	save_btn.add_theme_font_size_override("font_size", 18)
+	save_btn.pressed.connect(func(): _on_save_pressed(slot))
+	hbox.add_child(save_btn)
+
+	var load_btn := Button.new()
+	load_btn.text = "Load"
+	load_btn.custom_minimum_size = Vector2(110, 44)
+	load_btn.add_theme_font_size_override("font_size", 18)
+	load_btn.disabled = not has_save
+	load_btn.pressed.connect(func(): _on_load_pressed(slot))
+	hbox.add_child(load_btn)
+
+	return row
+
+func _on_save_pressed(slot: int) -> void:
+	_save_load_status_ok = SaveManager.save_game(slot)
+	_save_load_status_text = (
+		"Saved to Slot %d." % (slot + 1) if _save_load_status_ok
+		else "Failed to save to Slot %d." % (slot + 1)
+	)
+	_open_sub("saveload")
+
+func _on_load_pressed(slot: int) -> void:
+	_save_load_status_ok = SaveManager.load_game(slot)
+	if _save_load_status_ok:
+		_save_load_status_text = "Loaded Slot %d." % (slot + 1)
+		# Dungeon position/mode aren't part of the save payload, so drop back
+		# to the Hub (fresh scene instance) to reflect the loaded state
+		# cleanly rather than leaving stale Dungeon geometry on screen.
+		_close()
+		GameState.change_mode(GameState.GameMode.HUB)
+		return
+	_save_load_status_text = "Failed to load Slot %d." % (slot + 1)
+	_open_sub("saveload")
 
 # -------------------------------------------------------------------Options
 func _build_options() -> void:
