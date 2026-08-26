@@ -2,23 +2,16 @@
 class_name StudentClassData
 extends Resource
 
-## Base archetype definition for a student's RPG class (e.g. Cheerleader, Jock).
+## Base archetype definition for a student's class (e.g. Cheerleader, Jock).
+## Despite each class being unique to a particular student,
+## classes are broken into their own files for organizational purposes.
+## Class specifies character growth; student defines starting/current stats.
 
 enum RowPreference { FRONT, BACK, EITHER }
 
 @export var class_id: StringName
 @export var class_name_display: String
 @export var archetype_tag: String
-
-@export_group("Base Stats")
-@export var base_hp: int = 50
-@export var base_mp: int = 20
-@export var base_atk: int = 8
-@export var base_def: int = 8
-@export var base_mag: int = 8
-@export var base_res: int = 8
-@export var base_spd: int = 8
-@export var base_luck: int = 8
 
 @export_group("Growth Per Level")
 @export var hp_per_level: float = 4.0

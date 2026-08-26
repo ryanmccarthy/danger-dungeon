@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"chess_club"
 class_name_display = "Chess Club"
 archetype_tag = "Strategist"
-base_hp = 34
-base_mp = 36
-base_atk = 6
-base_def = 7
-base_mag = 11
-base_res = 10
-base_spd = 11
-base_luck = 9
+
 hp_per_level = 3.2
 mp_per_level = 2.8
 atk_per_level = 0.3
@@ -28,6 +21,7 @@ mag_per_level = 0.7
 res_per_level = 0.6
 spd_per_level = 0.5
 luck_per_level = 0.4
+
 preferred_row = 1
 skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
 icon_color = Color(0.15, 0.2, 0.45, 1.0)

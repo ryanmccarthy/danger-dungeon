@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"stuco_pres"
 class_name_display = "Student Council President"
 archetype_tag = "Commander"
-base_hp = 48
-base_mp = 34
-base_atk = 8
-base_def = 8
-base_mag = 9
-base_res = 9
-base_spd = 10
-base_luck = 11
+
 hp_per_level = 4.4
 mp_per_level = 2.6
 atk_per_level = 0.5
@@ -28,6 +21,7 @@ mag_per_level = 0.5
 res_per_level = 0.5
 spd_per_level = 0.5
 luck_per_level = 0.5
+
 preferred_row = 2
 skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
 icon_color = Color(0.5, 0.08, 0.2, 1.0)

@@ -10,14 +10,7 @@ script = ExtResource("1_f38rp")
 class_id = &"generalist"
 class_name_display = "Generalist"
 archetype_tag = "Unspecialized"
-base_hp = 25
-base_mp = 10
-base_atk = 10
-base_def = 10
-base_mag = 10
-base_res = 10
-base_spd = 10
-base_luck = 10
+
 hp_per_level = 8.0
 mp_per_level = 0.8
 atk_per_level = 0.5
@@ -26,6 +19,7 @@ mag_per_level = 0.5
 res_per_level = 0.5
 spd_per_level = 0.3
 luck_per_level = 0.4
+
 skill_ids = Array[ExtResource("2_7qx1m")]([ExtResource("3_0xjfq"), ExtResource("4_hd8js")])
 icon_color = Color(0.6039216, 0.6039216, 0.6039216, 1)
 flavor_text = "Hasn't found their class yet. Still counts for college credit."

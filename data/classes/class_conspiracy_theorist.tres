@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"conspiracy_theorist"
 class_name_display = "Conspiracy Theorist"
 archetype_tag = "Chaos Debuffer"
-base_hp = 38
-base_mp = 30
-base_atk = 7
-base_def = 6
-base_mag = 10
-base_res = 11
-base_spd = 9
-base_luck = 8
+
 hp_per_level = 3.6
 mp_per_level = 2.4
 atk_per_level = 0.4
@@ -28,6 +21,7 @@ mag_per_level = 0.6
 res_per_level = 0.7
 spd_per_level = 0.4
 luck_per_level = 0.3
+
 preferred_row = 1
 skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
 icon_color = Color(0.65, 0.75, 0.3, 1.0)

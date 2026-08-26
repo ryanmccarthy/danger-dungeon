@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"wallflower"
 class_name_display = "Wallflower"
 archetype_tag = "Evasive Support"
-base_hp = 42
-base_mp = 32
-base_atk = 5
-base_def = 10
-base_mag = 8
-base_res = 12
-base_spd = 9
-base_luck = 13
+
 hp_per_level = 4.0
 mp_per_level = 2.6
 atk_per_level = 0.2

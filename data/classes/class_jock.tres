@@ -12,14 +12,7 @@ script = ExtResource("1_disl1")
 class_id = &"jock"
 class_name_display = "Jock"
 archetype_tag = "Tank"
-base_hp = 50
-base_mp = 15
-base_atk = 12
-base_def = 16
-base_mag = 3
-base_res = 9
-base_spd = 12
-base_luck = 6
+
 hp_per_level = 8.0
 mp_per_level = 0.8
 atk_per_level = 0.7
@@ -28,6 +21,7 @@ mag_per_level = 0.1
 res_per_level = 0.1
 spd_per_level = 0.3
 luck_per_level = 0.2
+
 preferred_row = 0
 skill_ids = Array[ExtResource("2_2ahgy")]([ExtResource("3_um4ke"), ExtResource("4_1do44"), ExtResource("5_e5b4e"), ExtResource("6_78uxn")])
 icon_color = Color(0.2901961, 0.5647059, 0.8509804, 1)

@@ -9,3 +9,5 @@ extends Resource
 @export_group("Stats")
 @export var max_hp: int = 20
 @export var max_mp: int = 0
+@export var max_san: int = 100
+@export var san: int = 100

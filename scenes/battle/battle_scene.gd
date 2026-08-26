@@ -202,15 +202,18 @@ func _show_roster_list() -> void:
 func _start_round() -> void:
 	if _check_battle_end():
 		return
+
 	_round_label.text = "Round %d" % _round_num
 	_turn_order.clear()
 	for i in enemies.size():
 		if enemies[i]["hp"] > 0:
 			_turn_order.append(i)
+
 	for id in party_ids:
 		var s := PartyManager.get_student(id)
 		if s != null and s.status == StudentData.Status.ACTIVE:
 			_turn_order.append(id)
+
 	_turn_order.sort_custom(func(a, b): return _get_spd(a) > _get_spd(b))
 	_turn_cursor = 0
 	_next_turn()
@@ -218,15 +221,18 @@ func _start_round() -> void:
 func _next_turn() -> void:
 	if _check_battle_end():
 		return
+
 	if _turn_cursor >= _turn_order.size():
 		_round_num += 1
 		_start_round()
 		return
+
 	var ref = _turn_order[_turn_cursor]
 	_turn_cursor += 1
 	if not _is_alive(ref):
 		_next_turn()
 		return
+
 	_current_actor_ref = ref
 	if _is_enemy_ref(ref):
 		# Action menu and portrait go fully transparent (not hidden/resized)
@@ -247,26 +253,18 @@ func _next_turn() -> void:
 func _check_battle_end() -> bool:
 	if _resolved:
 		return true
-	var any_enemy_alive := false
-	for e in enemies:
-		if e["hp"] > 0:
-			any_enemy_alive = true
-			break
-	if not any_enemy_alive:
-		_resolve("WON")
+
+	if _living_enemies().size() < 1:
+		_resolve("WON", _living_party())
 		return true
-	var any_party_alive := false
-	for id in party_ids:
-		var s := PartyManager.get_student(id)
-		if s != null and s.status == StudentData.Status.ACTIVE:
-			any_party_alive = true
-			break
-	if not any_party_alive:
-		_resolve("LOST")
+
+	if _living_party().size() < 1:
+		_resolve("LOST", [])
 		return true
+
 	return false
 
-func _resolve(result: String) -> void:
+func _resolve(result: String, live_party: Array) -> void:
 	if _resolved:
 		return
 
@@ -274,24 +272,30 @@ func _resolve(result: String) -> void:
 	_clear_action_area()
 
 	if result == "WON":
-		var rewards := _roll_rewards()
+		var rewards := _roll_rewards(live_party)
 		_log("Victory! Found: " + rewards.get("log", "nothing"))
 	elif result == "LOST":
 		_log("The party has fallen back...")
 	GameState.resolve_battle(result, {})
 
-func _roll_rewards() -> Dictionary:
+func _roll_rewards(live_party: Array) -> Dictionary:
 	var log_parts: Array[String] = []
 
+	var total_xp: int = 0
 	for e in enemies:
-		var data: EnemyData = e["data"]
-		InventoryManager.add_supplies(data.supply_reward)
-		for drop in data.drop_table:
+		var e_data: EnemyData = e["data"]
+		InventoryManager.add_supplies(e_data.supply_reward)
+		for drop in e_data.drop_table:
 			if randf() <= float(drop["chance"]):
 				var qty := randi_range(int(drop["min_qty"]), int(drop["max_qty"]))
 				InventoryManager.add_item(drop["item_id"], qty)
 				var item := ContentDatabase.get_item(drop["item_id"])
 				log_parts.append("%s x%d" % [item.display_name, qty])
+		total_xp += e_data.xp_drop
+
+	for id in live_party:
+		var member = PartyManager.get_student(id)
+		member.add_experience(total_xp)
 
 	return {"log": ", ".join(log_parts)}
 
@@ -311,7 +315,7 @@ func _get_spd(ref) -> int:
 		return enemies[ref]["data"].spd
 
 	var s := PartyManager.get_student(ref)
-	return s.student_class.base_spd + int(s.student_class.spd_per_level * (s.level - 1))
+	return s.spd + int(s.student_class.spd_per_level * (s.level - 1))
 
 func _get_stat(ref, stat: String) -> int:
 	if _is_enemy_ref(ref):
@@ -329,10 +333,10 @@ func _get_stat(ref, stat: String) -> int:
 	var lvl := s.level - 1
 
 	match stat:
-		"atk": return c.base_atk + int(c.atk_per_level * lvl)
-		"def": return c.base_def + int(c.def_per_level * lvl)
-		"mag": return c.base_mag + int(c.mag_per_level * lvl)
-		"res": return c.base_res + int(c.res_per_level * lvl)
+		"atk": return s.atk + int(c.atk_per_level * lvl)
+		"def": return s.def + int(c.def_per_level * lvl)
+		"mag": return s.mag + int(c.mag_per_level * lvl)
+		"res": return s.res + int(c.res_per_level * lvl)
 
 	return 0
 

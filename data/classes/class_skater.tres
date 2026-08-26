@@ -12,14 +12,7 @@ script = ExtResource("1_uhg7g")
 class_id = &"skater"
 class_name_display = "Skater"
 archetype_tag = "Rogue/Striker"
-base_hp = 35
-base_mp = 25
-base_atk = 15
-base_def = 7
-base_mag = 4
-base_res = 7
-base_spd = 16
-base_luck = 12
+
 hp_per_level = 4.0
 mp_per_level = 1.2
 atk_per_level = 1.0
@@ -28,6 +21,7 @@ mag_per_level = 0.2
 res_per_level = 0.3
 spd_per_level = 1.1
 luck_per_level = 0.5
+
 preferred_row = 0
 skill_ids = Array[ExtResource("2_vv5cp")]([ExtResource("3_05r8p"), ExtResource("4_bj4vm"), ExtResource("5_5ar5l"), ExtResource("6_hewk5")])
 icon_color = Color(0.9490196, 0.6627451, 0.23529412, 1)

@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"burnout"
 class_name_display = "Burnout"
 archetype_tag = "Berserker"
-base_hp = 55
-base_mp = 15
-base_atk = 16
-base_def = 7
-base_mag = 3
-base_res = 6
-base_spd = 11
-base_luck = 7
+
 hp_per_level = 5.0
 mp_per_level = 1.2
 atk_per_level = 1.0
@@ -28,6 +21,7 @@ mag_per_level = 0.1
 res_per_level = 0.3
 spd_per_level = 0.6
 luck_per_level = 0.3
+
 preferred_row = 0
 skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
 icon_color = Color(0.35, 0.4, 0.3, 1.0)

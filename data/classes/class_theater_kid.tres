@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"theater_kid"
 class_name_display = "Theater Kid"
 archetype_tag = "Illusionist"
-base_hp = 38
-base_mp = 32
-base_atk = 8
-base_def = 6
-base_mag = 13
-base_res = 8
-base_spd = 11
-base_luck = 11
+
 hp_per_level = 3.6
 mp_per_level = 2.4
 atk_per_level = 0.4
@@ -28,6 +21,7 @@ mag_per_level = 0.8
 res_per_level = 0.4
 spd_per_level = 0.5
 luck_per_level = 0.4
+
 preferred_row = 1
 skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
 icon_color = Color(0.75, 0.2, 0.55, 1.0)

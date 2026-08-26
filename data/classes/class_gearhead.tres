@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"gearhead"
 class_name_display = "Gearhead"
 archetype_tag = "Engineer"
-base_hp = 60
-base_mp = 22
-base_atk = 13
-base_def = 13
-base_mag = 4
-base_res = 8
-base_spd = 7
-base_luck = 8
+
 hp_per_level = 5.5
 mp_per_level = 1.8
 atk_per_level = 0.7
@@ -28,6 +21,7 @@ mag_per_level = 0.2
 res_per_level = 0.5
 spd_per_level = 0.3
 luck_per_level = 0.3
+
 preferred_row = 0
 skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
 icon_color = Color(0.55, 0.35, 0.15, 1.0)

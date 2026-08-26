@@ -14,3 +14,10 @@ current_mp = 42
 max_mp = 42
 portrait_color = Color(0.3, 0.9, 0.4, 1.0)
 bio_flavor = "Somewhere on this bus, on this tour, in this nightmare."
+
+atk = 5
+def = 5
+mag = 14
+res = 8
+spd = 13
+luck = 10

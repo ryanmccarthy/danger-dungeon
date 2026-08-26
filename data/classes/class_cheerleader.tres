@@ -12,14 +12,7 @@ script = ExtResource("1_o0fcc")
 class_id = &"cheerleader"
 class_name_display = "Cheerleader"
 archetype_tag = "Support"
-base_hp = 80
-base_mp = 40
-base_atk = 7
-base_def = 6
-base_mag = 10
-base_res = 9
-base_spd = 12
-base_luck = 10
+
 hp_per_level = 4.5
 mp_per_level = 2.5
 atk_per_level = 0.5
@@ -28,6 +21,7 @@ mag_per_level = 0.7
 res_per_level = 0.5
 spd_per_level = 0.7
 luck_per_level = 0.4
+
 preferred_row = 1
 skill_ids = Array[ExtResource("2_kj2jj")]([ExtResource("3_pv2tx"), ExtResource("4_slo7e"), ExtResource("5_3s8kt"), ExtResource("6_mtd0p")])
 icon_color = Color(1, 0.43529412, 0.68235296, 1)

@@ -12,14 +12,7 @@ script = ExtResource("1_l4e2r")
 class_id = &"debate_captain"
 class_name_display = "Debate Captain"
 archetype_tag = "Enchanter"
-base_hp = 30
-base_mp = 45
-base_atk = 6
-base_def = 6
-base_mag = 13
-base_res = 11
-base_spd = 7
-base_luck = 10
+
 hp_per_level = 3.8
 mp_per_level = 3.0
 atk_per_level = 0.3
@@ -27,6 +20,7 @@ def_per_level = 0.4
 mag_per_level = 0.8
 spd_per_level = 0.3
 luck_per_level = 0.4
+
 preferred_row = 1
 skill_ids = Array[ExtResource("2_nrlu0")]([ExtResource("3_eg2e7"), ExtResource("4_7mmjm"), ExtResource("5_14ilg"), ExtResource("6_48bgw")])
 icon_color = Color(0.29803923, 0.7882353, 0.627451, 1)

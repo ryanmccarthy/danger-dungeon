@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"loner"
 class_name_display = "Loner"
 archetype_tag = "Assassin"
-base_hp = 34
-base_mp = 20
-base_atk = 17
-base_def = 5
-base_mag = 4
-base_res = 6
-base_spd = 15
-base_luck = 9
+
 hp_per_level = 3.2
 mp_per_level = 1.5
 atk_per_level = 1.0
@@ -28,6 +21,7 @@ mag_per_level = 0.1
 res_per_level = 0.3
 spd_per_level = 0.9
 luck_per_level = 0.4
+
 preferred_row = 0
 skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
 icon_color = Color(0.25, 0.28, 0.35, 1.0)

@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"art_kid"
 class_name_display = "Art Kid"
 archetype_tag = "Painter"
-base_hp = 36
-base_mp = 34
-base_atk = 6
-base_def = 6
-base_mag = 12
-base_res = 9
-base_spd = 10
-base_luck = 10
+
 hp_per_level = 3.4
 mp_per_level = 2.6
 atk_per_level = 0.3

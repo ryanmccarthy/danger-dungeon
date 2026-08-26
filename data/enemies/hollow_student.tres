@@ -23,6 +23,7 @@ drop_table = Array[Dictionary]([{
     "max_qty": 2.0,
     "min_qty": 1.0
 }])
+xp_drop = 10
 supply_reward = 3
 primitive_shape = 2
 icon_color = Color(0.41960785, 0.3529412, 0.2901961, 1)

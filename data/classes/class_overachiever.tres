@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"overachiever"
 class_name_display = "Overachiever"
 archetype_tag = "Glass Cannon"
-base_hp = 40
-base_mp = 28
-base_atk = 13
-base_def = 6
-base_mag = 13
-base_res = 6
-base_spd = 13
-base_luck = 9
+
 hp_per_level = 3.8
 mp_per_level = 2.2
 atk_per_level = 0.8
@@ -28,6 +21,7 @@ mag_per_level = 0.8
 res_per_level = 0.3
 spd_per_level = 0.7
 luck_per_level = 0.4
+
 preferred_row = 2
 skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
 icon_color = Color(0.2, 0.75, 0.85, 1.0)

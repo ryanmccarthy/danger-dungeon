@@ -7,7 +7,7 @@
 script = ExtResource("1_vqq4m")
 area_id = &"forest_approach"
 display_name = "Forest of White"
-distance_from_university = 3
+distance_from_university = 0
 grid_layout = Array[String](
     ["#########",
      "#R......#",
@@ -28,6 +28,4 @@ encounter_table = Array[Dictionary]([{
     "enemy_id": "hollow_student",
     "weight": 0.4
 }])
-encounter_rate = 0.2
-distance_from_university = 0
 visual_theme = ExtResource("2_5jyl3")

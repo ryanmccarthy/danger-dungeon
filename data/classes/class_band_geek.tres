@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"band_geek"
 class_name_display = "Band Geek"
 archetype_tag = "Bard"
-base_hp = 40
-base_mp = 38
-base_atk = 6
-base_def = 6
-base_mag = 11
-base_res = 9
-base_spd = 10
-base_luck = 9
+
 hp_per_level = 3.8
 mp_per_level = 2.8
 atk_per_level = 0.3

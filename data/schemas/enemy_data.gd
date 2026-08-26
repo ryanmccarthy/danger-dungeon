@@ -20,6 +20,7 @@ enum PrimitiveShape { BOX, SPHERE, CAPSULE }
 @export var skill_pool: Array[SkillData] = []
 @export var drop_table: Array[Dictionary] = []
 @export var supply_reward: int = 0
+@export var xp_drop: int = 0
 
 @export_group("Presentation")
 @export var primitive_shape: PrimitiveShape = PrimitiveShape.BOX

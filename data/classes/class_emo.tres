@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"emo"
 class_name_display = "Emo"
 archetype_tag = "Blood Mage"
-base_hp = 42
-base_mp = 34
-base_atk = 9
-base_def = 6
-base_mag = 13
-base_res = 7
-base_spd = 8
-base_luck = 6
+
 hp_per_level = 3.8
 mp_per_level = 2.6
 atk_per_level = 0.4
@@ -28,6 +21,7 @@ mag_per_level = 0.8
 res_per_level = 0.4
 spd_per_level = 0.3
 luck_per_level = 0.2
+
 preferred_row = 1
 skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
 icon_color = Color(0.4, 0.05, 0.1, 1.0)

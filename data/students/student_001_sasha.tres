@@ -17,3 +17,10 @@ portrait = ExtResource("3_sasha")
 display_name = "Sasha"
 max_hp = 80
 max_mp = 40
+
+atk = 7
+def = 6
+mag = 10
+res = 9
+spd = 12
+luck = 10

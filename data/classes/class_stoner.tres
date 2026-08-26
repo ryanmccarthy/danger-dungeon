@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"stoner"
 class_name_display = "Stoner"
 archetype_tag = "Slacker Support"
-base_hp = 45
-base_mp = 30
-base_atk = 5
-base_def = 7
-base_mag = 6
-base_res = 13
-base_spd = 6
-base_luck = 14
+
 hp_per_level = 4.0
 mp_per_level = 2.0
 atk_per_level = 0.2
@@ -28,6 +21,7 @@ mag_per_level = 0.3
 res_per_level = 0.7
 spd_per_level = 0.3
 luck_per_level = 0.6
+
 preferred_row = 2
 skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
 icon_color = Color(0.5, 0.75, 0.35, 1.0)

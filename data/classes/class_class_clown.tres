@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"class_clown"
 class_name_display = "Class Clown"
 archetype_tag = "Trickster"
-base_hp = 44
-base_mp = 26
-base_atk = 8
-base_def = 7
-base_mag = 6
-base_res = 8
-base_spd = 12
-base_luck = 13
+
 hp_per_level = 4.0
 mp_per_level = 2.0
 atk_per_level = 0.5
@@ -28,6 +21,7 @@ mag_per_level = 0.2
 res_per_level = 0.4
 spd_per_level = 0.6
 luck_per_level = 0.6
+
 preferred_row = 2
 skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
 icon_color = Color(0.95, 0.85, 0.15, 1.0)

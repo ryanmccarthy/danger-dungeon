@@ -17,3 +17,10 @@ max_mp = 45
 portrait_color = Color(0.29803923, 0.7882353, 0.627451, 1)
 bio_flavor = "Has already opened a formal motion to leave the fog dimension."
 is_starter = true
+
+atk = 6
+def = 6
+mag = 13
+res = 11
+spd = 7
+luck = 10

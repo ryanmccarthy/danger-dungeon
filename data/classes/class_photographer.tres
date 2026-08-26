@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"photographer"
 class_name_display = "Photographer"
 archetype_tag = "Debuffer"
-base_hp = 36
-base_mp = 30
-base_atk = 6
-base_def = 6
-base_mag = 10
-base_res = 9
-base_spd = 10
-base_luck = 12
+
 hp_per_level = 3.4
 mp_per_level = 2.4
 atk_per_level = 0.3
@@ -28,6 +21,7 @@ mag_per_level = 0.6
 res_per_level = 0.5
 spd_per_level = 0.5
 luck_per_level = 0.6
+
 preferred_row = 1
 skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
 icon_color = Color(0.8, 0.8, 0.85, 1.0)

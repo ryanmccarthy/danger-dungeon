@@ -12,14 +12,7 @@ script = ExtResource("1")
 class_id = &"farm_kid"
 class_name_display = "Farm Kid"
 archetype_tag = "Beastmaster"
-base_hp = 65
-base_mp = 24
-base_atk = 12
-base_def = 12
-base_mag = 6
-base_res = 10
-base_spd = 8
-base_luck = 10
+
 hp_per_level = 6.0
 mp_per_level = 1.8
 atk_per_level = 0.6
@@ -28,6 +21,7 @@ mag_per_level = 0.3
 res_per_level = 0.6
 spd_per_level = 0.3
 luck_per_level = 0.4
+
 preferred_row = 0
 skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
 icon_color = Color(0.45, 0.6, 0.25, 1.0)
