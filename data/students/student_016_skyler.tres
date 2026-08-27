@@ -14,7 +14,7 @@ max_hp = 34
 current_mp = 20
 max_mp = 20
 portrait_color = Color(0.25, 0.28, 0.35, 1.0)
-bio_flavor = "Somewhere on this bus, on this tour, in this nightmare."
+bio_flavor = "The only one who feels more comfortable in the fog."
 portrait = ExtResource("3_skyler")
 
 atk = 17

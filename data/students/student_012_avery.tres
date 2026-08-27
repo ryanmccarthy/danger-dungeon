@@ -14,7 +14,7 @@ max_hp = 42
 current_mp = 34
 max_mp = 34
 portrait_color = Color(0.4, 0.05, 0.1, 1.0)
-bio_flavor = "Somewhere on this bus, on this tour, in this nightmare."
+bio_flavor = "Finally, a mood that matches the aesthetic."
 portrait = ExtResource("3_avery")
 
 atk = 9

@@ -14,7 +14,7 @@ max_hp = 38
 current_mp = 32
 max_mp = 32
 portrait_color = Color(0.75, 0.2, 0.55, 1.0)
-bio_flavor = "Somewhere on this bus, on this tour, in this nightmare."
+bio_flavor = "Has already cast herself as the damsel in distress."
 portrait = ExtResource("3_morgan")
 
 atk = 8
