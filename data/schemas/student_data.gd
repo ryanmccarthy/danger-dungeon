@@ -48,7 +48,7 @@ func is_alive() -> bool:
 func add_experience(xp: int):
 	experience += xp
 
-	while experience >= xp_to_next_level:
+	while experience >= xp_to_next_level and level < len(experience_table):
 		level_up()
 
 func level_up():
@@ -95,3 +95,6 @@ const experience_table = {
 
 func restore_mp(amount: int):
 	current_mp = min(current_mp + amount, max_mp)
+
+func reduce_mp(amount: int):
+	current_mp = max(current_mp - amount, 0)

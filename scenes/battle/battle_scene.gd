@@ -22,6 +22,7 @@ var enemies: Array = []
 var party_ids: Array = []
 var _defending: Dictionary = {}
 var _cards: Dictionary = {}
+var _buffs: Dictionary = {} # ref -> Array[{"stat": String, "amount": float, "remaining": int}]
 var _turn_order: Array = []
 var _turn_cursor: int = 0
 var _round_num: int = 1
@@ -47,6 +48,7 @@ func enter_state(_context: Dictionary = {}) -> void:
 	enemies.clear()
 	_defending.clear()
 	_cards.clear()
+	_buffs.clear()
 
 	var enemy_ids: Array = GameState.pending_encounter.get("enemy_ids", [])
 	for id in enemy_ids:
@@ -136,7 +138,7 @@ func _make_enemy_card(idx: int) -> Control:
 	# hp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	# box.add_child(hp_lbl)
 
-	_cards[idx] = {"root": panel} #, "hp": hp_lbl}
+	_cards[idx] = {"root": panel, "name_lbl": name_lbl} #, "hp": hp_lbl}
 
 	return panel
 
@@ -149,6 +151,7 @@ func _refresh_cards() -> void:
 
 		# card["hp"].text = "HP %d / %d" % [max(0, e["hp"]), e["data"].max_hp]
 		card["root"].modulate = Color(1, 1, 1, 1) if e["hp"] > 0 else Color(0.4, 0.4, 0.4, 0.7)
+		card["name_lbl"].text = e["name"] + _buff_tag_string(i)
 
 	_show_roster_list()
 
@@ -189,8 +192,8 @@ func _show_roster_list() -> void:
 		row.add_child(name_lbl)
 
 		var stat_lbl := Label.new()
-		stat_lbl.text = "HP %d/%d  MP %d/%d" % [student.current_hp, student.max_hp,
-												student.current_mp, student.max_mp]
+		stat_lbl.text = "HP %d/%d  MP %d/%d%s" % [student.current_hp, student.max_hp,
+												student.current_mp, student.max_mp, _buff_tag_string(id)]
 		stat_lbl.add_theme_font_size_override("font_size", 13)
 		row.add_child(stat_lbl)
 
@@ -203,6 +206,7 @@ func _start_round() -> void:
 	if _check_battle_end():
 		return
 
+	_tick_buffs()
 	_round_label.text = "Round %d" % _round_num
 	_turn_order.clear()
 	for i in enemies.size():
@@ -311,34 +315,76 @@ func _is_alive(ref) -> bool:
 	return s != null and s.status == StudentData.Status.ACTIVE
 
 func _get_spd(ref) -> int:
+	var base: int
 	if _is_enemy_ref(ref):
-		return enemies[ref]["data"].spd
+		base = enemies[ref]["data"].spd
+	else:
+		var s := PartyManager.get_student(ref)
+		base = s.spd + int(s.student_class.spd_per_level * (s.level - 1))
 
-	var s := PartyManager.get_student(ref)
-	return s.spd + int(s.student_class.spd_per_level * (s.level - 1))
+	return max(0, int(round(base + _get_buff_total(ref, "spd"))))
 
 func _get_stat(ref, stat: String) -> int:
+	var base: int = 0
 	if _is_enemy_ref(ref):
 		var d: EnemyData = enemies[ref]["data"]
 		match stat:
-			"atk": return d.atk
-			"def": return d.def
-			"mag": return d.mag
-			"res": return d.res
+			"atk": base = d.atk
+			"def": base = d.def
+			"mag": base = d.mag
+			"res": base = d.res
+	else:
+		var s := PartyManager.get_student(ref)
+		match stat:
+			"atk": base = s.atk
+			"def": base = s.def
+			"mag": base = s.mag
+			"res": base = s.res
 
-		return 0
+	return max(0, int(round(base + _get_buff_total(ref, stat))))
 
-	var s := PartyManager.get_student(ref)
-	var c := s.student_class
-	var lvl := s.level - 1
+# ------------------------------------------------------------------ buffs
+func _get_buff_total(ref, stat: String) -> float:
+	var total := 0.0
+	for b in _buffs.get(ref, []):
+		if b["stat"] == stat:
+			total += b["amount"]
 
-	match stat:
-		"atk": return s.atk + int(c.atk_per_level * lvl)
-		"def": return s.def + int(c.def_per_level * lvl)
-		"mag": return s.mag + int(c.mag_per_level * lvl)
-		"res": return s.res + int(c.res_per_level * lvl)
+	return total
 
-	return 0
+func _apply_buff(ref, stat: String, amount: float, duration: int) -> void:
+	if stat == "" or duration <= 0:
+		return
+
+	if not _buffs.has(ref):
+		_buffs[ref] = []
+	_buffs[ref].append({"stat": stat, "amount": amount, "remaining": duration})
+
+func _tick_buffs() -> void:
+	for ref in _buffs.keys():
+		var list: Array = _buffs[ref]
+		var i := list.size() - 1
+		while i >= 0:
+			list[i]["remaining"] -= 1
+			if list[i]["remaining"] <= 0:
+				list.remove_at(i)
+			i -= 1
+		if list.is_empty():
+			_buffs.erase(ref)
+
+func _buff_tag_string(ref) -> String:
+	var list: Array = _buffs.get(ref, [])
+	if list.is_empty():
+		return ""
+
+	var parts: Array[String] = []
+	for b in list:
+		parts.append("%s%s(%d)" % [String(b["stat"]).to_upper(), _signed_str(b["amount"]), int(b["remaining"])])
+
+	return "  " + " ".join(parts)
+
+func _signed_str(amount: float) -> String:
+	return "+%d" % int(amount) if amount >= 0.0 else str(int(amount))
 
 func _in_back_row(ref) -> bool:
 	if _is_enemy_ref(ref):
@@ -529,7 +575,10 @@ func _cast_skill(actor: StringName, skill: SkillData, targets: Array) -> void:
 				_apply_heal(t, amount)
 				_log("%s uses %s, healing %s for %d." % [_display_name(actor), skill.display_name, _display_name(t), amount])
 			SkillData.EffectType.BUFF, SkillData.EffectType.DEBUFF:
-				_log("%s uses %s on %s." % [_display_name(actor), skill.display_name, _display_name(t)])
+				_apply_buff(t, skill.stat_affected, skill.buff_amount, skill.buff_duration)
+				_log("%s uses %s on %s (%s %s for %d rounds)." % [_display_name(actor), skill.display_name,
+						_display_name(t), String(skill.stat_affected).to_upper(),
+						_signed_str(skill.buff_amount), skill.buff_duration])
 
 	_end_player_turn()
 
@@ -577,21 +626,12 @@ func _make_description_label() -> Label:
 
 func _use_item(actor: StringName, item_id: StringName) -> void:
 	var item := ContentDatabase.get_item(item_id)
-	_begin_target_select(actor, func(t): _apply_item(actor, item_id, item, t), _living_party())
+	_begin_target_select(actor, func(t): _apply_item(actor, item, t), _living_party())
 
-func _apply_item(actor: StringName, item_id: StringName, item: ItemData, target) -> void:
-	if not InventoryManager.remove_item(item_id):
+func _apply_item(actor: StringName, item: ItemData, target) -> void:
+	var student := PartyManager.get_student(target)
+	if student == null or not item.use_item(student):
 		return
-
-	match item.use_effect:
-		ItemData.UseEffect.HEAL_HP:
-			_apply_heal(target, int(item.use_value))
-		ItemData.UseEffect.HEAL_MP:
-			var s := PartyManager.get_student(target)
-			if s:
-				s.current_mp = min(s.max_mp, s.current_mp + int(item.use_value))
-		ItemData.UseEffect.CURE_HUNGER:
-			HungerSystem.restore_hunger(target, item.use_value)
 
 	_log("%s uses %s on %s." % [_display_name(actor), item.display_name, _display_name(target)])
 	_end_player_turn()

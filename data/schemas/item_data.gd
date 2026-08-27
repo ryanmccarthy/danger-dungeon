@@ -19,9 +19,12 @@ enum UseEffect { NONE, HEAL_HP, HEAL_MP, CURE_HUNGER, BUFF_FOOD, HEAL_SAN, REDUC
 @export var bonus_effect: UseEffect = UseEffect.NONE
 @export var bonus_value: float = 0.0
 
-func use_item(target: CharacterData):
+## Applies this item's use_effect (and bonus_effect) to target, consuming
+## one copy from InventoryManager. Returns false (and leaves the item
+## unconsumed) if there wasn't one to use.
+func use_item(target: CharacterData) -> bool:
 	if not InventoryManager.remove_item(item_id):
-		return
+		return false
 
 	match use_effect:
 		ItemData.UseEffect.HEAL_HP:
@@ -34,6 +37,7 @@ func use_item(target: CharacterData):
 				HungerSystem.restore_hunger(target.student_id, int(use_value))
 
 	_apply_bonus_effect(target)
+	return true
 
 func _apply_bonus_effect(target: CharacterData):
 	match bonus_effect:
@@ -46,4 +50,4 @@ func _apply_bonus_effect(target: CharacterData):
 			if target.is_student:
 				HungerSystem.reduce_hunger(target.student_id, int(bonus_value))
 		ItemData.UseEffect.REDUCE_SAN:
-			target.reduce_san(int(bonus_value))
+			target.reduce_sanity(int(bonus_value))

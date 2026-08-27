@@ -4,8 +4,6 @@ extends Node
 ## with an area's distance from the university and is discounted by any
 ## unlocked bus-repair upgrades.
 
-const DISTANCE_MULT := 4.0 # maybe used later for travel cost adjustment
-
 var supplies: int = 50
 var items: Dictionary = {}
 
