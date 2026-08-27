@@ -3,7 +3,11 @@ class_name ItemData
 extends Resource
 
 enum Category { INGREDIENT, CONSUMABLE, KEY_ITEM }
-enum UseEffect { NONE, HEAL_HP, HEAL_MP, CURE_HUNGER, BUFF_FOOD, HEAL_SAN, REDUCE_HP, REDUCE_MP, INCREASE_HUNGER, DEBUFF_FOOD, REDUCE_SAN, }
+enum UseEffect {
+	NONE, HEAL_HP, HEAL_MP, CURE_HUNGER, BUFF_FOOD, HEAL_SAN,
+	REDUCE_HP, REDUCE_MP, INCREASE_HUNGER, DEBUFF_FOOD, REDUCE_SAN,
+	REVIVE,
+}
 
 @export var item_id: StringName
 @export var display_name: String
@@ -21,20 +25,31 @@ enum UseEffect { NONE, HEAL_HP, HEAL_MP, CURE_HUNGER, BUFF_FOOD, HEAL_SAN, REDUC
 
 ## Applies this item's use_effect (and bonus_effect) to target, consuming
 ## one copy from InventoryManager. Returns false (and leaves the item
-## unconsumed) if there wasn't one to use.
+## unconsumed) if there wasn't one to use or isn't applicable.
 func use_item(target: CharacterData) -> bool:
 	if not InventoryManager.remove_item(item_id):
 		return false
 
 	match use_effect:
 		ItemData.UseEffect.HEAL_HP:
+			if target.current_hp >= target.max_hp:
+				return false
 			target.restore_health(int(use_value))
+
 		ItemData.UseEffect.HEAL_MP:
-			if target.is_student:
-				target.restore_mp(int(use_value))
+			if not target.is_student or target.current_mp >= target.max_mp:
+				return false
+			target.restore_mp(int(use_value))
+
 		ItemData.UseEffect.CURE_HUNGER:
-			if target.is_student:
-				HungerSystem.restore_hunger(target.student_id, int(use_value))
+			if not target.is_student or target.current_hunger >= target.max_hunger:
+				return false
+			HungerSystem.restore_hunger(target.student_id, int(use_value))
+
+		ItemData.UseEffect.REVIVE:
+			if not target.is_student or target.is:
+				return false
+			target.revive_student(target.student_id, int(use_value))
 
 	_apply_bonus_effect(target)
 	return true
@@ -51,3 +66,11 @@ func _apply_bonus_effect(target: CharacterData):
 				HungerSystem.reduce_hunger(target.student_id, int(bonus_value))
 		ItemData.UseEffect.REDUCE_SAN:
 			target.reduce_sanity(int(bonus_value))
+
+func is_usable():
+	if item_category == Category.CONSUMABLE or (
+		use_effect == UseEffect.REVIVE and PartyManager.is_anyone_down()
+	):
+		return true
+
+	return false

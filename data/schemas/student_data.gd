@@ -42,6 +42,9 @@ func _init():
 func is_usable() -> bool:
 	return status == Status.ACTIVE or status == Status.DOWNED
 
+func is_downed() -> bool:
+	return status == Status.DOWNED
+
 func is_alive() -> bool:
 	return status != Status.DEAD
 

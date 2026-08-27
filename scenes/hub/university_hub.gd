@@ -173,7 +173,7 @@ func _do_feed(id: StringName) -> void:
 		return
 
 	var s := PartyManager.get_student(id)
-	HungerSystem.restore_hunger(id, s.max_hunger)
+	HungerSystem.restore_hunger(id, int(s.max_hunger))
 	_refresh_popup("nurse")
 
 # ----------------------------------------------------------------- Library

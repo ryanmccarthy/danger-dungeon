@@ -194,6 +194,9 @@ func _build_stub(text: String) -> void:
 
 # ----------------------------------------------------------------- Inventory
 func _build_inventory() -> void:
+	for c in _sub_body.get_children():
+		c.queue_free()
+
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -236,8 +239,13 @@ func _make_inventory_row(item: ItemData, count: int) -> Control:
 	var row := PanelContainer.new()
 	row.add_theme_stylebox_override("panel", _row_style())
 
+	var hbox := HBoxContainer.new()
+	hbox.add_theme_constant_override("separation", 12)
+	row.add_child(hbox)
+
 	var box := VBoxContainer.new()
-	row.add_child(box)
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hbox.add_child(box)
 
 	var head_lbl := Label.new()
 	head_lbl.text = "%s x%d" % [item.display_name, count]
@@ -252,7 +260,60 @@ func _make_inventory_row(item: ItemData, count: int) -> Control:
 		desc_lbl.add_theme_color_override("font_color", DIM_TEXT)
 		box.add_child(desc_lbl)
 
+	var use_btn := Button.new()
+	use_btn.text = "Use"
+	use_btn.custom_minimum_size = Vector2(100, 44)
+	use_btn.add_theme_font_size_override("font_size", 18)
+	use_btn.disabled = not item.is_usable()
+	use_btn.pressed.connect(func(): _show_use_target_select(item))
+	hbox.add_child(use_btn)
+
 	return row
+
+# Shown when "Use" is pressed on an inventory item — picks which roster
+# member (ACTIVE or DOWNED, same pool as the Status tab's get_usable_roster)
+# receives the item's effect, then consumes it and returns to the refreshed
+# inventory list.
+func _show_use_target_select(item: ItemData) -> void:
+	for c in _sub_body.get_children():
+		c.queue_free()
+
+	var back := Button.new()
+	back.text = "< Back"
+	back.pressed.connect(_build_inventory)
+	_sub_body.add_child(back)
+
+	var hdr := Label.new()
+	hdr.text = "Use %s on:" % item.display_name
+	hdr.add_theme_font_size_override("font_size", 22)
+	hdr.add_theme_color_override("font_color", GOLD)
+	_sub_body.add_child(hdr)
+
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_sub_body.add_child(scroll)
+
+	var list := VBoxContainer.new()
+	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	list.add_theme_constant_override("separation", 6)
+	scroll.add_child(list)
+
+	var roster := PartyManager.get_usable_roster()
+	if roster.is_empty():
+		list.add_child(_make_dim_label("No one to use this on."))
+		return
+
+	for s in roster:
+		var btn := Button.new()
+		btn.text = "%s   HP %d/%d   MP %d/%d" % [s.display_name, s.current_hp, s.max_hp, s.current_mp, s.max_mp]
+		btn.add_theme_font_size_override("font_size", 18)
+		btn.pressed.connect(func(): _use_item_on(item, s))
+		list.add_child(btn)
+
+func _use_item_on(item: ItemData, target: StudentData) -> void:
+	if item.use_item(target): # only need to update if it was used
+		_build_inventory()
 
 # -------------------------------------------------------------------- Status
 # Three columns: roster list (left) | stats broken into sections (center) |
@@ -311,6 +372,7 @@ func _build_status() -> void:
 func _fill_status_detail(detail: VBoxContainer, portrait_panel: PanelContainer, s: StudentData) -> void:
 	for c in detail.get_children():
 		c.queue_free()
+
 	for c in portrait_panel.get_children():
 		c.queue_free()
 	portrait_panel.add_child(_make_card_portrait(s.portrait))

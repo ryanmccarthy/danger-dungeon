@@ -101,25 +101,25 @@ func swap_party_slots(a: StringName, b: StringName) -> void:
 
 func apply_damage(id: StringName, amount: int, is_hunger_dot: bool = false) -> void:
 	var s := get_student(id)
-	if s == null or s.status == StudentData.Status.DEAD:
+	if s == null or not s.is_alive():
 		return
 	s.current_hp = max(0, s.current_hp - amount)
 	if s.current_hp == 0:
 		if is_hunger_dot:
 			kill_student(id)
-		elif s.status != StudentData.Status.DOWNED:
+		elif not s.is_downed():
 			s.status = StudentData.Status.DOWNED
 			EventBus.student_downed.emit(id)
 
 func heal_student(id: StringName, amount: int) -> void:
 	var s := get_student(id)
-	if s == null or s.status == StudentData.Status.DEAD:
+	if s == null or not s.is_alive():
 		return
 	s.current_hp = min(s.max_hp, s.current_hp + amount)
 
 func revive_student(id: StringName, hp_amount: int) -> bool:
 	var s := get_student(id)
-	if s == null or s.status != StudentData.Status.DOWNED:
+	if s == null or not s.is_downed():
 		return false
 	s.status = StudentData.Status.ACTIVE
 	s.current_hp = max(1, hp_amount)
@@ -128,7 +128,7 @@ func revive_student(id: StringName, hp_amount: int) -> bool:
 
 func kill_student(id: StringName) -> void:
 	var s := get_student(id)
-	if s == null or s.status == StudentData.Status.DEAD:
+	if s == null or not s.is_alive():
 		return
 	s.status = StudentData.Status.DEAD
 	s.current_hp = 0
@@ -140,7 +140,7 @@ func kill_student(id: StringName) -> void:
 		EventBus.party_wiped.emit()
 
 func is_party_wiped() -> bool:
-	## True both when every party slot is DOWNED (battle loss) and when the
+	## True when either every party slot is DOWNED (battle loss) or when the
 	## party has been whittled down to nobody (hunger deaths) — either way
 	## there's no one left able to act.
 	for id in get_active_party_ids():
@@ -148,6 +148,13 @@ func is_party_wiped() -> bool:
 		if s != null and s.status == StudentData.Status.ACTIVE:
 			return false
 	return true
+
+func is_anyone_down() -> bool:
+	for id in get_active_party_ids():
+		var s := get_student(id)
+		if s != null and s.is_downed():
+			return true
+	return false
 
 func force_return_to_university() -> void:
 	EventBus.party_wiped.emit()
