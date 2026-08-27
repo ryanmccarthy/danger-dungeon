@@ -8,10 +8,10 @@ script = ExtResource("2_1ka0e")
 recipe_id = &"recipe_spirit_cupcake"
 display_name = "Spirit Cupcake"
 ingredients = Array[Dictionary]([{
-"count": 1.0,
-"item_id": "ingredient_wisp_essence"
+    "count": 1.0,
+    "item_id": "ingredient_wisp_essence"
 }, {
-"count": 1.0,
-"item_id": "ingredient_stale_snack"
+    "count": 1.0,
+    "item_id": "ingredient_stale_snack"
 }])
 result_item = ExtResource("1_tlkqv")

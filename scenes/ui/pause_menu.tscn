@@ -20,7 +20,7 @@ mouse_filter = 1
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0, 0, 0, 0.75)
+color = Color(0, 0, 0, 1)
 
 [node name="MainPanel" type="Panel" parent="Root" unique_id=1048462072]
 layout_mode = 0

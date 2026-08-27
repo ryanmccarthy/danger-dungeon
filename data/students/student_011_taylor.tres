@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_g7twu"]
 [ext_resource type="Resource" path="res://data/classes/class_gamer.tres" id="2_le0ny"]
+[ext_resource type="Texture2D" path="res://data/assets/portraits/taylor.png" id="3_taylor"]
 
 [resource]
 script = ExtResource("1_g7twu")
@@ -14,6 +15,7 @@ current_mp = 42
 max_mp = 42
 portrait_color = Color(0.3, 0.9, 0.4, 1.0)
 bio_flavor = "Somewhere on this bus, on this tour, in this nightmare."
+portrait = ExtResource("3_taylor")
 
 atk = 5
 def = 5

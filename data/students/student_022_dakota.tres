@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_x77uo"]
 [ext_resource type="Resource" path="res://data/classes/class_stuco_pres.tres" id="2_gihox"]
+[ext_resource type="Texture2D" path="res://data/assets/portraits/generic.png" id="3_dakota"]
 
 [resource]
 script = ExtResource("1_x77uo")
@@ -14,6 +15,7 @@ current_mp = 34
 max_mp = 34
 portrait_color = Color(0.5, 0.08, 0.2, 1.0)
 bio_flavor = "Somewhere on this bus, on this tour, in this nightmare."
+portrait = ExtResource("3_dakota")
 
 atk = 8
 def = 8

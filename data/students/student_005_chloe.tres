@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_8kbfp"]
 [ext_resource type="Resource" uid="uid://bd7peg0gf4kyb" path="res://data/classes/class_debate_captain.tres" id="2_exj0v"]
-[ext_resource type="CompressedTexture2D" uid="uid://7gq18qvthob4" path="res://data/assets/portraits/chloe.png" id="3_chloe"]
+[ext_resource type="CompressedTexture2D" path="res://data/assets/portraits/chloe.png" id="3_chloe"]
 
 [resource]
 script = ExtResource("1_8kbfp")
