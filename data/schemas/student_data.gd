@@ -12,12 +12,10 @@ enum Status { ACTIVE, DOWNED, DEAD }
 @export var student_class: StudentClassData
 @export var level: int = 1
 @export var experience: int = 0
-@export var experience_to_next: int = 100
+@export var xp_to_next_level: int = 100
 
 @export_group("Stats")
-@export var current_hp: int = max_hp
 @export var current_mp: int = max_mp
-@export var current_san: int = max_san
 @export var current_hunger: float = 100.0
 @export var max_hunger: float = 100.0
 
@@ -38,6 +36,9 @@ enum Status { ACTIVE, DOWNED, DEAD }
 @export_multiline var bio_flavor: String = ""
 @export var is_starter: bool = false
 
+func _init():
+	is_student = true
+
 func is_usable() -> bool:
 	return status == Status.ACTIVE or status == Status.DOWNED
 
@@ -46,16 +47,14 @@ func is_alive() -> bool:
 
 func add_experience(xp: int):
 	experience += xp
-	check_level()
 
-func check_level():
-	while experience >= experience_to_next:
+	while experience >= xp_to_next_level:
 		level_up()
 
 func level_up():
 	level += 1
 	if level+1 in experience_table:
-		experience_to_next = experience_table[level+1]
+		xp_to_next_level = experience_table[level+1]
 
 	# Apply stat growth from student class
 	if student_class:
@@ -66,6 +65,8 @@ func level_up():
 		max_mp += int(max_mp * student_class.mp_per_level * roll)
 		current_mp = max_mp # heal on level up
 
+		# Stat not guaranteed to increase;
+		# eventually intended to reliably increase through crafting instead
 		if randf()*100 < luck:
 			atk += int(student_class.atk_per_level * roll * atk)
 		if randf()*100 < luck:
@@ -91,3 +92,6 @@ const experience_table = {
 	9: 2300,
 	10: 2800,
 }
+
+func restore_mp(amount: int):
+	current_mp = min(current_mp + amount, max_mp)

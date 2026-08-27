@@ -3,7 +3,7 @@ class_name ItemData
 extends Resource
 
 enum Category { INGREDIENT, CONSUMABLE, KEY_ITEM }
-enum UseEffect { NONE, HEAL_HP, HEAL_MP, CURE_HUNGER, BUFF_FOOD }
+enum UseEffect { NONE, HEAL_HP, HEAL_MP, CURE_HUNGER, BUFF_FOOD, HEAL_SAN, REDUCE_HP, REDUCE_MP, INCREASE_HUNGER, DEBUFF_FOOD, REDUCE_SAN, }
 
 @export var item_id: StringName
 @export var display_name: String
@@ -15,3 +15,35 @@ enum UseEffect { NONE, HEAL_HP, HEAL_MP, CURE_HUNGER, BUFF_FOOD }
 @export var use_effect: UseEffect = UseEffect.NONE
 @export var use_value: float = 0.0
 @export var icon_color: Color = Color.WHITE
+
+@export var bonus_effect: UseEffect = UseEffect.NONE
+@export var bonus_value: float = 0.0
+
+func use_item(target: CharacterData):
+	if not InventoryManager.remove_item(item_id):
+		return
+
+	match use_effect:
+		ItemData.UseEffect.HEAL_HP:
+			target.restore_health(int(use_value))
+		ItemData.UseEffect.HEAL_MP:
+			if target.is_student:
+				target.restore_mp(int(use_value))
+		ItemData.UseEffect.CURE_HUNGER:
+			if target.is_student:
+				HungerSystem.restore_hunger(target.student_id, int(use_value))
+
+	_apply_bonus_effect(target)
+
+func _apply_bonus_effect(target: CharacterData):
+	match bonus_effect:
+		ItemData.UseEffect.REDUCE_HP:
+			target.reduce_health(int(bonus_value))
+		ItemData.UseEffect.REDUCE_MP:
+			if target.is_student:
+				target.reduce_mp(int(bonus_value))
+		ItemData.UseEffect.INCREASE_HUNGER:
+			if target.is_student:
+				HungerSystem.reduce_hunger(target.student_id, int(bonus_value))
+		ItemData.UseEffect.REDUCE_SAN:
+			target.reduce_san(int(bonus_value))

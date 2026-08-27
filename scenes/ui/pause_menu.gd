@@ -136,19 +136,6 @@ func _make_party_card(s: StudentData) -> Control:
 
 	return card
 
-func _make_portrait_frame(texture: Texture2D, box_size: float) -> Control:
-	var frame := PanelContainer.new()
-	frame.custom_minimum_size = Vector2(box_size, box_size)
-	frame.add_theme_stylebox_override("panel", _portrait_style())
-
-	var portrait := TextureRect.new()
-	portrait.texture = texture
-	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	frame.add_child(portrait)
-
-	return frame
-
 func _make_card_portrait(texture: Texture2D) -> TextureRect:
 	# Borderless, no background box — scales to fill the card's full height
 	# (and whatever width share the HBoxContainer stretch ratio gives it)
@@ -268,6 +255,8 @@ func _make_inventory_row(item: ItemData, count: int) -> Control:
 	return row
 
 # -------------------------------------------------------------------- Status
+# Three columns: roster list (left) | stats broken into sections (center) |
+# portrait scaled to fill the available height (right).
 func _build_status() -> void:
 	var hbox := HBoxContainer.new()
 	hbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -285,11 +274,23 @@ func _build_status() -> void:
 	left_list.add_theme_constant_override("separation", 6)
 	left_scroll.add_child(left_list)
 
+	var detail_scroll := ScrollContainer.new()
+	detail_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	detail_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	detail_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hbox.add_child(detail_scroll)
+
 	var detail := VBoxContainer.new()
 	detail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	detail.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	detail.add_theme_constant_override("separation", 8)
-	hbox.add_child(detail)
+	detail.add_theme_constant_override("separation", 6)
+	detail_scroll.add_child(detail)
+
+	var portrait_panel := PanelContainer.new()
+	portrait_panel.custom_minimum_size = Vector2(260, 0)
+	portrait_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	portrait_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	portrait_panel.add_theme_stylebox_override("panel", _portrait_style())
+	hbox.add_child(portrait_panel)
 
 	var roster := PartyManager.get_usable_roster()
 	if roster.is_empty():
@@ -302,61 +303,110 @@ func _build_status() -> void:
 		var btn := Button.new()
 		btn.text = s.display_name
 		btn.add_theme_font_size_override("font_size", 18)
-		btn.pressed.connect(func(): _fill_status_detail(detail, s))
+		btn.pressed.connect(func(): _fill_status_detail(detail, portrait_panel, s))
 		left_list.add_child(btn)
 
-	_fill_status_detail(detail, roster[0])
+	_fill_status_detail(detail, portrait_panel, roster[0])
 
-func _fill_status_detail(detail: VBoxContainer, s: StudentData) -> void:
+func _fill_status_detail(detail: VBoxContainer, portrait_panel: PanelContainer, s: StudentData) -> void:
 	for c in detail.get_children():
 		c.queue_free()
+	for c in portrait_panel.get_children():
+		c.queue_free()
+	portrait_panel.add_child(_make_card_portrait(s.portrait))
 
-	var top := HBoxContainer.new()
-	top.add_theme_constant_override("separation", 16)
-	detail.add_child(top)
-	top.add_child(_make_portrait_frame(s.portrait, 96.0))
-
-	var head_box := VBoxContainer.new()
-	top.add_child(head_box)
-
+	# --- Top: identity — name, class, level, condition/status ---
 	var name_lbl := Label.new()
 	name_lbl.text = s.display_name
 	name_lbl.add_theme_font_size_override("font_size", 30)
 	name_lbl.add_theme_color_override("font_color", GOLD)
-	head_box.add_child(name_lbl)
+	detail.add_child(name_lbl)
 
-	var class_lbl := Label.new()
-	class_lbl.text = "%s — Level %d" % [s.student_class.class_name_display, s.level]
-	class_lbl.add_theme_font_size_override("font_size", 18)
-	head_box.add_child(class_lbl)
-
-	var status_lbl := Label.new()
-	status_lbl.text = "Status: %s" % StudentData.Status.keys()[s.status]
-	status_lbl.add_theme_font_size_override("font_size", 18)
-	head_box.add_child(status_lbl)
-
-	detail.add_child(HSeparator.new())
-
-	var stats_lbl := Label.new()
-	stats_lbl.text = "HP %d / %d      MP %d / %d\nHunger %d / %d" % [
-		s.current_hp, s.max_hp, s.current_mp, s.max_mp,
-		int(s.current_hunger), int(s.max_hunger)]
-	stats_lbl.add_theme_font_size_override("font_size", 20)
-	detail.add_child(stats_lbl)
+	detail.add_child(_make_ident_grid(s))
 
 	if s.bio_flavor != "":
-		detail.add_child(HSeparator.new())
-		var bio_hdr := Label.new()
-		bio_hdr.text = "About:"
-		bio_hdr.add_theme_font_size_override("font_size", 16)
-		bio_hdr.add_theme_color_override("font_color", DIM_TEXT)
-		detail.add_child(bio_hdr)
-
+		_add_section_header(detail, "About")
 		var bio_lbl := Label.new()
 		bio_lbl.text = s.bio_flavor
 		bio_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		bio_lbl.add_theme_font_size_override("font_size", 18)
 		detail.add_child(bio_lbl)
+
+	# --- Middle: stats — resource pools, then core attributes ---
+	_add_section_header(detail, "Vitals")
+	detail.add_child(_make_stat_grid([
+		["HP", "%d / %d" % [s.current_hp, s.max_hp]],
+		["MP", "%d / %d" % [s.current_mp, s.max_mp]],
+		["SAN", "%d / %d" % [s.current_san, s.max_san]],
+		["Hunger", "%d / %d" % [int(s.current_hunger), int(s.max_hunger)]],
+	], 2))
+
+	_add_section_header(detail, "Attributes")
+	detail.add_child(_make_stat_grid([
+		["ATK", str(s.atk)], ["DEF", str(s.def)], ["MAG", str(s.mag)],
+		["RES", str(s.res)], ["SPD", str(s.spd)], ["LUCK", str(s.luck)],
+	], 3))
+
+	# --- Bottom: equipment — no gear system exists yet, mirror the stub tab ---
+	_add_section_header(detail, "Equipment")
+	detail.add_child(_make_dim_label("No equipment loadouts yet — coming in a future update."))
+
+func _add_section_header(detail: VBoxContainer, text: String) -> void:
+	detail.add_child(HSeparator.new())
+	var hdr := Label.new()
+	hdr.text = text
+	hdr.add_theme_font_size_override("font_size", 18)
+	hdr.add_theme_color_override("font_color", GOLD)
+	detail.add_child(hdr)
+
+func _get_grid(columns: int) -> GridContainer:
+	var grid = GridContainer.new()
+	grid.columns = columns
+	grid.add_theme_constant_override("h_separation", 28)
+	grid.add_theme_constant_override("v_separation", 4)
+
+	return grid
+
+func _make_ident_grid(student: StudentData) -> GridContainer:
+	var grid = _get_grid(2)
+
+	var class_lbl := Label.new()
+	class_lbl.text = "%s — Level %d" % [student.student_class.class_name_display, student.level]
+	class_lbl.add_theme_font_size_override("font_size", 20)
+	class_lbl.add_theme_color_override("font_color", BODY_TEXT)
+	grid.add_child(class_lbl)
+
+	var xp_lbl := Label.new()
+	xp_lbl.text = "XP %d / %d" % [student.experience, student.xp_to_next_level]
+	xp_lbl.add_theme_font_size_override("font_size", 16)
+	xp_lbl.add_theme_color_override("font_color", DIM_TEXT)
+	grid.add_child(xp_lbl)
+
+	var condition_lbl := Label.new()
+	var row_str := "Back Row" if PartyManager.is_in_back_row(student.student_id) else "Front Row"
+	condition_lbl.text = "%s   •   %s" % [StudentData.Status.keys()[student.status], row_str]
+	condition_lbl.add_theme_font_size_override("font_size", 18)
+	condition_lbl.add_theme_color_override("font_color", GOOD_TEXT if student.status == StudentData.Status.ACTIVE else BAD_TEXT)
+	grid.add_child(condition_lbl)
+
+	var effects_lbl := Label.new()
+	effects_lbl.text = "Status: %s" % ", ".join(student.status_effects)
+	effects_lbl.add_theme_font_size_override("font_size", 18)
+	effects_lbl.add_theme_color_override("font_color", DIM_TEXT)
+	grid.add_child(effects_lbl)
+
+	return grid
+
+func _make_stat_grid(pairs: Array, columns: int) -> GridContainer:
+	var grid := _get_grid(columns)
+
+	for pair in pairs:
+		var lbl := Label.new()
+		lbl.text = "%s  %s" % [pair[0], pair[1]]
+		lbl.add_theme_font_size_override("font_size", 18)
+		grid.add_child(lbl)
+
+	return grid
 
 # ------------------------------------------------------------------ Requests
 func _build_requests() -> void:

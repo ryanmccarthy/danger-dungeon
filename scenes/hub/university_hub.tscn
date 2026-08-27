@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bnbqjxm4ve5kl" path="res://scenes/hub/university_hub.gd" id="1_5b25d"]
 [ext_resource type="AudioStream" uid="uid://n4cy8pwacvc1" path="res://data/assets/music/hub.ogg" id="2_4bkps"]
+[ext_resource type="Texture2D" uid="uid://b5hjb5dxgv8wo" path="res://data/assets/backgrounds/hub.png" id="3_hubBg"]
 
 [node name="UniversityHub" type="Control" unique_id=1142938538]
 layout_mode = 3
@@ -12,14 +13,17 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5b25d")
 
-[node name="Background" type="ColorRect" parent="." unique_id=315926601]
+[node name="Background" type="TextureRect" parent="." unique_id=315926601]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.078431375, 0.07058824, 0.101960786, 1)
+texture = ExtResource("3_hubBg")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="MainMargin" type="MarginContainer" parent="." unique_id=1756087279]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/margin_left = 32
@@ -36,18 +40,20 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.8784314, 0.75686276, 0.2901961, 1)
 theme_override_font_sizes/font_size = 28
 text = "University of Fog Ridge — Home Base"
+horizontal_alignment = 2
 
 [node name="HUDLabel" type="Label" parent="MainMargin/MainVBox" unique_id=701131592]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7882353, 0.76862746, 0.84705883, 1)
 theme_override_font_sizes/font_size = 16
 text = "Supplies: 50   |   Roster: 26 / 26 alive"
+horizontal_alignment = 2
 
 [node name="FacilityGrid" type="GridContainer" parent="MainMargin/MainVBox" unique_id=371273203]
 layout_mode = 2
+size_flags_horizontal = 8
 theme_override_constants/h_separation = 12
 theme_override_constants/v_separation = 12
-columns = 4
 
 [node name="BtnCafeteria" type="Button" parent="MainMargin/MainVBox/FacilityGrid" unique_id=2030761011]
 custom_minimum_size = Vector2(220, 56)
@@ -96,7 +102,6 @@ theme_override_colors/font_color = Color(0.56078434, 0.83137256, 0.56078434, 1)
 [node name="PopupLayer" type="CanvasLayer" parent="." unique_id=1245266952]
 
 [node name="PopupRoot" type="Control" parent="PopupLayer" unique_id=686020838]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

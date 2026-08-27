@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://bvkaumikcr7of"]
 
 [ext_resource type="Script" uid="uid://ca3ey3jh2stpc" path="res://scenes/battle/battle_scene.gd" id="1_3hov6"]
-[ext_resource type="AudioStream" uid="uid://1yau26b4fj5m" path="res://data/assets/music/battle.ogg" id="2_6iigb"]
+[ext_resource type="AudioStream" path="res://data/assets/music/battle.ogg" id="2_6iigb"]
+[ext_resource type="Texture2D" path="res://data/assets/backgrounds/forest_battle.png" id="3_forestBg"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_mhx8t"]
 
@@ -14,11 +15,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3hov6")
 
-[node name="Background" type="ColorRect" parent="." unique_id=1762228323]
+[node name="Background" type="TextureRect" parent="." unique_id=1762228323]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.101960786, 0.05882353, 0.07058824, 1)
+mouse_filter = 2
+texture = ExtResource("3_forestBg")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="MainMargin" type="MarginContainer" parent="." unique_id=447556169]
 layout_mode = 0

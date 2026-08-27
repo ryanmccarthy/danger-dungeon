@@ -6,9 +6,11 @@
 script = ExtResource("1_wj0yc")
 item_id = &"item_spirit_cupcake"
 display_name = "Spirit Cupcake"
-description = "A cafeteria creation baked from questionable ingredients. Temporarily boosts attack."
+description = "A cafeteria creation baked from questionable ingredients. Fills your hunger at the cost of sanity."
 sell_price = 8
 stack_size = 10
-use_effect = 4
-use_value = 5.0
+use_effect = 3
+use_value = 10.0
 icon_color = Color(1, 0.7137255, 0.8509804, 1)
+bonus_effect = 10
+bonus_value = 5.0
