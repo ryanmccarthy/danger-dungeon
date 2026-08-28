@@ -13,7 +13,6 @@
 
 - Split hub areas into individual scenes
 - Add other dungeons
-- Add other quests
 - Add a boss
 
 ## Possible but minor-ish undertaking ##
@@ -26,3 +25,4 @@
 - Add intro
 - Add dialogue
 - Rework hunger system
+- Add in-dungeon events and secrets

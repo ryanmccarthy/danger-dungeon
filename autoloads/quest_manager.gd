@@ -33,6 +33,12 @@ func _complete_quest(id: StringName, quest: QuestData) -> void:
 	for item in quest.reward_items:
 		InventoryManager.add_item(item.id)
 	EventBus.quest_completed.emit(id)
+	_start_followup_quests(id)
+
+func _start_followup_quests(completed_id: StringName) -> void:
+	for quest in ContentDatabase.get_all_quests():
+		if quest.prerequisite_quest_id == completed_id:
+			start_quest(quest.quest_id)
 
 func is_quest_complete(id: StringName) -> bool:
 	return id in completed_quest_ids

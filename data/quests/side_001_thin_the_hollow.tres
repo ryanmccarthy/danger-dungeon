@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="QuestData" format=3]
+
+[ext_resource type="Script" uid="uid://xbujovrb718e" path="res://data/schemas/quest_data.gd" id="1_qd"]
+
+[resource]
+script = ExtResource("1_qd")
+quest_id = &"side_001_thin_the_hollow"
+display_name = "Thin the Hollow"
+description = "The fog wisps were only the outer edge of it. Something that used to be a student is shambling the halls now — put four of them down before they figure out how to open doors."
+quest_type = 1
+objective_type = 0
+objective_target_id = &"hollow_student"
+objective_count = 4
+reward_supplies = 25
+prerequisite_quest_id = &"main_001_first_contact"
