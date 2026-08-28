@@ -6,9 +6,8 @@
 - Finish adding hub area backgrounds
 - Adjust character stats
   - HP/MP need to be more reasonable
-  - Stats need to be adjusted to
+  - Stats need to be adjusted to match their class theme (8 is average; min 2, max 14)
 - Make enemies tougher
-- Add multi-enemy encounters
 
 ## Minor priority ##
 
@@ -16,10 +15,14 @@
 - Add other dungeons
 - Add other quests
 - Add a boss
-- Remove forest ceiling and replace with skybox
+
+## Possible but minor-ish undertaking ##
+
+- Add sound effects
 
 ## Possible but major undertaking ##
 
+- Add animations or visual effects to attacks (enemy/player)
 - Add intro
 - Add dialogue
 - Rework hunger system

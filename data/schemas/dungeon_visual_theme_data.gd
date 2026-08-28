@@ -10,3 +10,4 @@ extends Resource
 @export var ceiling_material: Material
 @export var exit_marker_color: Color = Color.YELLOW
 @export var tile_size: float = 4.0
+@export var has_ceiling: bool = true

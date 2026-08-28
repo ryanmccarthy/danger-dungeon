@@ -134,21 +134,29 @@ func _turn(new_facing: Vector2i) -> void:
 	_refresh_automap()
 
 func _start_encounter() -> void:
-	var enemy_id := _pick_weighted_enemy()
-	if enemy_id == StringName():
+	var enemy_ids := _pick_weighted_encounter()
+	if enemy_ids.is_empty():
 		return
 
-	GameState.request_battle([enemy_id], {"position": grid_position, "facing": facing})
+	GameState.request_battle(enemy_ids, {"position": grid_position, "facing": facing})
 
-func _pick_weighted_enemy() -> StringName:
-	var total := 0.0
+func _pick_weighted_encounter() -> Array:
+	var enemies = []
+	var total := randi_range(1, area.max_enemy_count) # how many enemies in the fight
+	for i in range(total):
+		enemies.append(_pick_weighted_enemy_id())
+
+	return enemies
+
+func _pick_weighted_enemy_id() -> StringName:
+	var weight_total := 0.0
 	for entry in area.encounter_table:
-		total += float(entry["weight"])
+		weight_total += float(entry["weight"])
 
-	if total <= 0.0:
-		return StringName()
+	if weight_total <= 0.0:
+		return area.encounter_table[-1]["enemy_id"]
 
-	var roll := randf() * total
+	var roll := randf() * weight_total
 	for entry in area.encounter_table:
 		roll -= float(entry["weight"])
 		if roll <= 0.0:

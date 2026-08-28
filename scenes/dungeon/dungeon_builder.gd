@@ -20,7 +20,8 @@ static func build(parent: Node3D, area: AreaData) -> void:
 				_add_wall(parent, world_pos, tile_size, theme)
 			else:
 				_add_floor(parent, world_pos, tile_size, theme)
-				_add_ceiling(parent, world_pos, tile_size, theme)
+				if not theme or theme.has_ceiling:
+					_add_ceiling(parent, world_pos, tile_size, theme)
 				if ch == "R":
 					_add_exit_marker(parent, world_pos, tile_size, theme)
 
