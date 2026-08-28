@@ -1,22 +1,25 @@
-#Left to do#
+# Left to do #
 
-##Major priority##
+## Major priority ##
+
 - Finish adding character portraits
 - Finish adding hub area backgrounds
 - Adjust character stats
   - HP/MP need to be more reasonable
-  - Stats need to be adjusted to 
+  - Stats need to be adjusted to
 - Make enemies tougher
 - Add multi-enemy encounters
 
-##Minor priority##
+## Minor priority ##
+
 - Split hub areas into individual scenes
 - Add other dungeons
 - Add other quests
 - Add a boss
 - Remove forest ceiling and replace with skybox
 
-##Possible but major undertaking##
+## Possible but major undertaking ##
+
 - Add intro
 - Add dialogue
 - Rework hunger system
