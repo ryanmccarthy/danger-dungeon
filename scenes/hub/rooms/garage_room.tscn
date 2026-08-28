@@ -1,0 +1,71 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/hub/rooms/garage_room.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b5hjb5dxgv8wo" path="res://data/assets/backgrounds/hub.png" id="2_bg"]
+
+[node name="GarageRoom" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="MainMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 24
+
+[node name="MainVBox" type="VBoxContainer" parent="MainMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="TitleLabel" type="Label" parent="MainMargin/MainVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8784314, 0.75686276, 0.2901961, 1)
+theme_override_font_sizes/font_size = 28
+text = "Garage"
+horizontal_alignment = 2
+
+[node name="HUDLabel" type="Label" parent="MainMargin/MainVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7882353, 0.76862746, 0.84705883, 1)
+theme_override_font_sizes/font_size = 16
+text = "Supplies: 50   |   Roster: 26 / 26 alive"
+horizontal_alignment = 2
+
+[node name="PopupScroll" type="ScrollContainer" parent="MainMargin/MainVBox"]
+custom_minimum_size = Vector2(0, 340)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PopupContent" type="VBoxContainer" parent="MainMargin/MainVBox/PopupScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="StatusLabel" type="Label" parent="MainMargin/MainVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.56078434, 0.83137256, 0.56078434, 1)
+
+[node name="BackButton" type="Button" parent="MainMargin/MainVBox"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Back to Campus"

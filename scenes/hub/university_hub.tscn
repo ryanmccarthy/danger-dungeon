@@ -101,9 +101,9 @@ text = "Depart: Fog-Wreathed Approach"
 layout_mode = 2
 theme_override_colors/font_color = Color(0.56078434, 0.83137256, 0.56078434, 1)
 
-[node name="PopupLayer" type="CanvasLayer" parent="." unique_id=1245266952]
+[node name="RoomLayer" type="CanvasLayer" parent="." unique_id=1245266952]
 
-[node name="PopupRoot" type="Control" parent="PopupLayer" unique_id=686020838]
+[node name="RoomHolder" type="Control" parent="RoomLayer" unique_id=686020838]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -111,57 +111,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
-
-[node name="PopupBackdrop" type="ColorRect" parent="PopupLayer/PopupRoot" unique_id=2066330328]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color(0, 0, 0, 0.6901961)
-
-[node name="PopupPanel" type="Panel" parent="PopupLayer/PopupRoot" unique_id=125177834]
-custom_minimum_size = Vector2(680, 480)
-layout_mode = 0
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="PopupMargin" type="MarginContainer" parent="PopupLayer/PopupRoot/PopupPanel" unique_id=877078473]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 20
-
-[node name="PopupVBox" type="VBoxContainer" parent="PopupLayer/PopupRoot/PopupPanel/PopupMargin" unique_id=854130189]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="PopupTitle" type="Label" parent="PopupLayer/PopupRoot/PopupPanel/PopupMargin/PopupVBox" unique_id=294668692]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.8784314, 0.75686276, 0.2901961, 1)
-theme_override_font_sizes/font_size = 22
-text = "Facility"
-
-[node name="PopupScroll" type="ScrollContainer" parent="PopupLayer/PopupRoot/PopupPanel/PopupMargin/PopupVBox" unique_id=1178287296]
-custom_minimum_size = Vector2(0, 320)
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="PopupContent" type="VBoxContainer" parent="PopupLayer/PopupRoot/PopupPanel/PopupMargin/PopupVBox/PopupScroll" unique_id=866754275]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 6
-
-[node name="PopupCloseButton" type="Button" parent="PopupLayer/PopupRoot/PopupPanel/PopupMargin/PopupVBox" unique_id=2074098871]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-text = "Close"
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1830748198]
 process_mode = 3

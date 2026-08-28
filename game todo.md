@@ -4,14 +4,9 @@
 
 - Finish adding character portraits
 - Finish adding hub area backgrounds
-- Adjust character stats
-  - HP/MP need to be more reasonable
-  - Stats need to be adjusted to match their class theme (8 is average; min 2, max 14)
-- Make enemies tougher
 
 ## Minor priority ##
 
-- Split hub areas into individual scenes
 - Add other dungeons
 - Add a boss
 
