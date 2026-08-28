@@ -30,4 +30,6 @@ signal inventory_changed(item_id: StringName, new_count: int)
 
 signal upgrade_unlocked(upgrade_id: StringName)
 
+signal equipment_changed(student_id: StringName)
+
 signal dungeon_tile_moved(coord: Vector2i, facing: Vector2i)

@@ -13,7 +13,11 @@ func tick_step(active_party_ids: Array) -> void:
 			continue
 
 		if s.current_hunger > 0.0:
-			reduce_hunger(id, hunger_depletion_per_tile)
+			# Kept fractional: at the default 1-per-tile drain, rounding to an
+			# int would swallow anything under a 50% reduction entirely.
+			var reduction: float = clamp(
+					EquipmentManager.get_passive_value(id, EquipmentData.PassiveEffect.REDUCED_HUNGER_DECAY), 0.0, 1.0)
+			reduce_hunger(id, hunger_depletion_per_tile * (1.0 - reduction))
 		else:
 			PartyManager.apply_damage(id, dot_damage_per_tile, true)
 
@@ -25,7 +29,7 @@ func restore_hunger(id: StringName, amount: int) -> void:
 	s.current_hunger = min(s.max_hunger, s.current_hunger + amount)
 	EventBus.hunger_changed.emit(id, s.current_hunger)
 
-func reduce_hunger(id: StringName, amount: int) -> void:
+func reduce_hunger(id: StringName, amount: float) -> void:
 	var s: StudentData = PartyManager.get_student(id)
 	if s == null:
 		return

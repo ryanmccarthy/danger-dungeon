@@ -15,6 +15,7 @@ func save_game(slot: int = 0) -> bool:
 		"back_row": PartyManager.back_row_ids,
 		"completed_quests": QuestManager.completed_quest_ids,
 		"unlocked_upgrades": UpgradeManager.unlocked_upgrade_ids,
+		"equipment": EquipmentManager.loadouts,
 		"students": {},
 	}
 	for s in PartyManager.roster:
@@ -43,6 +44,18 @@ func load_game(slot: int = 0) -> bool:
 	PartyManager.back_row_ids.assign(data.get("back_row", []))
 	QuestManager.completed_quest_ids.assign(data.get("completed_quests", []))
 	UpgradeManager.unlocked_upgrade_ids.assign(data.get("unlocked_upgrades", []))
+	# Unlike the Array[StringName] fields above (which Godot converts on
+	# assign), Dictionary keys/values come back from JSON as plain Strings —
+	# convert explicitly so EquipmentManager's &"" comparisons keep working.
+	EquipmentManager.loadouts.clear()
+	for id in data.get("equipment", {}).keys():
+		var slots: Dictionary = data["equipment"][id]
+		EquipmentManager.loadouts[StringName(id)] = {
+			"weapon": StringName(slots.get("weapon", "")),
+			"armor": StringName(slots.get("armor", "")),
+			"accessory_1": StringName(slots.get("accessory_1", "")),
+			"accessory_2": StringName(slots.get("accessory_2", "")),
+		}
 	for id in data.get("students", {}).keys():
 		var s: StudentData = PartyManager.get_student(id)
 		if s == null:

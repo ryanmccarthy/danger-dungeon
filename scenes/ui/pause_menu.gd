@@ -20,6 +20,11 @@ const ROW_BORDER := Color(0.32, 0.29, 0.31, 1)
 
 const SAVE_SLOT_COUNT := 3
 
+const SLOT_LABELS := {
+	"weapon": "Weapon", "armor": "Armor",
+	"accessory_1": "Accessory 1", "accessory_2": "Accessory 2",
+}
+
 @onready var _root: Control = $Root
 @onready var _main_panel: Panel = $Root/MainPanel
 @onready var _party_grid: GridContainer = $Root/MainPanel/MainMargin/MainVBox/PartyGrid
@@ -125,7 +130,8 @@ func _make_party_card(s: StudentData) -> Control:
 	info.add_child(class_lbl)
 
 	var stat_lbl := Label.new()
-	stat_lbl.text = "HP %d/%d   MP %d/%d" % [s.current_hp, s.max_hp, s.current_mp, s.max_mp]
+	stat_lbl.text = "HP %d/%d   MP %d/%d" % [s.current_hp, PartyManager.get_effective_max_hp(s.student_id),
+											s.current_mp, PartyManager.get_effective_max_mp(s.student_id)]
 	stat_lbl.add_theme_font_size_override("font_size", 20)
 	info.add_child(stat_lbl)
 
@@ -166,7 +172,7 @@ func _open_sub(kind: String) -> void:
 			_build_inventory()
 		"equipment":
 			_sub_title.text = "Equipment"
-			_build_stub("Equipment loadouts aren't in yet — coming in a future update.")
+			_build_equipment()
 		"status":
 			_sub_title.text = "Status"
 			_build_status()
@@ -222,12 +228,18 @@ func _build_inventory() -> void:
 		if count <= 0:
 			continue
 
-		var item: ItemData = ContentDatabase.get_item(id)
-		if item == null:
+		# An owned id is either a consumable/ingredient or a piece of gear —
+		# both live in the same flat InventoryManager.items stacks, and each
+		# gets its own action (Use vs Equip).
+		var entry := ContentDatabase.get_inventory_item(id)
+		if entry == null:
 			continue
 
 		any = true
-		list.add_child(_make_inventory_row(item, count))
+		if entry is EquipmentData:
+			list.add_child(_make_equipment_inventory_row(entry, count))
+		else:
+			list.add_child(_make_inventory_row(entry, count))
 
 	if not any:
 		var lbl := Label.new()
@@ -315,6 +327,311 @@ func _use_item_on(item: ItemData, target: StudentData) -> void:
 	if item.use_item(target): # only need to update if it was used
 		_build_inventory()
 
+# Gear counterpart to _make_inventory_row: "Equip" instead of "Use", routing
+# through a roster picker rather than a use-target picker.
+func _make_equipment_inventory_row(eq: EquipmentData, count: int) -> Control:
+	var row := PanelContainer.new()
+	row.add_theme_stylebox_override("panel", _row_style())
+
+	var hbox := HBoxContainer.new()
+	hbox.add_theme_constant_override("separation", 12)
+	row.add_child(hbox)
+
+	var box := VBoxContainer.new()
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hbox.add_child(box)
+
+	var head_lbl := Label.new()
+	head_lbl.text = "%s x%d   %s" % [eq.display_name, count, _equipment_summary(eq)]
+	head_lbl.add_theme_font_size_override("font_size", 20)
+	box.add_child(head_lbl)
+
+	if eq.description != "":
+		box.add_child(_make_dim_label(eq.description))
+
+	var equip_btn := Button.new()
+	equip_btn.text = "Equip"
+	equip_btn.custom_minimum_size = Vector2(100, 44)
+	equip_btn.add_theme_font_size_override("font_size", 18)
+	equip_btn.pressed.connect(func(): _show_equip_student_select(eq))
+	hbox.add_child(equip_btn)
+
+	return row
+
+func _show_equip_student_select(eq: EquipmentData) -> void:
+	for c in _sub_body.get_children():
+		c.queue_free()
+
+	var back := Button.new()
+	back.text = "< Back"
+	back.pressed.connect(_build_inventory)
+	_sub_body.add_child(back)
+
+	var hdr := Label.new()
+	hdr.text = "Equip %s on:" % eq.display_name
+	hdr.add_theme_font_size_override("font_size", 22)
+	hdr.add_theme_color_override("font_color", GOLD)
+	_sub_body.add_child(hdr)
+
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_sub_body.add_child(scroll)
+
+	var list := VBoxContainer.new()
+	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	list.add_theme_constant_override("separation", 6)
+	scroll.add_child(list)
+
+	var roster := PartyManager.get_usable_roster()
+	if roster.is_empty():
+		list.add_child(_make_dim_label("No one to equip this on."))
+		return
+
+	for s in roster:
+		var btn := Button.new()
+		btn.text = s.display_name
+		btn.add_theme_font_size_override("font_size", 18)
+		btn.pressed.connect(func(): _pick_equip_slot(eq, s))
+		list.add_child(btn)
+
+# Weapons and armor have exactly one home; accessories need the player to
+# say which of the two interchangeable slots to fill.
+func _pick_equip_slot(eq: EquipmentData, s: StudentData) -> void:
+	var slot_key := eq.default_slot_key()
+	if slot_key != "":
+		EquipmentManager.equip(s.student_id, eq.id, slot_key)
+		_build_inventory()
+		return
+
+	for c in _sub_body.get_children():
+		c.queue_free()
+
+	var back := Button.new()
+	back.text = "< Back"
+	back.pressed.connect(func(): _show_equip_student_select(eq))
+	_sub_body.add_child(back)
+
+	var hdr := Label.new()
+	hdr.text = "Equip %s on %s in:" % [eq.display_name, s.display_name]
+	hdr.add_theme_font_size_override("font_size", 22)
+	hdr.add_theme_color_override("font_color", GOLD)
+	_sub_body.add_child(hdr)
+
+	for slot in ["accessory_1", "accessory_2"]:
+		var worn := EquipmentManager.get_equipped(s.student_id, slot)
+		var btn := Button.new()
+		btn.text = "%s — %s" % [SLOT_LABELS[slot], worn.display_name if worn else "(empty)"]
+		btn.add_theme_font_size_override("font_size", 18)
+		btn.pressed.connect(func():
+			EquipmentManager.equip(s.student_id, eq.id, slot)
+			_build_inventory())
+		_sub_body.add_child(btn)
+
+# ----------------------------------------------------------------- Equipment
+# Two columns: roster list (left) | the picked student's four slots plus their
+# combined bonuses (right). Same skeleton as the Status tab below, minus the
+# portrait column. `focus_id` re-opens on a specific student after an
+# equip/unequip so the screen doesn't snap back to the first roster member.
+func _build_equipment(focus_id: StringName = &"") -> void:
+	for c in _sub_body.get_children():
+		c.queue_free()
+
+	var hbox := HBoxContainer.new()
+	hbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hbox.add_theme_constant_override("separation", 20)
+	_sub_body.add_child(hbox)
+
+	var left_scroll := ScrollContainer.new()
+	left_scroll.custom_minimum_size = Vector2(220, 0)
+	left_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hbox.add_child(left_scroll)
+
+	var left_list := VBoxContainer.new()
+	left_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	left_list.add_theme_constant_override("separation", 6)
+	left_scroll.add_child(left_list)
+
+	var detail_scroll := ScrollContainer.new()
+	detail_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	detail_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	detail_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hbox.add_child(detail_scroll)
+
+	var detail := VBoxContainer.new()
+	detail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	detail.add_theme_constant_override("separation", 6)
+	detail_scroll.add_child(detail)
+
+	var roster := PartyManager.get_usable_roster()
+	if roster.is_empty():
+		detail.add_child(_make_dim_label("No party members available."))
+		return
+
+	var focus: StudentData = roster[0]
+	for s in roster:
+		if s.student_id == focus_id:
+			focus = s
+		var btn := Button.new()
+		btn.text = s.display_name
+		btn.add_theme_font_size_override("font_size", 18)
+		btn.pressed.connect(func(): _fill_equipment_detail(detail, s))
+		left_list.add_child(btn)
+
+	_fill_equipment_detail(detail, focus)
+
+func _fill_equipment_detail(detail: VBoxContainer, s: StudentData) -> void:
+	for c in detail.get_children():
+		c.queue_free()
+
+	var name_lbl := Label.new()
+	name_lbl.text = s.display_name
+	name_lbl.add_theme_font_size_override("font_size", 30)
+	name_lbl.add_theme_color_override("font_color", GOLD)
+	detail.add_child(name_lbl)
+
+	_add_section_header(detail, "Loadout")
+	for slot_key in EquipmentManager.SLOT_KEYS:
+		detail.add_child(_make_equipment_slot_row(s, slot_key))
+
+	_add_section_header(detail, "Equipment Bonuses")
+	var pairs: Array = []
+	for stat in ["atk", "def", "mag", "res", "spd", "luck", "max_hp", "max_mp"]:
+		var amount := EquipmentManager.get_stat_bonus(s.student_id, stat)
+		pairs.append([stat.to_upper(), _signed_str(amount)])
+	detail.add_child(_make_stat_grid(pairs, 4))
+
+	var passives := _passive_summary(s.student_id)
+	if passives != "":
+		detail.add_child(_make_dim_label(passives))
+
+# One row per fixed loadout slot: what's worn (or "(empty)") plus the single
+# action that applies — Unequip when occupied, Equip when not.
+func _make_equipment_slot_row(s: StudentData, slot_key: String) -> Control:
+	var row := PanelContainer.new()
+	row.add_theme_stylebox_override("panel", _row_style())
+
+	var hbox := HBoxContainer.new()
+	hbox.add_theme_constant_override("separation", 12)
+	row.add_child(hbox)
+
+	var box := VBoxContainer.new()
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hbox.add_child(box)
+
+	var eq := EquipmentManager.get_equipped(s.student_id, slot_key)
+
+	var head_lbl := Label.new()
+	head_lbl.text = "%s: %s" % [SLOT_LABELS[slot_key], eq.display_name if eq else "(empty)"]
+	head_lbl.add_theme_font_size_override("font_size", 20)
+	if eq == null:
+		head_lbl.add_theme_color_override("font_color", DIM_TEXT)
+	box.add_child(head_lbl)
+
+	if eq != null and eq.description != "":
+		box.add_child(_make_dim_label(eq.description))
+
+	var btn := Button.new()
+	btn.custom_minimum_size = Vector2(120, 44)
+	btn.add_theme_font_size_override("font_size", 18)
+	if eq != null:
+		btn.text = "Unequip"
+		btn.pressed.connect(func():
+			EquipmentManager.unequip(s.student_id, slot_key)
+			_build_equipment(s.student_id))
+	else:
+		btn.text = "Equip"
+		btn.pressed.connect(func(): _show_equip_item_select(s, slot_key))
+	hbox.add_child(btn)
+
+	return row
+
+# Shown when "Equip" is pressed on an empty slot — lists owned equipment
+# whose own Slot enum fits this loadout key, then equips and returns to the
+# refreshed loadout view.
+func _show_equip_item_select(s: StudentData, slot_key: String) -> void:
+	for c in _sub_body.get_children():
+		c.queue_free()
+
+	var back := Button.new()
+	back.text = "< Back"
+	back.pressed.connect(func(): _build_equipment(s.student_id))
+	_sub_body.add_child(back)
+
+	var hdr := Label.new()
+	hdr.text = "%s — %s:" % [s.display_name, SLOT_LABELS[slot_key]]
+	hdr.add_theme_font_size_override("font_size", 22)
+	hdr.add_theme_color_override("font_color", GOLD)
+	_sub_body.add_child(hdr)
+
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_sub_body.add_child(scroll)
+
+	var list := VBoxContainer.new()
+	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	list.add_theme_constant_override("separation", 6)
+	scroll.add_child(list)
+
+	var ids: Array = InventoryManager.items.keys()
+	ids.sort()
+	var any := false
+	for id in ids:
+		if InventoryManager.items.get(id, 0) <= 0:
+			continue
+
+		var eq: EquipmentData = ContentDatabase.get_equipment(id)
+		if eq == null or not eq.fits_slot_key(slot_key):
+			continue
+
+		any = true
+		var btn := Button.new()
+		btn.text = "%s   %s" % [eq.display_name, _equipment_summary(eq)]
+		btn.add_theme_font_size_override("font_size", 18)
+		btn.pressed.connect(func():
+			EquipmentManager.equip(s.student_id, eq.id, slot_key)
+			_build_equipment(s.student_id))
+		list.add_child(btn)
+
+	if not any:
+		list.add_child(_make_dim_label("Nothing in the bag fits this slot."))
+
+# "ATK +4  DEF +2" — only the stats a piece actually modifies, so slot rows
+# and pick lists stay readable.
+func _equipment_summary(eq: EquipmentData) -> String:
+	var parts: Array[String] = []
+	for stat in ["atk", "def", "mag", "res", "spd", "luck", "max_hp", "max_mp"]:
+		var amount := eq.get_stat_bonus(stat)
+		if amount != 0.0:
+			parts.append("%s %s" % [stat.to_upper(), _signed_str(amount)])
+
+	if eq.passive_effect != EquipmentData.PassiveEffect.NONE:
+		parts.append(_passive_label(eq))
+
+	return "  ".join(parts)
+
+func _passive_summary(student_id: StringName) -> String:
+	var parts: Array[String] = []
+	for slot_key in EquipmentManager.SLOT_KEYS:
+		var eq := EquipmentManager.get_equipped(student_id, slot_key)
+		if eq != null and eq.passive_effect != EquipmentData.PassiveEffect.NONE:
+			parts.append(_passive_label(eq))
+
+	return "  •  ".join(parts)
+
+func _passive_label(eq: EquipmentData) -> String:
+	match eq.passive_effect:
+		EquipmentData.PassiveEffect.LIFESTEAL:
+			return "Lifesteal %d%%" % int(round(eq.passive_value * 100.0))
+		EquipmentData.PassiveEffect.REDUCED_HUNGER_DECAY:
+			return "Hunger decay -%d%%" % int(round(eq.passive_value * 100.0))
+	return ""
+
+func _signed_str(amount: float) -> String:
+	return "+%d" % int(amount) if amount >= 0.0 else str(int(amount))
+
 # -------------------------------------------------------------------- Status
 # Three columns: roster list (left) | stats broken into sections (center) |
 # portrait scaled to fill the available height (right).
@@ -397,21 +714,33 @@ func _fill_status_detail(detail: VBoxContainer, portrait_panel: PanelContainer, 
 	# --- Middle: stats — resource pools, then core attributes ---
 	_add_section_header(detail, "Vitals")
 	detail.add_child(_make_stat_grid([
-		["HP", "%d / %d" % [s.current_hp, s.max_hp]],
-		["MP", "%d / %d" % [s.current_mp, s.max_mp]],
+		["HP", "%d / %d" % [s.current_hp, PartyManager.get_effective_max_hp(s.student_id)]],
+		["MP", "%d / %d" % [s.current_mp, PartyManager.get_effective_max_mp(s.student_id)]],
 		["SAN", "%d / %d" % [s.current_san, s.max_san]],
 		["Hunger", "%d / %d" % [int(s.current_hunger), int(s.max_hunger)]],
 	], 2))
 
 	_add_section_header(detail, "Attributes")
 	detail.add_child(_make_stat_grid([
-		["ATK", str(s.atk)], ["DEF", str(s.def)], ["MAG", str(s.mag)],
-		["RES", str(s.res)], ["SPD", str(s.spd)], ["LUCK", str(s.luck)],
+		["ATK", _attr_str(s, "atk", s.atk)], ["DEF", _attr_str(s, "def", s.def)],
+		["MAG", _attr_str(s, "mag", s.mag)], ["RES", _attr_str(s, "res", s.res)],
+		["SPD", _attr_str(s, "spd", s.spd)], ["LUCK", _attr_str(s, "luck", s.luck)],
 	], 3))
 
-	# --- Bottom: equipment — no gear system exists yet, mirror the stub tab ---
+	# --- Bottom: equipment — read-only mirror of the Equipment tab's loadout ---
 	_add_section_header(detail, "Equipment")
-	detail.add_child(_make_dim_label("No equipment loadouts yet — coming in a future update."))
+	for slot_key in EquipmentManager.SLOT_KEYS:
+		var eq := EquipmentManager.get_equipped(s.student_id, slot_key)
+		detail.add_child(_make_dim_label("%s: %s" % [SLOT_LABELS[slot_key], eq.display_name if eq else "(empty)"]))
+
+# Attributes are shown as the effective total (what combat actually uses),
+# with the equipment share broken out so gear's contribution stays visible.
+func _attr_str(s: StudentData, stat: String, base: int) -> String:
+	var bonus := EquipmentManager.get_stat_bonus(s.student_id, stat)
+	if bonus == 0.0:
+		return str(base)
+
+	return "%d (%s)" % [base + int(bonus), _signed_str(bonus)]
 
 func _add_section_header(detail: VBoxContainer, text: String) -> void:
 	detail.add_child(HSeparator.new())

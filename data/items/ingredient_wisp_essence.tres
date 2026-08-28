@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_ebcm3")
-item_id = &"ingredient_wisp_essence"
+id = &"ingredient_wisp_essence"
 display_name = "Wisp Essence"
 description = "A faintly glowing residue left behind by a fog wisp. Cool to the touch."
 item_category = 0

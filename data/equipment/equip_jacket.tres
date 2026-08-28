@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EquipmentData" format=3]
+
+[ext_resource type="Script" path="res://data/schemas/equipment_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"equip_jacket"
+display_name = "Jacket"
+description = "Worn thin but still warm. The padding helps a little."
+effect_summary = "DEF+3; HP+10"
+slot = 1
+in_shop = true
+buy_price = 50
+sell_price = 18
+icon_color = Color(0.6039216, 0.32941177, 0.32941177, 1)
+bonus_def = 3
+bonus_max_hp = 10

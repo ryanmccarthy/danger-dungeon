@@ -1,6 +1,6 @@
 @tool
 class_name ItemData
-extends Resource
+extends InventoryItemData
 
 enum Category { INGREDIENT, CONSUMABLE, KEY_ITEM }
 enum UseEffect {
@@ -9,16 +9,10 @@ enum UseEffect {
 	REVIVE,
 }
 
-@export var item_id: StringName
-@export var display_name: String
-@export_multiline var description: String = ""
 @export var item_category: Category = Category.CONSUMABLE
-@export var buy_price: int = 0
-@export var sell_price: int = 0
 @export var stack_size: int = 99
 @export var use_effect: UseEffect = UseEffect.NONE
 @export var use_value: float = 0.0
-@export var icon_color: Color = Color.WHITE
 
 @export var bonus_effect: UseEffect = UseEffect.NONE
 @export var bonus_value: float = 0.0
@@ -27,7 +21,7 @@ enum UseEffect {
 ## one copy from InventoryManager. Returns false (and leaves the item
 ## unconsumed) if there wasn't one to use or isn't applicable.
 func use_item(target: CharacterData) -> bool:
-	if InventoryManager.get_count(item_id) < 1:
+	if InventoryManager.get_count(id) < 1:
 		return false
 
 	match use_effect:
@@ -48,13 +42,14 @@ func use_item(target: CharacterData) -> bool:
 			HungerSystem.restore_hunger(target.student_id, int(use_value))
 
 		ItemData.UseEffect.REVIVE:
-			if not target.is_student or target.is:
+			if not target.is_student or not target.is_downed:
 				return false
-			target.revive_student(target.student_id, int(use_value))
+			if not PartyManager.revive_student(target.student_id, int(use_value)):
+				return false
 
 	_apply_bonus_effect(target)
 
-	if not InventoryManager.remove_item(item_id):
+	if not InventoryManager.remove_item(id):
 		return false
 
 	return true

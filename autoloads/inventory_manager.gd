@@ -24,11 +24,7 @@ func add_item(id: StringName, count: int = 1) -> void:
 	EventBus.inventory_changed.emit(id, items[id])
 
 func get_count(id: StringName) -> int:
-	var have: int = items.get(id, 0)
-	if not have:
-		return -1
-
-	return have
+	return items.get(id, 0)
 
 func remove_item(id: StringName, count: int = 1) -> bool:
 	var have = get_count(id)
@@ -38,13 +34,26 @@ func remove_item(id: StringName, count: int = 1) -> bool:
 	items[id] = have - count
 	if items[id] <= 0:
 		items.erase(id)
+
 	EventBus.inventory_changed.emit(id, items.get(id, 0))
 	return true
 
 func has_item(id: StringName, count: int = 1) -> bool:
 	return items.get(id, 0) >= count
 
+func get_sellable() -> Array[InventoryItemData]:
+	# Stacks hold both consumables and gear, so resolve through the union
+	# lookup — get_item() returns null for an equipment id.
+	var sellable: Array[InventoryItemData] = []
+	for i in items.keys():
+		var entry := ContentDatabase.get_inventory_item(i)
+		if entry != null and entry.sell_price > 0:
+			sellable.append(entry)
+
+	return sellable
+
 func get_travel_cost(area: AreaData) -> int:
+	"""Supply cost to travel to the given area"""
 	if area == null:
 		return 0
 

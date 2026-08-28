@@ -192,8 +192,8 @@ func _show_roster_list() -> void:
 		row.add_child(name_lbl)
 
 		var stat_lbl := Label.new()
-		stat_lbl.text = "HP %d/%d  MP %d/%d%s" % [student.current_hp, student.max_hp,
-												student.current_mp, student.max_mp, _buff_tag_string(id)]
+		stat_lbl.text = "HP %d/%d  MP %d/%d%s" % [student.current_hp, PartyManager.get_effective_max_hp(id),
+												student.current_mp, PartyManager.get_effective_max_mp(id), _buff_tag_string(id)]
 		stat_lbl.add_theme_font_size_override("font_size", 13)
 		row.add_child(stat_lbl)
 
@@ -293,8 +293,11 @@ func _roll_rewards(live_party: Array) -> Dictionary:
 			if randf() <= float(drop["chance"]):
 				var qty := randi_range(int(drop["min_qty"]), int(drop["max_qty"]))
 				InventoryManager.add_item(drop["item_id"], qty)
-				var item := ContentDatabase.get_item(drop["item_id"])
-				log_parts.append("%s x%d" % [item.display_name, qty])
+				# Drop tables are loose Dictionaries, so the id can name gear
+				# as readily as a consumable.
+				var item := ContentDatabase.get_inventory_item(drop["item_id"])
+				if item != null:
+					log_parts.append("%s x%d" % [item.display_name, qty])
 		total_xp += e_data.xp_drop
 
 	for id in live_party:
@@ -322,7 +325,7 @@ func _get_spd(ref) -> int:
 		var s := PartyManager.get_student(ref)
 		base = s.spd + int(s.student_class.spd_per_level * (s.level - 1))
 
-	return max(0, int(round(base + _get_buff_total(ref, "spd"))))
+	return max(0, int(round(base + _get_buff_total(ref, "spd") + _get_equip_total(ref, "spd"))))
 
 func _get_stat(ref, stat: String) -> int:
 	var base: int = 0
@@ -341,7 +344,14 @@ func _get_stat(ref, stat: String) -> int:
 			"mag": base = s.mag
 			"res": base = s.res
 
-	return max(0, int(round(base + _get_buff_total(ref, stat))))
+	return max(0, int(round(base + _get_buff_total(ref, stat) + _get_equip_total(ref, stat))))
+
+func _get_equip_total(ref, stat: String) -> float:
+	# Enemies never carry equipment.
+	if _is_enemy_ref(ref):
+		return 0.0
+
+	return EquipmentManager.get_stat_bonus(ref, stat)
 
 # ------------------------------------------------------------------ buffs
 func _get_buff_total(ref, stat: String) -> float:
@@ -408,7 +418,16 @@ func _deal_damage(attacker, defender, power: float, school: int) -> int:
 		dmg = int(dmg * 0.6)
 
 	_apply_damage(defender, dmg)
+	_apply_lifesteal(attacker, dmg)
 	return dmg
+
+func _apply_lifesteal(attacker, damage_dealt: int) -> void:
+	if _is_enemy_ref(attacker) or damage_dealt <= 0:
+		return
+
+	var frac := EquipmentManager.get_passive_value(attacker, EquipmentData.PassiveEffect.LIFESTEAL)
+	if frac > 0.0:
+		_apply_heal(attacker, int(round(damage_dealt * frac)))
 
 func _apply_damage(ref, amount: int) -> void:
 	if _is_enemy_ref(ref):

@@ -31,7 +31,7 @@ func _complete_quest(id: StringName, quest: QuestData) -> void:
 	completed_quest_ids.append(id)
 	InventoryManager.add_supplies(quest.reward_supplies)
 	for item in quest.reward_items:
-		InventoryManager.add_item(item.item_id)
+		InventoryManager.add_item(item.id)
 	EventBus.quest_completed.emit(id)
 
 func is_quest_complete(id: StringName) -> bool:

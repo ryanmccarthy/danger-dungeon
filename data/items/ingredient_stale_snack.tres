@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_n35ox")
-item_id = &"ingredient_stale_snack"
+id = &"ingredient_stale_snack"
 display_name = "Stale Snack"
 description = "A vending-machine snack, decades expired but still recognizable. Edible if desperate."
 item_category = 0

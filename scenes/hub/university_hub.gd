@@ -113,8 +113,11 @@ func _build_cafeteria() -> void:
 		var have_all := true
 		var parts: Array[String] = []
 		for entry in recipe.ingredients:
-			var item: ItemData = ContentDatabase.get_item(entry["item_id"])
-			var have: int = InventoryManager.items.get(entry["item_id"], 0)
+			var item := ContentDatabase.get_inventory_item(entry["item_id"])
+			if item == null:
+				continue
+
+			var have: int = InventoryManager.get_count(entry["item_id"])
 			if have < int(entry["count"]):
 				have_all = false
 			parts.append("%s x%d (have %d)" % [item.display_name, entry["count"], have])
@@ -125,7 +128,7 @@ func _cook_recipe(recipe: RecipeData) -> void:
 	for entry in recipe.ingredients:
 		InventoryManager.remove_item(entry["item_id"], int(entry["count"]))
 
-	InventoryManager.add_item(recipe.result_item.item_id)
+	InventoryManager.add_item(recipe.result_item.id)
 	_status_label.text = "Cooked %s." % recipe.result_item.display_name
 	_build_cafeteria_refresh()
 
@@ -202,36 +205,29 @@ func _do_unlock(id: StringName) -> void:
 
 # ------------------------------------------------------------------- Shop
 func _build_shop() -> void:
-	_add_header("Buy supplies-for-goods, sell what you find.")
-
-	for id in [&"item_bandage", &"item_energy_drink", &"item_trail_mix"]:
-		var item: ItemData = ContentDatabase.get_item(id)
-		if item == null:
-			continue
-
-		_add_row("Buy %s — %d supplies" % [item.display_name, item.buy_price], "Buy", func(): _do_buy(id), InventoryManager.supplies >= item.buy_price)
+	_add_header("Buy goods for supplies, sell what you find.")
+	for item in ShopManager.get_shop_inventory():
+		_add_row("Buy %s — %d supplies" % [item.display_name, item.buy_price], "Buy",
+				func(): _do_buy(item.id), InventoryManager.supplies >= item.buy_price)
 
 	_add_header("Sell")
-
-	for id in [&"ingredient_wisp_essence", &"ingredient_stale_snack"]:
-		var item: ItemData = ContentDatabase.get_item(id)
-		var have: int = InventoryManager.items.get(id, 0)
-		if item == null or have <= 0:
-			continue
-
-		_add_row("Sell %s (have %d) — +%d supplies" % [item.display_name, have, item.sell_price], "Sell", func(): _do_sell(id), true)
+	for item in InventoryManager.get_sellable():
+		var have: int = InventoryManager.get_count(item.id)
+		_add_row("Sell %s (have %d) — +%d supplies" % [item.display_name, have, item.sell_price],
+				"Sell", func(): _do_sell(item.id), true)
 
 func _do_buy(id: StringName) -> void:
-	var item := ContentDatabase.get_item(id)
-	if not InventoryManager.spend_supplies(item.buy_price):
+	# The shop stocks consumables and gear alike, so resolve through the union.
+	var item := ContentDatabase.get_inventory_item(id)
+	if item == null or not InventoryManager.spend_supplies(item.buy_price):
 		return
 
 	InventoryManager.add_item(id)
 	_refresh_popup("shop")
 
 func _do_sell(id: StringName) -> void:
-	var item := ContentDatabase.get_item(id)
-	if not InventoryManager.remove_item(id):
+	var item := ContentDatabase.get_inventory_item(id)
+	if item == null or not InventoryManager.remove_item(id):
 		return
 
 	InventoryManager.add_supplies(item.sell_price)

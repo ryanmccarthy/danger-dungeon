@@ -13,6 +13,7 @@ var _areas: Dictionary = {}
 var _quests: Dictionary = {}
 var _recipes: Dictionary = {}
 var _upgrades: Dictionary = {}
+var _equipment: Dictionary = {}
 
 func _ready() -> void:
 	_load_all()
@@ -21,15 +22,22 @@ func _load_all() -> void:
 	_index_dir("res://data/students", _students, "student_id")
 	_index_dir("res://data/classes", _classes, "class_id")
 	_index_dir("res://data/skills", _skills, "skill_id")
-	_index_dir("res://data/items", _items, "item_id")
+	_index_dir("res://data/items", _items, "id")
 	_index_dir("res://data/enemies", _enemies, "enemy_id")
 	_index_dir("res://data/areas", _areas, "area_id")
 	_index_dir("res://data/quests", _quests, "quest_id")
 	_index_dir("res://data/recipes", _recipes, "recipe_id")
 	_index_dir("res://data/upgrades", _upgrades, "upgrade_id")
-	print("[ContentDatabase] students=%d classes=%d skills=%d items=%d enemies=%d areas=%d quests=%d recipes=%d upgrades=%d" % [
+	_index_dir("res://data/equipment", _equipment, "id")
+	# Items and equipment share one flat id namespace (both live in
+	# InventoryManager.items), so a duplicate would silently shadow —
+	# get_inventory_item resolves items first.
+	for dup in _items.keys().filter(func(k): return _equipment.has(k)):
+		push_warning("[ContentDatabase] id '%s' is both an item and equipment" % dup)
+	print("[ContentDatabase] students=%d classes=%d skills=%d items=%d enemies=%d areas=%d quests=%d recipes=%d upgrades=%d equipment=%d" % [
 		_students.size(), _classes.size(), _skills.size(), _items.size(),
-		_enemies.size(), _areas.size(), _quests.size(), _recipes.size(), _upgrades.size()
+		_enemies.size(), _areas.size(), _quests.size(), _recipes.size(), _upgrades.size(),
+		_equipment.size()
 	])
 
 func _index_dir(dir_path: String, target: Dictionary, id_field: String) -> void:
@@ -63,23 +71,95 @@ func get_all_students() -> Array[StudentData]:
 func get_class_data(id: StringName) -> StudentClassData:
 	return _classes.get(id)
 
+func get_all_classes() -> Array[StudentClassData]:
+	var out: Array[StudentClassData] = []
+	for v in _upgrades.values():
+		out.append(v)
+
+	return out
+
 func get_skill(id: StringName) -> SkillData:
 	return _skills.get(id)
+
+func get_all_skills() -> Array[SkillData]:
+	var out: Array[SkillData] = []
+	for v in _skills.values():
+		out.append(v)
+
+	return out
 
 func get_item(id: StringName) -> ItemData:
 	return _items.get(id)
 
+func get_all_items() -> Array[ItemData]:
+	var out: Array[ItemData] = []
+	for v in _items.values():
+		out.append(v)
+	return out
+
 func get_enemy(id: StringName) -> EnemyData:
 	return _enemies.get(id)
+
+func get_all_enemies() -> Array[EnemyData]:
+	var out: Array[EnemyData] = []
+	for v in _enemies.values():
+		out.append(v)
+
+	return out
 
 func get_area(id: StringName) -> AreaData:
 	return _areas.get(id)
 
+func get_all_areas() -> Array[AreaData]:
+	var out: Array[AreaData] = []
+	for v in _areas.values():
+		out.append(v)
+
+	return out
+
 func get_quest(id: StringName) -> QuestData:
 	return _quests.get(id)
+
+func get_all_quests() -> Array[QuestData]:
+	var out: Array[QuestData] = []
+	for v in _quests.values():
+		out.append(v)
+
+	return out
 
 func get_recipe(id: StringName) -> RecipeData:
 	return _recipes.get(id)
 
+func get_all_recipes() -> Array[RecipeData]:
+	var out: Array[RecipeData] = []
+	for v in _recipes.values():
+		out.append(v)
+
+	return out
+
 func get_upgrade(id: StringName) -> UpgradeData:
 	return _upgrades.get(id)
+
+func get_all_upgrades() -> Array[UpgradeData]:
+	var out: Array[UpgradeData] = []
+	for v in _upgrades.values():
+		out.append(v)
+
+	return out
+
+func get_equipment(id: StringName) -> EquipmentData:
+	return _equipment.get(id)
+
+## Resolves any id that can occupy an InventoryManager stack, whichever kind
+## it is. Use this instead of get_item() anywhere the id came from inventory,
+## a shop list, or a drop table — those can all be gear.
+func get_inventory_item(id: StringName) -> InventoryItemData:
+	var item: InventoryItemData = _items.get(id)
+	return item if item != null else _equipment.get(id)
+
+func get_all_equipment() -> Array[EquipmentData]:
+	var out: Array[EquipmentData] = []
+	for v in _equipment.values():
+		out.append(v)
+
+	return out

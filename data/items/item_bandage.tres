@@ -4,12 +4,14 @@
 
 [resource]
 script = ExtResource("1_hmj4s")
-item_id = &"item_bandage"
+id = &"item_bandage"
 display_name = "Bandage"
 description = "Standard first-aid kit bandage. Restores HP."
+effect_summary = "20 HP"
+in_shop = true
 buy_price = 12
 sell_price = 4
 stack_size = 20
 use_effect = 1
-use_value = 30.0
+use_value = 20.0
 icon_color = Color(0.9098039, 0.9098039, 0.9098039, 1)

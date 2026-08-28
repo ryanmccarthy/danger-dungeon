@@ -17,9 +17,9 @@ portrait_color = Color(0.25, 0.28, 0.35, 1.0)
 bio_flavor = "The only one who feels more comfortable in the fog."
 portrait = ExtResource("3_skyler")
 
-atk = 17
-def = 5
+atk = 9
+def = 10
 mag = 4
-res = 6
-spd = 15
-luck = 9
+res = 11
+spd = 10
+luck = 10

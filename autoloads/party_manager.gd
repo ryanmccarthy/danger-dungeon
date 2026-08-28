@@ -111,11 +111,26 @@ func apply_damage(id: StringName, amount: int, is_hunger_dot: bool = false) -> v
 			s.status = StudentData.Status.DOWNED
 			EventBus.student_downed.emit(id)
 
+func get_effective_max_hp(id: StringName) -> int:
+	## Base growth (StudentData.max_hp) plus any equipped max-HP bonuses.
+	## Equipment never mutates the base field, so this is the ceiling every
+	## heal/clamp/HP readout should use.
+	var s := get_student(id)
+	if s == null:
+		return 0
+	return max(1, s.max_hp + int(EquipmentManager.get_stat_bonus(id, "max_hp")))
+
+func get_effective_max_mp(id: StringName) -> int:
+	var s := get_student(id)
+	if s == null:
+		return 0
+	return max(0, s.max_mp + int(EquipmentManager.get_stat_bonus(id, "max_mp")))
+
 func heal_student(id: StringName, amount: int) -> void:
 	var s := get_student(id)
 	if s == null or not s.is_alive():
 		return
-	s.current_hp = min(s.max_hp, s.current_hp + amount)
+	s.current_hp = min(get_effective_max_hp(id), s.current_hp + amount)
 
 func revive_student(id: StringName, hp_amount: int) -> bool:
 	var s := get_student(id)

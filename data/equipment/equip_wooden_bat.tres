@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EquipmentData" format=3]
+
+[ext_resource type="Script" path="res://data/schemas/equipment_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"equip_wooden_bat"
+display_name = "Wooden Bat"
+description = "A scuffed bat from the PE closet. Brittle, but better than bare fists."
+effect_summary = "ATK+4"
+slot = 0
+in_shop = true
+buy_price = 40
+sell_price = 15
+icon_color = Color(0.7568628, 0.6039216, 0.42352942, 1)
+bonus_atk = 4

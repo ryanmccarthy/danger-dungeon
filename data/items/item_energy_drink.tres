@@ -4,9 +4,11 @@
 
 [resource]
 script = ExtResource("1_p25fq")
-item_id = &"item_energy_drink"
+id = &"item_energy_drink"
 display_name = "Energy Drink"
-description = "Deeply unhealthy. Restores MP."
+description = "Deeply unhealthy, but energizing. Restores MP."
+effect_summary = "20 MP"
+in_shop = true
 buy_price = 15
 sell_price = 5
 stack_size = 20

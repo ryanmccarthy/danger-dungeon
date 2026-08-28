@@ -4,9 +4,10 @@
 
 [resource]
 script = ExtResource("1_wj0yc")
-item_id = &"item_spirit_cupcake"
+id = &"item_spirit_cupcake"
 display_name = "Spirit Cupcake"
 description = "A cafeteria creation baked from questionable ingredients. Fills your hunger at the cost of sanity."
+effect_summary = "10 Hunger; -5 SAN"
 sell_price = 8
 stack_size = 10
 use_effect = 3
