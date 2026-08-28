@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_tem7y"]
 [ext_resource type="Resource" path="res://data/classes/class_burnout.tres" id="2_hd0m7"]
-[ext_resource type="Texture2D" path="res://data/assets/portraits/generic.png" id="3_peyton"]
+[ext_resource type="Texture2D" path="res://data/assets/portraits/peyton.png" id="3_peyton"]
 
 [resource]
 script = ExtResource("1_tem7y")
