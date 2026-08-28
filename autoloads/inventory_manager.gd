@@ -14,6 +14,7 @@ func add_supplies(amount: int) -> void:
 func spend_supplies(amount: int) -> bool:
 	if supplies < amount:
 		return false
+
 	supplies -= amount
 	EventBus.supplies_changed.emit(supplies)
 	return true
@@ -22,10 +23,18 @@ func add_item(id: StringName, count: int = 1) -> void:
 	items[id] = items.get(id, 0) + count
 	EventBus.inventory_changed.emit(id, items[id])
 
-func remove_item(id: StringName, count: int = 1) -> bool:
+func get_count(id: StringName) -> int:
 	var have: int = items.get(id, 0)
+	if not have:
+		return -1
+
+	return have
+
+func remove_item(id: StringName, count: int = 1) -> bool:
+	var have = get_count(id)
 	if have < count:
 		return false
+
 	items[id] = have - count
 	if items[id] <= 0:
 		items.erase(id)

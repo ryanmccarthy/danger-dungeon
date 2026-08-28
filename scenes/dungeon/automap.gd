@@ -20,6 +20,7 @@ func set_state(p_area: AreaData, p_visited: Dictionary, p_coord: Vector2i, p_fac
 func _draw() -> void:
 	if area == null:
 		return
+
 	var rows := area.grid_layout
 	for y in rows.size():
 		var row: String = rows[y]
@@ -27,13 +28,16 @@ func _draw() -> void:
 			var coord := Vector2i(x, y)
 			if not visited.has(coord):
 				continue
+
 			var ch := row[x]
 			var color := Color("#2a2733") if ch == "#" else Color("#5c5468")
 			if ch == "R":
 				color = Color("#e0c14a")
 			elif ch == ".":
 				color = Color("#7a4a4a")
+
 			draw_rect(Rect2(x * CELL + 8, y * CELL + 8, CELL - 1, CELL - 1), color)
+
 	if visited.has(player_coord):
 		var center := Vector2(player_coord.x * CELL + 8 + CELL * 0.5, player_coord.y * CELL + 8 + CELL * 0.5)
 		draw_circle(center, CELL * 0.35, Color("#4ac9ff"))

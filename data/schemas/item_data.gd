@@ -27,13 +27,14 @@ enum UseEffect {
 ## one copy from InventoryManager. Returns false (and leaves the item
 ## unconsumed) if there wasn't one to use or isn't applicable.
 func use_item(target: CharacterData) -> bool:
-	if not InventoryManager.remove_item(item_id):
+	if InventoryManager.get_count(item_id) < 1:
 		return false
 
 	match use_effect:
 		ItemData.UseEffect.HEAL_HP:
 			if target.current_hp >= target.max_hp:
 				return false
+
 			target.restore_health(int(use_value))
 
 		ItemData.UseEffect.HEAL_MP:
@@ -52,6 +53,10 @@ func use_item(target: CharacterData) -> bool:
 			target.revive_student(target.student_id, int(use_value))
 
 	_apply_bonus_effect(target)
+
+	if not InventoryManager.remove_item(item_id):
+		return false
+
 	return true
 
 func _apply_bonus_effect(target: CharacterData):
