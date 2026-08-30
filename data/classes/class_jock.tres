@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1_disl1"]
 [ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2_2ahgy"]
-[ext_resource type="Resource" uid="uid://xhc2aj1nk6j1" path="res://data/skills/marcus_shield_wall.tres" id="3_um4ke"]
-[ext_resource type="Resource" uid="uid://be61hca4xbunb" path="res://data/skills/marcus_tackle.tres" id="4_1do44"]
-[ext_resource type="Resource" uid="uid://b1tqbihnenhgr" path="res://data/skills/marcus_taunt.tres" id="5_e5b4e"]
-[ext_resource type="Resource" uid="uid://d4kqh0vb6ih4h" path="res://data/skills/marcus_second_wind.tres" id="6_78uxn"]
+[ext_resource type="Resource" uid="uid://xhc2aj1nk6j1" path="res://data/skills/jock_shield_wall.tres" id="3_um4ke"]
+[ext_resource type="Resource" uid="uid://be61hca4xbunb" path="res://data/skills/jock_tackle.tres" id="4_1do44"]
+[ext_resource type="Resource" uid="uid://b1tqbihnenhgr" path="res://data/skills/jock_taunt.tres" id="5_e5b4e"]
+[ext_resource type="Resource" uid="uid://d4kqh0vb6ih4h" path="res://data/skills/jock_second_wind.tres" id="6_78uxn"]
 
 [resource]
 script = ExtResource("1_disl1")

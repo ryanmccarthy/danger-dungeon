@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_ddxy4")
-skill_id = &"sasha_pom_pom_smack"
+skill_id = &"cheerleader_pom_pom_smack"
 display_name = "Pom-Pom Smack"
 description = "A surprisingly stinging bop with a pair of pom-poms."
 mp_cost = 2

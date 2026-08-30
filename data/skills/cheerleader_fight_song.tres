@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_43rmo")
-skill_id = &"sasha_fight_song"
+skill_id = &"cheerleader_fight_song"
 display_name = "Fight Song"
 description = "Sasha leads a rousing cheer, boosting the whole squad's attack."
 mp_cost = 8

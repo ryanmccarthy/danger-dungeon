@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_jq8y8")
-skill_id = &"chloe_closing_argument"
+skill_id = &"debate_captain_closing_argument"
 display_name = "Closing Argument"
 description = "Chloe delivers a devastating, unanswerable point."
 mp_cost = 10

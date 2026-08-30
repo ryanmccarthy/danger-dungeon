@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_o51xu")
-skill_id = &"chloe_group_study"
+skill_id = &"debate_captain_group_study"
 display_name = "Group Study"
 description = "Chloe organizes a quick recovery session for everyone."
 mp_cost = 12

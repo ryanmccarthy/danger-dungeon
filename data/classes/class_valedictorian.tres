@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1_ma6ux"]
 [ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2_0wm8e"]
-[ext_resource type="Resource" uid="uid://vwbb5i2emdgu" path="res://data/skills/priya_arcane_bolt.tres" id="3_i64uq"]
-[ext_resource type="Resource" uid="uid://bsuocge6akl8i" path="res://data/skills/priya_analyze.tres" id="4_8g5cu"]
-[ext_resource type="Resource" uid="uid://6kh5ocosxdee" path="res://data/skills/priya_overload_zap.tres" id="5_qgcay"]
-[ext_resource type="Resource" uid="uid://u4314ovvpy5d" path="res://data/skills/priya_cold_focus.tres" id="6_sfx0o"]
+[ext_resource type="Resource" uid="uid://vwbb5i2emdgu" path="res://data/skills/valedictorian_arcane_bolt.tres" id="3_i64uq"]
+[ext_resource type="Resource" uid="uid://bsuocge6akl8i" path="res://data/skills/valedictorian_analyze.tres" id="4_8g5cu"]
+[ext_resource type="Resource" uid="uid://6kh5ocosxdee" path="res://data/skills/valedictorian_overload_zap.tres" id="5_qgcay"]
+[ext_resource type="Resource" uid="uid://u4314ovvpy5d" path="res://data/skills/valedictorian_cold_focus.tres" id="6_sfx0o"]
 
 [resource]
 script = ExtResource("1_ma6ux")

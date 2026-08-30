@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1_o0fcc"]
 [ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2_kj2jj"]
-[ext_resource type="Resource" uid="uid://cqg7wappxch0n" path="res://data/skills/sasha_fight_song.tres" id="3_pv2tx"]
-[ext_resource type="Resource" uid="uid://clhimp4tol5t2" path="res://data/skills/sasha_pom_pom_smack.tres" id="4_slo7e"]
-[ext_resource type="Resource" uid="uid://c6y7880citevx" path="res://data/skills/sasha_rally_cry.tres" id="5_3s8kt"]
-[ext_resource type="Resource" uid="uid://b7gcvq51qadvx" path="res://data/skills/sasha_encore.tres" id="6_mtd0p"]
+[ext_resource type="Resource" uid="uid://cqg7wappxch0n" path="res://data/skills/cheerleader_fight_song.tres" id="3_pv2tx"]
+[ext_resource type="Resource" uid="uid://clhimp4tol5t2" path="res://data/skills/cheerleader_pom_pom_smack.tres" id="4_slo7e"]
+[ext_resource type="Resource" uid="uid://c6y7880citevx" path="res://data/skills/cheerleader_rally_cry.tres" id="5_3s8kt"]
+[ext_resource type="Resource" uid="uid://b7gcvq51qadvx" path="res://data/skills/cheerleader_encore.tres" id="6_mtd0p"]
 
 [resource]
 script = ExtResource("1_o0fcc")

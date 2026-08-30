@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1_uhg7g"]
 [ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2_vv5cp"]
-[ext_resource type="Resource" uid="uid://dqent7fm6dk0x" path="res://data/skills/devon_quick_slash.tres" id="3_05r8p"]
-[ext_resource type="Resource" uid="uid://cblum5tmv0s0r" path="res://data/skills/devon_kickflip.tres" id="4_bj4vm"]
-[ext_resource type="Resource" uid="uid://d3d8bsa00mggl" path="res://data/skills/devon_adrenaline_rush.tres" id="5_5ar5l"]
-[ext_resource type="Resource" uid="uid://cosm44djix2tx" path="res://data/skills/devon_grind_and_grab.tres" id="6_hewk5"]
+[ext_resource type="Resource" uid="uid://dqent7fm6dk0x" path="res://data/skills/skater_quick_slash.tres" id="3_05r8p"]
+[ext_resource type="Resource" uid="uid://cblum5tmv0s0r" path="res://data/skills/skater_kickflip.tres" id="4_bj4vm"]
+[ext_resource type="Resource" uid="uid://d3d8bsa00mggl" path="res://data/skills/skater_adrenaline_rush.tres" id="5_5ar5l"]
+[ext_resource type="Resource" uid="uid://cosm44djix2tx" path="res://data/skills/skater_grind_and_grab.tres" id="6_hewk5"]
 
 [resource]
 script = ExtResource("1_uhg7g")

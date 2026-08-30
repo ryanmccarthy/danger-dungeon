@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_tcfmo")
-skill_id = &"priya_arcane_bolt"
+skill_id = &"valedictorian_arcane_bolt"
 display_name = "Arcane Bolt"
 description = "A crackling bolt of raw study-hall energy."
 mp_cost = 6

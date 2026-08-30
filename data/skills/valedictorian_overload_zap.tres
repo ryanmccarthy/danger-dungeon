@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_60yym")
-skill_id = &"priya_overload_zap"
+skill_id = &"valedictorian_overload_zap"
 display_name = "Overload Zap"
 description = "Priya overloads the air itself, zapping every foe."
 mp_cost = 14

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_k08yk")
-skill_id = &"sasha_rally_cry"
+skill_id = &"cheerleader_rally_cry"
 display_name = "Rally Cry"
 description = "A pump-up shout that quickens the whole squad's step."
 mp_cost = 10

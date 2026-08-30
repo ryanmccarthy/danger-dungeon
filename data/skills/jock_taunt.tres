@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_njg7f")
-skill_id = &"marcus_taunt"
+skill_id = &"jock_taunt"
 display_name = "Taunt"
 description = "Marcus talks trash, rattling one foe's focus."
 mp_cost = 4

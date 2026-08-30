@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_os3yh")
-skill_id = &"marcus_tackle"
+skill_id = &"jock_tackle"
 display_name = "Tackle"
 description = "A full-body varsity tackle."
 mp_cost = 3

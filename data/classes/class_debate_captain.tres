@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1_l4e2r"]
 [ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2_nrlu0"]
-[ext_resource type="Resource" uid="uid://n1oq2ps42pkh" path="res://data/skills/chloe_first_aid.tres" id="3_eg2e7"]
-[ext_resource type="Resource" uid="uid://0bkbv2wepwer" path="res://data/skills/chloe_rebuttal.tres" id="4_7mmjm"]
-[ext_resource type="Resource" uid="uid://2o1uyiofmirc" path="res://data/skills/chloe_group_study.tres" id="5_14ilg"]
-[ext_resource type="Resource" uid="uid://bkxc2ccby53da" path="res://data/skills/chloe_closing_argument.tres" id="6_48bgw"]
+[ext_resource type="Resource" uid="uid://n1oq2ps42pkh" path="res://data/skills/debate_captain_first_aid.tres" id="3_eg2e7"]
+[ext_resource type="Resource" uid="uid://0bkbv2wepwer" path="res://data/skills/debate_captain_rebuttal.tres" id="4_7mmjm"]
+[ext_resource type="Resource" uid="uid://2o1uyiofmirc" path="res://data/skills/debate_captain_group_study.tres" id="5_14ilg"]
+[ext_resource type="Resource" uid="uid://bkxc2ccby53da" path="res://data/skills/debate_captain_closing_argument.tres" id="6_48bgw"]
 
 [resource]
 script = ExtResource("1_l4e2r")

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_pk3l5")
-skill_id = &"devon_grind_and_grab"
+skill_id = &"skater_grind_and_grab"
 display_name = "Grind & Grab"
 description = "Devon grinds past a foe, snatching a hit and whatever isn't nailed down."
 mp_cost = 5

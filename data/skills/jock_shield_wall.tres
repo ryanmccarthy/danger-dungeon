@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_w2jw7")
-skill_id = &"marcus_shield_wall"
+skill_id = &"jock_shield_wall"
 display_name = "Shield Wall"
 description = "Marcus braces behind his arms, hardening his defense."
 mp_cost = 6

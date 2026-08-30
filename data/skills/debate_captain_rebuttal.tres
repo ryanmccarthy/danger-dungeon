@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_nt8kc")
-skill_id = &"chloe_rebuttal"
+skill_id = &"debate_captain_rebuttal"
 display_name = "Rebuttal"
 description = "Chloe dismantles a foe's stance with airtight logic."
 mp_cost = 5

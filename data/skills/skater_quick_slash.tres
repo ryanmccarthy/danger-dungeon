@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_sva41")
-skill_id = &"devon_quick_slash"
+skill_id = &"skater_quick_slash"
 display_name = "Quick Slash"
 description = "A fast, low-effort slash off a skateboard's edge."
 mp_cost = 3

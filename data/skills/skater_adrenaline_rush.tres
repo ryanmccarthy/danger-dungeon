@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_5624w")
-skill_id = &"devon_adrenaline_rush"
+skill_id = &"skater_adrenaline_rush"
 display_name = "Adrenaline Rush"
 description = "Devon's heart rate spikes, and so does his speed."
 mp_cost = 5

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_xg5ek")
-skill_id = &"devon_kickflip"
+skill_id = &"skater_kickflip"
 display_name = "Kickflip"
 description = "A flashy aerial kick. Hard to pull off but it hurts even harder."
 mp_cost = 7

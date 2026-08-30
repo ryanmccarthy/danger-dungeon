@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_8tkra")
-skill_id = &"sasha_encore"
+skill_id = &"cheerleader_encore"
 display_name = "Encore"
 description = "The crowd demands one more song — mends the whole squad."
 mp_cost = 12

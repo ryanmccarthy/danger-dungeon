@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_jgt21")
-skill_id = &"marcus_second_wind"
+skill_id = &"jock_second_wind"
 display_name = "Second Wind"
 description = "Marcus catches his breath and pushes on."
 mp_cost = 8

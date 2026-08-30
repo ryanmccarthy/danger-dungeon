@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_wwbj2")
-skill_id = &"priya_cold_focus"
+skill_id = &"valedictorian_cold_focus"
 display_name = "Cold Focus"
 description = "Priya narrows her focus to a razor point."
 mp_cost = 6

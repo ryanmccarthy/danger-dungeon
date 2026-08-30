@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_ug6pk")
-skill_id = &"chloe_first_aid"
+skill_id = &"debate_captain_first_aid"
 display_name = "First Aid"
 description = "A calm, well-rehearsed patch-up."
 mp_cost = 5

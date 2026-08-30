@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_nuddm")
-skill_id = &"priya_analyze"
+skill_id = &"valedictorian_analyze"
 display_name = "Analyze"
 description = "Priya picks apart a weak point in the enemy's guard."
 mp_cost = 5
