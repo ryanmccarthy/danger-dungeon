@@ -4,13 +4,13 @@
 
 [resource]
 script = ExtResource("1")
-skill_id = &"loner_cold_shoulder"
+skill_id = &"cadet_cold_shoulder"
 display_name = "Cold Shoulder"
 description = "Freezes a foe out, guard and all."
 mp_cost = 5
 power = 0.0
-effect_type = 3
-stat_affected = "def"
-buff_amount = -4.0
-buff_duration = 3
+effect_type = [3]
+debuff_stat_affected = "def"
+debuff_amount = 4
+debuff_duration = 3
 icon_color = Color(0.25, 0.28, 0.35, 1.0)

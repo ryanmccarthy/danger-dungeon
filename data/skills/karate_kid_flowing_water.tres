@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_id = &"karate_kid_flowing_water"
+display_name = "Flowing Water Stance"
+description = "Fluid movements boosting speed in exchange for attack."
+target_type = 4
+mp_cost = 3
+effect_type = [2, 3]
+debuff_stat_affected = "atk"
+debuff_amount = 3
+debuff_duration = 3
+buff_stat_affected = "spd"
+buff_amount = 3
+buff_duration = 3
+icon_color = Color(0.2, 0.75, 0.85, 1.0)

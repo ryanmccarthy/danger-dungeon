@@ -4,14 +4,14 @@
 
 [resource]
 script = ExtResource("1_axgu8")
-skill_id = &"tony_human_shield_formation"
+skill_id = &"mascot_human_shield_formation"
 display_name = "Human Shield Formation"
-description = "Tony rallies everyone behind his enormous foam belly."
+description = "Rally everyone behind your enormous foam belly."
 mp_cost = 10
 target_type = 3
 power = 0.0
-effect_type = 2
-stat_affected = "def"
-buff_amount = 3.0
+effect_type = [2]
+buff_stat_affected = "def"
+buff_amount = 3
 buff_duration = 3
 icon_color = Color(0.8509804, 0.30980393, 0.30980393, 1)

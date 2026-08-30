@@ -10,5 +10,5 @@ description = "Marcus catches his breath and pushes on."
 mp_cost = 8
 target_type = 4
 power = 0.4
-effect_type = 1
+effect_type = [1]
 icon_color = Color(0.2901961, 0.5647059, 0.8509804, 1)

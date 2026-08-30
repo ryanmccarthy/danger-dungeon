@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scenes/hub/rooms/cafeteria_room.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://b5hjb5dxgv8wo" path="res://data/assets/backgrounds/hub.png" id="2_bg"]
+[ext_resource type="Texture2D" path="res://data/assets/backgrounds/cafeteria.png" id="2_bg"]
 
 [node name="CafeteriaRoom" type="Control"]
 layout_mode = 3

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://2hffuonjoux1"]
 
 [ext_resource type="Script" uid="uid://bfdlcu1jk6548" path="res://scenes/hub/rooms/shop_room.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://b5hjb5dxgv8wo" path="res://data/assets/backgrounds/hub.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://ckmlc2g6ghe5s" path="res://data/assets/backgrounds/shop.png" id="2_bg"]
 
 [node name="ShopRoom" type="Control" unique_id=1345037345]
 layout_mode = 3

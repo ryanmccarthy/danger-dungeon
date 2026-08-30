@@ -10,5 +10,5 @@ description = "A quick self-repair with spare parts."
 mp_cost = 9
 target_type = 4
 power = 0.6
-effect_type = 1
+effect_type = [1]
 icon_color = Color(0.55, 0.35, 0.15, 1.0)

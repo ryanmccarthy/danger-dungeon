@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1_1llgl"]
 [ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2_tvn5c"]
-[ext_resource type="Resource" uid="uid://kawoudcou6ai" path="res://data/skills/tony_body_slam.tres" id="3_usa3s"]
-[ext_resource type="Resource" uid="uid://me8f3kltwce5" path="res://data/skills/tony_human_shield_formation.tres" id="4_bwy21"]
-[ext_resource type="Resource" uid="uid://bvhvvkr1atxht" path="res://data/skills/tony_mascot_dance.tres" id="5_xjbvl"]
-[ext_resource type="Resource" uid="uid://dqtfjkmdsvv6b" path="res://data/skills/tony_bellyflop.tres" id="6_hwyjp"]
+[ext_resource type="Resource" uid="uid://kawoudcou6ai" path="res://data/skills/mascot_body_slam.tres" id="3_usa3s"]
+[ext_resource type="Resource" uid="uid://me8f3kltwce5" path="res://data/skills/mascot_human_shield_formation.tres" id="4_bwy21"]
+[ext_resource type="Resource" uid="uid://bvhvvkr1atxht" path="res://data/skills/mascot_mascot_dance.tres" id="5_xjbvl"]
+[ext_resource type="Resource" uid="uid://dqtfjkmdsvv6b" path="res://data/skills/mascot_bellyflop.tres" id="6_hwyjp"]
 
 [resource]
 script = ExtResource("1_1llgl")

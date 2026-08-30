@@ -10,5 +10,5 @@ description = "A home remedy that actually works."
 mp_cost = 7
 target_type = 2
 power = 0.55
-effect_type = 1
+effect_type = [1]
 icon_color = Color(0.45, 0.6, 0.25, 1.0)

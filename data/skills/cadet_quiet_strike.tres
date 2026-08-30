@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1")
-skill_id = &"loner_quiet_strike"
+skill_id = &"cadet_quiet_strike"
 display_name = "Quiet Strike"
 description = "No warning. No wasted motion."
 mp_cost = 3

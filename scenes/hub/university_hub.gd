@@ -62,7 +62,12 @@ func _refresh_hud() -> void:
 
 func _on_depart_pressed() -> void:
 	var area: AreaData = ContentDatabase.get_area(HOME_AREA_ID)
-	if GameState.depart_university(area):
+
+	if PartyManager.get_active_party().is_empty():
+		_status_label.text = "You need at least one student in your party to depart."
+	elif PartyManager.get_living_roster().is_empty():
+		_status_label.text = "Game Over: All students have perished."
+	elif GameState.depart_university(area):
 		_status_label.text = "Departed for %s." % area.display_name
 	else:
 		_status_label.text = "Not enough supplies to depart (need %d)." % InventoryManager.get_travel_cost(area)

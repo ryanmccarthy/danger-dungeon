@@ -10,5 +10,5 @@ description = "The whole band, full volume, full formation."
 mp_cost = 13
 target_type = 3
 power = 0.4
-effect_type = 1
+effect_type = [1]
 icon_color = Color(0.85, 0.7, 0.25, 1.0)

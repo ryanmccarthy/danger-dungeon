@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_ux2vd")
-skill_id = &"tony_body_slam"
+skill_id = &"mascot_body_slam"
 display_name = "Body Slam"
 description = "The mascot suit takes another hit for the team — on someone else."
 mp_cost = 4

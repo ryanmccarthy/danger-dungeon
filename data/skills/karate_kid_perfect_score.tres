@@ -4,9 +4,11 @@
 
 [resource]
 script = ExtResource("1")
-skill_id = &"overachiever_extra_credit_jab"
-display_name = "Extra Credit Jab"
-description = "Went above and beyond on this hit, too."
-mp_cost = 3
-accuracy = 0.93
+skill_id = &"karate_kid_perfect_score"
+display_name = "Perfect Score"
+description = "Gives their punch 110% effort."
+mp_cost = 12
+power = 1.5
+damage_school = 1
+accuracy = 0.9
 icon_color = Color(0.2, 0.75, 0.85, 1.0)

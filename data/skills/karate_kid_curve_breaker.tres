@@ -4,14 +4,13 @@
 
 [resource]
 script = ExtResource("1")
-skill_id = &"overachiever_all_nighter"
-display_name = "Pulling an All-Nighter"
-description = "Running on caffeine and pure spite."
+skill_id = &"overachiever_curve_breaker"
+display_name = "Curve Breaker"
+description = "Ruins the grading curve for everyone, including this thing."
 mp_cost = 5
-target_type = 4
 power = 0.0
-effect_type = 2
-stat_affected = "atk"
-buff_amount = 6.0
-buff_duration = 3
+effect_type = [3]
+debuff_stat_affected = "atk"
+debuff_amount = 4
+debuff_duration = 3
 icon_color = Color(0.2, 0.75, 0.85, 1.0)

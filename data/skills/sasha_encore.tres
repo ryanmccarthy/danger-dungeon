@@ -10,5 +10,5 @@ description = "The crowd demands one more song — mends the whole squad."
 mp_cost = 12
 target_type = 3
 power = 0.5
-effect_type = 1
+effect_type = [1]
 icon_color = Color(1, 0.43529412, 0.68235296, 1)

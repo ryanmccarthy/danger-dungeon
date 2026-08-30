@@ -4,10 +4,14 @@
 
 [resource]
 script = ExtResource("1")
-skill_id = &"loner_sneak_attack"
-display_name = "Sneak Attack"
-description = "One shot. Has to count."
-mp_cost = 8
-power = 1.8
-accuracy = 0.6
+skill_id = &"cadet_keep_to_myself"
+display_name = "Keep to Myself"
+description = "Doesn't need anyone else's help for this."
+mp_cost = 6
+target_type = 4
+power = 0.0
+effect_type = [2]
+buff_stat_affected = "atk"
+buff_amount = 6
+buff_duration = 3
 icon_color = Color(0.25, 0.28, 0.35, 1.0)

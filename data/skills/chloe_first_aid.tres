@@ -10,5 +10,5 @@ description = "A calm, well-rehearsed patch-up."
 mp_cost = 5
 target_type = 2
 power = 0.6
-effect_type = 1
+effect_type = [1]
 icon_color = Color(0.29803923, 0.7882353, 0.627451, 1)

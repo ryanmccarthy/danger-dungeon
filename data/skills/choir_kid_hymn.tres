@@ -10,5 +10,5 @@ description = "A quiet, steadying song."
 mp_cost = 6
 target_type = 2
 power = 0.65
-effect_type = 1
+effect_type = [1]
 icon_color = Color(0.9, 0.9, 0.7, 1.0)

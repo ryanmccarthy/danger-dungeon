@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="StudentClassData" format=3]
+
+[ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/skills/karate_kid_flowing_water.tres" id="3"]
+[ext_resource type="Resource" path="res://data/skills/karate_kid_curve_breaker.tres" id="4"]
+[ext_resource type="Resource" path="res://data/skills/karate_kid_all_nighter.tres" id="5"]
+[ext_resource type="Resource" path="res://data/skills/karate_kid_perfect_score.tres" id="6"]
+
+[resource]
+script = ExtResource("1")
+class_id = &"karate_kid"
+class_name_display = "Karate Kid"
+archetype_tag = "Glass Cannon/Counter"
+
+hp_per_level = 3.8
+mp_per_level = 0.5
+atk_per_level = 1.2
+def_per_level = 0.5
+mag_per_level = 0.8
+res_per_level = 0.3
+spd_per_level = 1.0
+luck_per_level = 0.4
+
+preferred_row = 2
+skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
+icon_color = Color(0.2, 0.75, 0.85, 1.0)
+flavor_text = "Can solve complex equations such as 'How many kicks does it take to get to the center of a fog monster?'"

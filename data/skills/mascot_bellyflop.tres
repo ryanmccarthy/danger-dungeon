@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_3qe2x")
-skill_id = &"tony_bellyflop"
+skill_id = &"mascot_bellyflop"
 display_name = "Bellyflop"
 description = "Tony flops. Everyone nearby regrets standing close."
 mp_cost = 9

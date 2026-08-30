@@ -149,7 +149,6 @@ func _refresh_cards() -> void:
 		if card == null:
 			continue
 
-		# card["hp"].text = "HP %d / %d" % [max(0, e["hp"]), e["data"].max_hp]
 		card["root"].modulate = Color(1, 1, 1, 1) if e["hp"] > 0 else Color(0.4, 0.4, 0.4, 0.7)
 		card["name_lbl"].text = e["name"] + _buff_tag_string(i)
 
@@ -368,6 +367,7 @@ func _apply_buff(ref, stat: String, amount: float, duration: int) -> void:
 
 	if not _buffs.has(ref):
 		_buffs[ref] = []
+
 	_buffs[ref].append({"stat": stat, "amount": amount, "remaining": duration})
 
 func _tick_buffs() -> void:
@@ -379,6 +379,7 @@ func _tick_buffs() -> void:
 			if list[i]["remaining"] <= 0:
 				list.remove_at(i)
 			i -= 1
+
 		if list.is_empty():
 			_buffs.erase(ref)
 
@@ -389,9 +390,9 @@ func _buff_tag_string(ref) -> String:
 
 	var parts: Array[String] = []
 	for b in list:
-		parts.append("%s%s(%d)" % [String(b["stat"]).to_upper(), _signed_str(b["amount"]), int(b["remaining"])])
+		parts.append("%s%s (%d)" % [String(b["stat"]).to_upper(), _signed_str(b["amount"]), int(b["remaining"])])
 
-	return "  " + " ".join(parts)
+	return "  " + "; ".join(parts)
 
 func _signed_str(amount: float) -> String:
 	return "+%d" % int(amount) if amount >= 0.0 else str(int(amount))
@@ -585,19 +586,25 @@ func _cast_skill(actor: StringName, skill: SkillData, targets: Array) -> void:
 
 	s.current_mp -= skill.mp_cost
 	for t in targets:
-		match skill.effect_type:
-			SkillData.EffectType.DAMAGE:
-				var dmg := _deal_damage(actor, t, skill.power, skill.damage_school)
-				_log("%s uses %s on %s for %d." % [_display_name(actor), skill.display_name, _display_name(t), dmg])
-			SkillData.EffectType.HEAL:
-				var amount := CombatMath.compute_heal(_get_stat(actor, "mag"), skill.power)
-				_apply_heal(t, amount)
-				_log("%s uses %s, healing %s for %d." % [_display_name(actor), skill.display_name, _display_name(t), amount])
-			SkillData.EffectType.BUFF, SkillData.EffectType.DEBUFF:
-				_apply_buff(t, skill.stat_affected, skill.buff_amount, skill.buff_duration)
-				_log("%s uses %s on %s (%s %s for %d rounds)." % [_display_name(actor), skill.display_name,
-						_display_name(t), String(skill.stat_affected).to_upper(),
-						_signed_str(skill.buff_amount), skill.buff_duration])
+		for effect: SkillData.EffectType in skill.effect_type:
+			match effect:
+				SkillData.EffectType.DAMAGE:
+					var dmg := _deal_damage(actor, t, skill.power, skill.damage_school)
+					_log("%s uses %s on %s for %d." % [_display_name(actor), skill.display_name, _display_name(t), dmg])
+				SkillData.EffectType.HEAL:
+					var amount := CombatMath.compute_heal(_get_stat(actor, "mag"), skill.power)
+					_apply_heal(t, amount)
+					_log("%s uses %s, healing %s for %d." % [_display_name(actor), skill.display_name, _display_name(t), amount])
+				SkillData.EffectType.BUFF:
+					_apply_buff(t, skill.buff_stat_affected, skill.buff_amount, skill.buff_duration)
+					_log("%s uses %s on %s (%s %s for %d rounds)." % [_display_name(actor), skill.display_name,
+							_display_name(t), String(skill.buff_stat_affected).to_upper(),
+							_signed_str(skill.buff_amount), skill.buff_duration])
+				SkillData.EffectType.DEBUFF:
+					_apply_buff(t, skill.debuff_stat_affected, -skill.debuff_amount, skill.debuff_duration)
+					_log("%s uses %s on %s (%s %s for %d rounds)." % [_display_name(actor), skill.display_name,
+							_display_name(t), String(skill.debuff_stat_affected).to_upper(),
+							_signed_str(-skill.debuff_amount), skill.debuff_duration])
 
 	_end_player_turn()
 

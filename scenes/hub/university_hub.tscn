@@ -100,6 +100,7 @@ text = "Depart: Fog-Wreathed Approach"
 [node name="StatusLabel" type="Label" parent="MainMargin/MainVBox" unique_id=1419259943]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.56078434, 0.83137256, 0.56078434, 1)
+horizontal_alignment = 2
 
 [node name="RoomLayer" type="CanvasLayer" parent="." unique_id=1245266952]
 

@@ -10,5 +10,5 @@ description = "Chloe organizes a quick recovery session for everyone."
 mp_cost = 12
 target_type = 3
 power = 0.3
-effect_type = 1
+effect_type = [1]
 icon_color = Color(0.29803923, 0.7882353, 0.627451, 1)

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="StudentData" format=3 uid="uid://cklcs5fqam32f"]
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_h6n4f"]
-[ext_resource type="Resource" path="res://data/classes/class_loner.tres" id="2_rx11a"]
+[ext_resource type="Resource" path="res://data/classes/class_cadet.tres" id="2_rx11a"]
 [ext_resource type="Texture2D" path="res://data/assets/portraits/generic.png" id="3_skyler"]
 
 [resource]
@@ -14,7 +14,7 @@ max_hp = 46
 current_mp = 15
 max_mp = 15
 portrait_color = Color(0.25, 0.28, 0.35, 1.0)
-bio_flavor = "The only one who feels more comfortable in the fog."
+bio_flavor = "Disciplined, tactical, and wishes they'd applied to trade school instead."
 portrait = ExtResource("3_skyler")
 
 atk = 8
