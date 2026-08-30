@@ -15,7 +15,7 @@ max_hp = 41
 current_mp = 22
 max_mp = 22
 portrait_color = Color(0.8, 0.8, 0.85, 1.0)
-bio_flavor = "Values the remaining film more than her classmates."
+bio_flavor = "Values the remaining film more than his classmates."
 portrait = ExtResource("3_finley")
 standing_portrait = ExtResource("4_finley_standing")
 

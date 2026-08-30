@@ -10,4 +10,5 @@ description = "A freezing, insubstantial touch."
 power = 0.9
 damage_school = 1
 accuracy = 0.95
+mp_cost = 3
 icon_color = Color(0.49803922, 0.83137256, 1, 1)

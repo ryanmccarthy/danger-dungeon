@@ -10,3 +10,4 @@ description = "A wild, corrupted swing."
 power = 1.1
 accuracy = 0.85
 icon_color = Color(0.41960785, 0.3529412, 0.2901961, 1)
+mp_cost = 6

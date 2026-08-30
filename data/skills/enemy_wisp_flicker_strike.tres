@@ -9,4 +9,5 @@ display_name = "Flicker Strike"
 description = "The wisp flickers and jabs."
 power = 0.6
 accuracy = 0.9
+mp_cost = 1
 icon_color = Color(0.49803922, 0.83137256, 1, 1)
