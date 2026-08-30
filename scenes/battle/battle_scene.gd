@@ -60,7 +60,7 @@ func enter_state(_context: Dictionary = {}) -> void:
 	party_ids.clear()
 	for id in PartyManager.get_active_party_ids():
 		var s := PartyManager.get_student(id)
-		if s != null and s.status == StudentData.Status.ACTIVE:
+		if s != null and s.status == StudentData.Status.ALIVE:
 			party_ids.append(id)
 
 	var names: Array = []
@@ -196,7 +196,7 @@ func _show_roster_list() -> void:
 		stat_lbl.add_theme_font_size_override("font_size", 13)
 		row.add_child(stat_lbl)
 
-		var alive := student.status == StudentData.Status.ACTIVE
+		var alive := student.status == StudentData.Status.ALIVE
 		row.modulate = Color(1, 1, 1, 1) if alive else Color(0.4, 0.4, 0.4, 0.7)
 		list.add_child(row)
 
@@ -214,7 +214,7 @@ func _start_round() -> void:
 
 	for id in party_ids:
 		var s := PartyManager.get_student(id)
-		if s != null and s.status == StudentData.Status.ACTIVE:
+		if s != null and s.status == StudentData.Status.ALIVE:
 			_turn_order.append(id)
 
 	_turn_order.sort_custom(func(a, b): return _get_spd(a) > _get_spd(b))
@@ -314,7 +314,7 @@ func _is_alive(ref) -> bool:
 		return enemies[ref]["hp"] > 0
 
 	var s := PartyManager.get_student(ref)
-	return s != null and s.status == StudentData.Status.ACTIVE
+	return s != null and s.status == StudentData.Status.ALIVE
 
 func _get_spd(ref) -> int:
 	var base: int

@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"photographer_flash_blind"
 display_name = "Flash Blind"
-description = "A point-blank flash, right in its whatever-it-uses-for-eyes."
+description = "A point-blank flash that leaves it stumbling around, slower to react."
 mp_cost = 5
 power = 0.0
 effect_type = [3]

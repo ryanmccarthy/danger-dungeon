@@ -142,17 +142,18 @@ func _make_party_card(s: StudentData) -> Control:
 
 	return card
 
-func _make_card_portrait(texture: Texture2D) -> TextureRect:
-	# Borderless, no background box — scales to fill the card's full height
-	# (and whatever width share the HBoxContainer stretch ratio gives it)
-	# while keeping the texture's own aspect ratio, instead of being boxed
-	# into a fixed square. Both size flags must be EXPAND_FILL or the
-	# container never grants it space to begin with (Control's horizontal
-	# flag defaults to FILL, not EXPAND) — same pattern as
-	# battle_scene.gd's _make_fitted_portrait.
+func _make_card_portrait(texture: Texture2D, proportional: bool = true) -> TextureRect:
+	"""
+	Borderless, no background box.
+	When `proportional` is true: scales to fill the
+	card's full height while keeping the texture's own aspect ratio,
+	instead of being boxed into a fixed square.
+	When false: FIT_HEIGHT_PROPORTIONAL would keep growing the requested
+	minimum width to match, blowing the panel out past the screen edge.
+	"""
 	var portrait := TextureRect.new()
 	portrait.texture = texture
-	portrait.expand_mode = TextureRect.EXPAND_FIT_HEIGHT_PROPORTIONAL
+	portrait.expand_mode = TextureRect.EXPAND_FIT_HEIGHT_PROPORTIONAL if proportional else TextureRect.EXPAND_IGNORE_SIZE
 	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	portrait.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	portrait.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -283,7 +284,7 @@ func _make_inventory_row(item: ItemData, count: int) -> Control:
 	return row
 
 # Shown when "Use" is pressed on an inventory item — picks which roster
-# member (ACTIVE or DOWNED, same pool as the Status tab's get_usable_roster)
+# member (ALIVE or DOWNED, same pool as the Status tab's get_usable_roster)
 # receives the item's effect, then consumes it and returns to the refreshed
 # inventory list.
 func _show_use_target_select(item: ItemData) -> void:
@@ -497,9 +498,9 @@ func _fill_equipment_detail(detail: VBoxContainer, s: StudentData) -> void:
 
 	_add_section_header(detail, "Equipment Bonuses")
 	var pairs: Array = []
-	for stat in ["atk", "def", "mag", "res", "spd", "luck", "max_hp", "max_mp"]:
+	for stat: String in ["atk", "def", "mag", "res", "spd", "luck", "max_hp", "max_mp"]:
 		var amount := EquipmentManager.get_stat_bonus(s.student_id, stat)
-		pairs.append([stat.to_upper(), _signed_str(amount)])
+		pairs.append([stat.replace("_", " ").to_upper(), _signed_str(amount)])
 	detail.add_child(_make_stat_grid(pairs, 4))
 
 	var passives := _passive_summary(s.student_id)
@@ -667,6 +668,8 @@ func _build_status() -> void:
 	portrait_panel.custom_minimum_size = Vector2(260, 0)
 	portrait_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	portrait_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	portrait_panel.clip_contents = true
+
 	portrait_panel.add_theme_stylebox_override("panel", _portrait_style())
 	hbox.add_child(portrait_panel)
 
@@ -692,7 +695,9 @@ func _fill_status_detail(detail: VBoxContainer, portrait_panel: PanelContainer, 
 
 	for c in portrait_panel.get_children():
 		c.queue_free()
-	portrait_panel.add_child(_make_card_portrait(s.portrait))
+
+	var portrait = s.standing_portrait if s.standing_portrait else s.portrait
+	portrait_panel.add_child(_make_card_portrait(portrait, false))
 
 	# --- Top: identity — name, class, level, condition/status ---
 	var name_lbl := Label.new()
@@ -774,10 +779,11 @@ func _make_ident_grid(student: StudentData) -> GridContainer:
 	grid.add_child(xp_lbl)
 
 	var condition_lbl := Label.new()
-	var row_str := "Back Row" if PartyManager.is_in_back_row(student.student_id) else "Front Row"
+	var row_str := "Benched" if !PartyManager.is_in_party(student.student_id) else \
+		("Back Row" if PartyManager.is_in_back_row(student.student_id) else "Front Row")
 	condition_lbl.text = "%s   •   %s" % [StudentData.Status.keys()[student.status], row_str]
 	condition_lbl.add_theme_font_size_override("font_size", 18)
-	condition_lbl.add_theme_color_override("font_color", GOOD_TEXT if student.status == StudentData.Status.ACTIVE else BAD_TEXT)
+	condition_lbl.add_theme_color_override("font_color", GOOD_TEXT if student.status == StudentData.Status.ALIVE else BAD_TEXT)
 	grid.add_child(condition_lbl)
 
 	var effects_lbl := Label.new()

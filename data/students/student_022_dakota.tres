@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_x77uo"]
 [ext_resource type="Resource" path="res://data/classes/class_stuco_pres.tres" id="2_gihox"]
-[ext_resource type="Texture2D" path="res://data/assets/portraits/generic.png" id="3_dakota"]
+[ext_resource type="Texture2D" path="res://data/assets/portraits/dakota.png" id="3_dakota"]
+[ext_resource type="Texture2D" path="res://data/assets/portraits/dakota_standing.png" id="4_dakota_standing"]
 
 [resource]
 script = ExtResource("1_x77uo")
@@ -16,6 +17,7 @@ max_mp = 20
 portrait_color = Color(0.5, 0.08, 0.2, 1.0)
 bio_flavor = "Drafts endless motions demanding better facilities."
 portrait = ExtResource("3_dakota")
+standing_portrait = ExtResource("4_dakota_standing")
 
 atk = 5
 def = 5

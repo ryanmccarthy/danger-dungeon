@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_k3mof"]
 [ext_resource type="Resource" path="res://data/classes/class_gearhead.tres" id="2_firj6"]
-[ext_resource type="Texture2D" path="res://data/assets/portraits/generic.png" id="3_hayden"]
+[ext_resource type="Texture2D" path="res://data/assets/portraits/hayden.png" id="3_hayden"]
+[ext_resource type="Texture2D" path="res://data/assets/portraits/hayden_standing.png" id="4_hayden_standing"]
 
 [resource]
 script = ExtResource("1_k3mof")
@@ -16,6 +17,7 @@ max_mp = 14
 portrait_color = Color(0.55, 0.35, 0.15, 1.0)
 bio_flavor = "More upset about what the fog did to the bus engine than anything else."
 portrait = ExtResource("3_hayden")
+standing_portrait = ExtResource("4_hayden_standing")
 
 atk = 13
 def = 13

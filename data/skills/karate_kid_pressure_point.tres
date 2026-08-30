@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource("1")
-skill_id = &"overachiever_curve_breaker"
-display_name = "Curve Breaker"
-description = "Ruins the grading curve for everyone, including this thing."
+skill_id = &"karate_kid_pressure_point"
+display_name = "Pressure Point"
+description = "A sharp strike to a nerve cluster. Numbs the arm enough to weaken their next hit."
 mp_cost = 5
 power = 0.0
 effect_type = [3]

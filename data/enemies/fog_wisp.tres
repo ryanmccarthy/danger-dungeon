@@ -18,12 +18,20 @@ mag = 9
 res = 6
 spd = 11
 skill_pool = Array[ExtResource("2_sxd1n")]([ExtResource("3_lgwma"), ExtResource("4_65133")])
-drop_table = Array[Dictionary]([{
-    "chance": 0.8,
-    "item_id": "ingredient_wisp_essence",
-    "max_qty": 2.0,
-    "min_qty": 1.0
-}])
+drop_table = Array[Dictionary]([
+    {
+        "chance": 0.5,
+        "item_id": "ingredient_wisp_essence",
+        "max_qty": 2.0,
+        "min_qty": 1.0
+    },
+    {
+        "chance": 0.1,
+        "item_id": "equip_lucky_keychain",
+        "max_qty": 1.0,
+        "min_qty": 1.0
+    },
+])
 xp_drop = 5
 supply_reward = 2
 primitive_shape = 1

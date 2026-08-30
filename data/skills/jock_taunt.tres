@@ -6,7 +6,7 @@
 script = ExtResource("1_njg7f")
 skill_id = &"jock_taunt"
 display_name = "Taunt"
-description = "Marcus talks trash, rattling one foe's focus."
+description = "Talks trash, getting in their head enough to throw off their swing."
 mp_cost = 4
 power = 0.0
 effect_type = [3]

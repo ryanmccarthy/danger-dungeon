@@ -3,8 +3,8 @@
 [ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1"]
 [ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2"]
 [ext_resource type="Resource" path="res://data/skills/karate_kid_flowing_water.tres" id="3"]
-[ext_resource type="Resource" path="res://data/skills/karate_kid_curve_breaker.tres" id="4"]
-[ext_resource type="Resource" path="res://data/skills/karate_kid_all_nighter.tres" id="5"]
+[ext_resource type="Resource" path="res://data/skills/karate_kid_pressure_point.tres" id="4"]
+[ext_resource type="Resource" path="res://data/skills/karate_kid_focused_breathing.tres" id="5"]
 [ext_resource type="Resource" path="res://data/skills/karate_kid_perfect_score.tres" id="6"]
 
 [resource]

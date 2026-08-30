@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"choir_kid_harmonize"
 display_name = "Harmonize"
-description = "Everyone finds the same key."
+description = "Everyone finds the same key, which steadies the whole choir against what's coming."
 mp_cost = 10
 target_type = 3
 power = 0.0

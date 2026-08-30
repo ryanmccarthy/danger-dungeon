@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource("1")
-skill_id = &"conspiracy_theorist_its_all_connected"
-display_name = "It's All Connected"
-description = "Draws the red string. It's disturbingly accurate."
+skill_id = &"metalhead_feedback_screech"
+display_name = "Feedback Screech"
+description = "A screech of amp feedback rattles their nerve."
 mp_cost = 5
 power = 0.0
 effect_type = [3]

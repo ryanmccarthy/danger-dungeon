@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"band_geek_sour_note"
 display_name = "Sour Note"
-description = "A deliberately, painfully flat note."
+description = "A deliberately, painfully flat note that throws off their rhythm, and their footing too."
 mp_cost = 5
 power = 0.0
 effect_type = [3]

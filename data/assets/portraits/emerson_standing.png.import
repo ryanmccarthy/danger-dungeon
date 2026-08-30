@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1sgloly8dgjk"
-path="res://.godot/imported/jamie_full.png-3433b5ec22f4524dac25c9336951f505.ctex"
+uid="uid://t8mxpprkm374"
+path="res://.godot/imported/emerson_standing.png-1626e6ea52947466152c77728ba29482.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://data/assets/portraits/jamie_full.png"
-dest_files=["res://.godot/imported/jamie_full.png-3433b5ec22f4524dac25c9336951f505.ctex"]
+source_file="res://data/assets/portraits/emerson_standing.png"
+dest_files=["res://.godot/imported/emerson_standing.png-1626e6ea52947466152c77728ba29482.ctex"]
 
 [params]
 

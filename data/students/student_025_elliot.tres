@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_uo412"]
 [ext_resource type="Resource" path="res://data/classes/class_karate_kid.tres" id="2_ga2aw"]
 [ext_resource type="Texture2D" path="res://data/assets/portraits/elliot.png" id="3_elliot"]
+[ext_resource type="Texture2D" path="res://data/assets/portraits/elliot_standing.png" id="4_elliot_standing"]
 
 [resource]
 script = ExtResource("1_uo412")
@@ -16,6 +17,7 @@ max_mp = 23
 portrait_color = Color(0.2, 0.75, 0.85, 1.0)
 bio_flavor = "Can punch a cinder block in half. Surely he can punch the fog in half, too."
 portrait = ExtResource("3_elliot")
+standing_portrait = ExtResource("4_elliot_standing")
 
 atk = 14
 def = 8

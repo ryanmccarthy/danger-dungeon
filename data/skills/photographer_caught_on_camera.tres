@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"photographer_caught_on_camera"
 display_name = "Caught on Camera"
-description = "There's a print of this later. It's not flattering."
+description = "There's a print of this later. It's not flattering, and it's rattled enough to drop its guard."
 mp_cost = 5
 power = 0.0
 effect_type = [3]

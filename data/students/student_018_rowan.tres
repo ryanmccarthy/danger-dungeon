@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_72qfe"]
 [ext_resource type="Resource" path="res://data/classes/class_farm_kid.tres" id="2_t6c4n"]
-[ext_resource type="Texture2D" path="res://data/assets/portraits/generic.png" id="3_rowan"]
+[ext_resource type="Texture2D" path="res://data/assets/portraits/rowan.png" id="3_rowan"]
+[ext_resource type="Texture2D" path="res://data/assets/portraits/rowan_standing.png" id="4_rowan_standing"]
 
 [resource]
 script = ExtResource("1_72qfe")
@@ -16,6 +17,7 @@ max_mp = 15
 portrait_color = Color(0.45, 0.6, 0.25, 1.0)
 bio_flavor = "Has seen weirder things happen to livestock."
 portrait = ExtResource("3_rowan")
+standing_portrait = ExtResource("4_rowan_standing")
 
 atk = 11
 def = 12

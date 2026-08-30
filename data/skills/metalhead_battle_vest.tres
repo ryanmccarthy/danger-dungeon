@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource("1")
-skill_id = &"conspiracy_theorist_prepared_for_anything"
-display_name = "Prepared for Anything"
-description = "Has, in fact, prepared for exactly this."
+skill_id = &"metalhead_battle_vest"
+display_name = "Battle Vest"
+description = "Patches and pins, sewn on for protection as much as style."
 mp_cost = 6
 target_type = 4
 power = 0.0

@@ -2,15 +2,15 @@
 
 [ext_resource type="Script" uid="uid://mn7srux1to7g" path="res://data/schemas/student_class_data.gd" id="1"]
 [ext_resource type="Script" uid="uid://btmr1u7dy06xe" path="res://data/schemas/skill_data.gd" id="2"]
-[ext_resource type="Resource" path="res://data/skills/conspiracy_theorist_wild_accusation.tres" id="3"]
-[ext_resource type="Resource" path="res://data/skills/conspiracy_theorist_its_all_connected.tres" id="4"]
-[ext_resource type="Resource" path="res://data/skills/conspiracy_theorist_prepared_for_anything.tres" id="5"]
-[ext_resource type="Resource" path="res://data/skills/conspiracy_theorist_theyre_onto_us.tres" id="6"]
+[ext_resource type="Resource" path="res://data/skills/metalhead_power_chord.tres" id="3"]
+[ext_resource type="Resource" path="res://data/skills/metalhead_feedback_screech.tres" id="4"]
+[ext_resource type="Resource" path="res://data/skills/metalhead_battle_vest.tres" id="5"]
+[ext_resource type="Resource" path="res://data/skills/metalhead_wall_of_sound.tres" id="6"]
 
 [resource]
 script = ExtResource("1")
-class_id = &"conspiracy_theorist"
-class_name_display = "Conspiracy Theorist"
+class_id = &"metalhead"
+class_name_display = "Metalhead"
 archetype_tag = "Chaos Debuffer"
 
 hp_per_level = 3.6
@@ -25,4 +25,4 @@ luck_per_level = 0.3
 preferred_row = 1
 skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
 icon_color = Color(0.65, 0.75, 0.3, 1.0)
-flavor_text = "Had a theory about the bus route. Was, somehow, completely right."
+flavor_text = "Learned everything about survival from three-chord songs and open pits."

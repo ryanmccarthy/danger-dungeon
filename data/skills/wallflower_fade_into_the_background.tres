@@ -6,12 +6,12 @@
 script = ExtResource("1")
 skill_id = &"wallflower_fade_into_the_background"
 display_name = "Fade Into the Background"
-description = "Becomes very hard to focus on."
+description = "Becomes impossible to notice and even harder to land a solid hit on."
 mp_cost = 5
 target_type = 4
 power = 0.0
 effect_type = [2]
-buff_stat_affected = "def"
+buff_stat_affected = "spd"
 buff_amount = 6
 buff_duration = 3
 icon_color = Color(0.55, 0.5, 0.6, 1.0)

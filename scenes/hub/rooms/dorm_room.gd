@@ -3,21 +3,22 @@ extends HubRoomBase
 ## Dorm: assign the party's front row, back row, and bench.
 
 func _build() -> void:
-	_add_header("Front row: %d/3   Back row: %d/3" % [PartyManager.front_row_ids.size(), PartyManager.MAX_BACK])
+	_add_header("Front row: %d/3   Back row: %d/3  " % [PartyManager.front_row_ids.size(), PartyManager.MAX_BACK])
 
 	for s in PartyManager.get_usable_roster():
 		var in_front := PartyManager.front_row_ids.has(s.student_id)
 		var in_back := PartyManager.back_row_ids.has(s.student_id)
 		var loc := "Front" if in_front else ("Back" if in_back else "Bench")
-		var label := "%s (%s) [%s] HP %d/%d" % [s.display_name, s.student_class.class_name_display, loc, s.current_hp, s.max_hp]
+		var label := "%s (%s - %s) [%s] HP %d/%d" % [s.display_name, s.student_class.class_name_display, s.student_class.archetype_tag, loc, s.current_hp, s.max_hp]
 
 		if in_front or in_back:
 			_add_row(label, "Bench", func(): _do_bench(s.student_id))
 		else:
 			var row := HBoxContainer.new()
+			row.add_theme_constant_override("separation", 10)
+			row.size_flags_horizontal = Control.SIZE_SHRINK_END
 			var lbl := Label.new()
 			lbl.text = label
-			lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			row.add_child(lbl)
 			var front_btn := Button.new()
 			front_btn.text = "-> Front"

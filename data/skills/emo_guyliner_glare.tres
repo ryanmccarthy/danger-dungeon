@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"emo_guyliner_glare"
 display_name = "Guyliner Glare"
-description = "A stare that's seen things."
+description = "A stare that's seen things, and makes sure they feel seen too."
 mp_cost = 3
 power = 0.85
 damage_school = 1

@@ -6,7 +6,7 @@
 script = ExtResource("1_pk3l5")
 skill_id = &"skater_grind_and_grab"
 display_name = "Grind & Grab"
-description = "Devon grinds past a foe, snatching a hit and whatever isn't nailed down."
+description = "Grinds past a foe, landing a fast hit on the way through."
 mp_cost = 5
 power = 0.9
 accuracy = 0.95

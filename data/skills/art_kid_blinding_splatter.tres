@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"art_kid_blinding_splatter"
 display_name = "Blinding Splatter"
-description = "A messy, disorienting spray of paint."
+description = "A messy spray that gets in their eyes and slows them down."
 mp_cost = 5
 power = 0.0
 effect_type = [3]

@@ -17,12 +17,20 @@ def = 6
 mag = 2
 res = 4
 skill_pool = Array[ExtResource("2_cj3vv")]([ExtResource("3_d3ptn"), ExtResource("4_7juog")])
-drop_table = Array[Dictionary]([{
-    "chance": 0.8,
-    "item_id": "ingredient_stale_snack",
-    "max_qty": 2.0,
-    "min_qty": 1.0
-}])
+drop_table = Array[Dictionary]([
+    {
+        "chance": 0.7,
+        "item_id": "ingredient_stale_snack",
+        "max_qty": 2.0,
+        "min_qty": 1.0
+    },
+    {
+        "chance": 0.05,
+        "item_id": "equip_vampire_fang",
+        "max_qty": 1.0,
+        "min_qty": 1.0
+    }
+])
 xp_drop = 10
 supply_reward = 3
 primitive_shape = 2

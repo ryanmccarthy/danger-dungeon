@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"art_kid_mural_of_dread"
 display_name = "Mural of Dread"
-description = "Paints something nightmarish directly onto reality."
+description = "Paints something nightmarish directly onto reality, and everyone nearby has to look at it."
 mp_cost = 13
 target_type = 1
 power = 0.6

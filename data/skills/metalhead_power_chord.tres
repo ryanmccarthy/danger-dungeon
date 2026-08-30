@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource("1")
-skill_id = &"conspiracy_theorist_wild_accusation"
-display_name = "Wild Accusation"
-description = "Points out something no one else noticed. It's real."
+skill_id = &"metalhead_power_chord"
+display_name = "Power Chord"
+description = "One perfect chord, played entirely too loud."
 mp_cost = 3
 power = 0.8
 damage_school = 1

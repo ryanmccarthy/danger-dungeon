@@ -30,3 +30,7 @@ func _do_sell(id: StringName) -> void:
 
 	InventoryManager.add_supplies(item.sell_price)
 	_refresh()
+
+func _refresh() -> void:
+	super._refresh()
+	_refresh_hud() # updates supplies display

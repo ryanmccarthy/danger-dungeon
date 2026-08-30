@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_b3hto"]
 [ext_resource type="Resource" path="res://data/classes/class_class_clown.tres" id="2_cdyx8"]
 [ext_resource type="Texture2D" path="res://data/assets/portraits/reese.png" id="3_reese"]
+[ext_resource type="Texture2D" path="res://data/assets/portraits/reese_standing.png" id="4_reese_standing"]
 
 [resource]
 script = ExtResource("1_b3hto")
@@ -16,6 +17,7 @@ max_mp = 16
 portrait_color = Color(0.95, 0.85, 0.15, 1.0)
 bio_flavor = "Has a bit for every horror the fog produces and the bite marks to prove it."
 portrait = ExtResource("3_reese")
+standing_portrait = ExtResource("4_reese_standing")
 
 atk = 7
 def = 5

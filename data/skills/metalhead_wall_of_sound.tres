@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource("1")
-skill_id = &"conspiracy_theorist_theyre_onto_us"
-display_name = "They're Onto Us"
-description = "Everyone within earshot gets pulled into the theory."
+skill_id = &"metalhead_wall_of_sound"
+display_name = "Wall of Sound"
+description = "Cranks the amp until everyone within earshot feels it."
 mp_cost = 13
 target_type = 1
 power = 0.6

@@ -3,7 +3,7 @@
 ## Major priority ##
 
 - Finish adding character portraits
-- Finish adding hub area backgrounds
+- Finish adding character standing portraits
 
 ## Minor priority ##
 
@@ -25,3 +25,4 @@
 - Add dialogue
 - Rework hunger system
 - Add in-dungeon events and secrets
+- Give classes something more unique to do (like the Valedictorian)

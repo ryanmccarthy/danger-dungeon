@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"prep_family_connections"
 display_name = "Family Connections"
-description = "Knows someone who knows someone. Somehow that helps here."
+description = "Knows someone who knows someone, and somehow that gets a friend patched up."
 mp_cost = 7
 target_type = 2
 power = 0.6

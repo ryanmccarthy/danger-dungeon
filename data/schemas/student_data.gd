@@ -4,9 +4,9 @@ extends CharacterData
 
 ## One of the 26-student roster. Defines starting/current stats.
 
-## ACTIVE/DOWNED are battle states (DOWNED is revivable at the Nurse's Office);
+## ALIVE/DOWNED are battle states (DOWNED is revivable at the Nurse's Office);
 ## DEAD is permanent and only ever caused by TPK.
-enum Status { ACTIVE, DOWNED, DEAD }
+enum Status { ALIVE, DOWNED, DEAD }
 
 @export var student_id: StringName
 @export var student_class: StudentClassData
@@ -35,16 +35,18 @@ enum Status { ACTIVE, DOWNED, DEAD }
 @export var luck: int = 8
 
 @export_group("Meta")
-@export var status: Status = Status.ACTIVE
+@export var status: Status = Status.ALIVE
 @export var portrait_color: Color = Color.WHITE
 @export_multiline var bio_flavor: String = ""
-@export var is_starter: bool = false
+@export var is_starter: bool = false # only used on new game init
 
 func _init():
 	is_student = true
 
 func is_usable() -> bool:
-	return status == Status.ACTIVE or status == Status.DOWNED
+	## Need to just refactor this out as it's always evaluated to the same thing
+	## as is_alive(), but that sounds like a headache so TODO
+	return is_alive()
 
 func is_downed() -> bool:
 	return status == Status.DOWNED

@@ -3,6 +3,13 @@
 [ext_resource type="Script" uid="uid://bfdlcu1jk6548" path="res://scenes/hub/rooms/shop_room.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://ckmlc2g6ghe5s" path="res://data/assets/backgrounds/shop.png" id="2_bg"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_contentbg"]
+bg_color = Color(0, 0, 0, 0.6901961)
+content_margin_left = 24.0
+content_margin_top = 20.0
+content_margin_right = 24.0
+content_margin_bottom = 20.0
+
 [node name="ShopRoom" type="Control" unique_id=1345037345]
 layout_mode = 3
 anchors_preset = 15
@@ -32,40 +39,46 @@ theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 24
 
-[node name="MainVBox" type="VBoxContainer" parent="MainMargin" unique_id=961392456]
+[node name="ContentPanel" type="PanelContainer" parent="MainMargin"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_contentbg")
+
+[node name="MainVBox" type="VBoxContainer" parent="MainMargin/ContentPanel" unique_id=961392456]
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="TitleLabel" type="Label" parent="MainMargin/MainVBox" unique_id=1499028102]
+[node name="TitleLabel" type="Label" parent="MainMargin/ContentPanel/MainVBox" unique_id=1499028102]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8784314, 0.75686276, 0.2901961, 1)
 theme_override_font_sizes/font_size = 28
 text = "Shop"
 horizontal_alignment = 2
 
-[node name="HUDLabel" type="Label" parent="MainMargin/MainVBox" unique_id=1171397601]
+[node name="HUDLabel" type="Label" parent="MainMargin/ContentPanel/MainVBox" unique_id=1171397601]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7882353, 0.76862746, 0.84705883, 1)
 theme_override_font_sizes/font_size = 16
 text = "Supplies: 50   |   Roster: 26 / 26 alive"
 horizontal_alignment = 2
 
-[node name="PopupScroll" type="ScrollContainer" parent="MainMargin/MainVBox" unique_id=966799693]
+[node name="PopupScroll" type="ScrollContainer" parent="MainMargin/ContentPanel/MainVBox" unique_id=966799693]
 custom_minimum_size = Vector2(0, 340)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PopupContent" type="VBoxContainer" parent="MainMargin/MainVBox/PopupScroll" unique_id=1086272455]
+[node name="PopupContent" type="VBoxContainer" parent="MainMargin/ContentPanel/MainVBox/PopupScroll" unique_id=1086272455]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
-[node name="StatusLabel" type="Label" parent="MainMargin/MainVBox" unique_id=1646534852]
+[node name="StatusLabel" type="Label" parent="MainMargin/ContentPanel/MainVBox" unique_id=1646534852]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.56078434, 0.83137256, 0.56078434, 1)
 
-[node name="BackButton" type="Button" parent="MainMargin/MainVBox" unique_id=915452954]
+[node name="BackButton" type="Button" parent="MainMargin/ContentPanel/MainVBox"]
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 8
 text = "Back to Campus"

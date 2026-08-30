@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"chess_club_three_moves_ahead"
 display_name = "Three Moves Ahead"
-description = "Already knows where this fight is going."
+description = "Already knows where this fight is going, and gets there first."
 mp_cost = 6
 target_type = 4
 power = 0.0

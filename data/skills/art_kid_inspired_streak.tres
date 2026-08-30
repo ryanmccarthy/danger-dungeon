@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"art_kid_inspired_streak"
 display_name = "Inspired Streak"
-description = "Everything's suddenly, perfectly clear."
+description = "Everything's suddenly, perfectly clear, and it makes the next few spells hit harder."
 mp_cost = 6
 target_type = 4
 power = 0.0

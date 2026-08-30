@@ -11,7 +11,7 @@
 script = ExtResource("1_uhg7g")
 class_id = &"skater"
 class_name_display = "Skater"
-archetype_tag = "Rogue/Striker"
+archetype_tag = "Rogue"
 
 hp_per_level = 4.0
 mp_per_level = 1.2

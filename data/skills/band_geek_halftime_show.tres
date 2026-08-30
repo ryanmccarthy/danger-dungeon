@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"band_geek_halftime_show"
 display_name = "Halftime Show"
-description = "The whole band, full volume, full formation."
+description = "The whole band, full volume, full formation, and it patches up everyone watching."
 mp_cost = 13
 target_type = 3
 power = 0.4

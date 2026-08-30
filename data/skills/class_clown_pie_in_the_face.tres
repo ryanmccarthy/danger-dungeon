@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"class_clown_pie_in_the_face"
 display_name = "Pie in the Face"
-description = "A classic. Still works."
+description = "A classic. Still lands, still hurts."
 mp_cost = 2
 power = 0.8
 accuracy = 0.92

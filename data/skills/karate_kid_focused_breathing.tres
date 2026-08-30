@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource("1")
-skill_id = &"overachiever_all_nighter"
-display_name = "Pulling an All-Nighter"
-description = "Running on caffeine and pure spite."
+skill_id = &"karate_kid_focused_breathing"
+display_name = "Focused Breathing"
+description = "Breathes through the pain, and channels it straight into the next strike."
 mp_cost = 5
 target_type = 4
 power = 0.0

@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"class_clown_heckle"
 display_name = "Heckle"
-description = "An extremely specific, extremely rude observation."
+description = "An extremely specific, extremely rude observation that gets under their skin, and throws off their swing."
 mp_cost = 4
 power = 0.0
 effect_type = [3]

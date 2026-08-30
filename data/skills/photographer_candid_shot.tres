@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"photographer_candid_shot"
 display_name = "Candid Shot"
-description = "Catches it completely off guard."
+description = "Catches it completely off guard for a clean, hard hit."
 mp_cost = 3
 power = 0.75
 damage_school = 1

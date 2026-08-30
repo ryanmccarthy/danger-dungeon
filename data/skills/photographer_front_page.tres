@@ -6,7 +6,7 @@
 script = ExtResource("1")
 skill_id = &"photographer_front_page"
 display_name = "Front Page"
-description = "This is definitely making the cover."
+description = "This is definitely making the cover, and everyone hams it up for the shot, swinging harder."
 mp_cost = 12
 target_type = 3
 power = 0.0

@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cnescjhou2f2o" path="res://data/schemas/student_data.gd" id="1_scbq6"]
 [ext_resource type="Resource" path="res://data/classes/class_choir_kid.tres" id="2_w8fl2"]
-[ext_resource type="Texture2D" path="res://data/assets/portraits/generic.png" id="3_emerson"]
+[ext_resource type="Texture2D" path="res://data/assets/portraits/emerson.png" id="3_emerson"]
+[ext_resource type="Texture2D" path="res://data/assets/portraits/emerson_standing.png" id="4_emerson_standing"]
 
 [resource]
 script = ExtResource("1_scbq6")
@@ -14,12 +15,13 @@ max_hp = 42
 current_mp = 23
 max_mp = 23
 portrait_color = Color(0.9, 0.9, 0.7, 1.0)
-bio_flavor = "Warms up for the horror the same way she warms up for a solo."
+bio_flavor = "Warms up for the horror the same way he warms up for a solo."
 portrait = ExtResource("3_emerson")
+standing_portrait = ExtResource("4_emerson_standing")
 
 atk = 3
 def = 4
-mag = 10
-res = 10
+mag = 12
+res = 12
 spd = 9
-luck = 12
+luck = 8
