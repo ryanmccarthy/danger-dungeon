@@ -10,6 +10,7 @@ addons/
 export.cfg
 export_credentials.cfg
 *.tmp
+publish/
 
 # Imported translations (automatically generated from CSV files)
 *.translation

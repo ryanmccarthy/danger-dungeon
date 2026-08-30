@@ -23,6 +23,7 @@ func save_game(slot: int = 0) -> bool:
 			"level": s.level, "hp": s.current_hp, "max_hp": s.max_hp,
 			"mp": s.current_mp, "max_mp": s.max_mp,
 			"hunger": s.current_hunger, "status": s.status,
+			"learned_skills": s.learned_skill_ids,
 		}
 	var f := FileAccess.open(SAVE_DIR + "slot_%d.json" % slot, FileAccess.WRITE)
 	if f == null:
@@ -68,4 +69,5 @@ func load_game(slot: int = 0) -> bool:
 		s.max_mp = sd.get("max_mp", s.max_mp)
 		s.current_hunger = sd.get("hunger", s.current_hunger)
 		s.status = sd.get("status", s.status)
+		s.learned_skill_ids.assign(sd.get("learned_skills", []))
 	return true

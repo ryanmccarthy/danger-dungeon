@@ -10,6 +10,10 @@ enum Status { ACTIVE, DOWNED, DEAD }
 
 @export var student_id: StringName
 @export var student_class: StudentClassData
+## Skills learned on top of student_class.skill_ids (e.g. via the
+## Valedictorian's Analyze). Stored as ids, not resources, so this is
+## per-student state, never shared with other students of the same class.
+@export var learned_skill_ids: Array[StringName] = []
 @export var level: int = 1
 @export var experience: int = 0
 @export var xp_to_next_level: int = 100

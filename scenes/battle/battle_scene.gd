@@ -394,6 +394,39 @@ func _buff_tag_string(ref) -> String:
 
 	return "  " + "; ".join(parts)
 
+# -------------------------------------------------------------- learning
+func _try_learn_skill(actor: StringName, target, skill: SkillData) -> void:
+	if not _is_enemy_ref(target):
+		return
+
+	var enemy_data: EnemyData = enemies[target]["data"]
+	if enemy_data.skill_pool.is_empty():
+		_log("%s finds nothing to learn from %s." % [_display_name(actor), _display_name(target)])
+		return
+
+	if randf() >= skill.learn_chance:
+		_log("%s studies %s, but doesn't pick up anything new." % [_display_name(actor), _display_name(target)])
+		return
+
+	var s := PartyManager.get_student(actor)
+	var known_ids: Array = []
+	for known in s.student_class.skill_ids:
+		known_ids.append(known.skill_id)
+	known_ids.append_array(s.learned_skill_ids)
+
+	var eligible: Array[SkillData] = []
+	for candidate in enemy_data.skill_pool:
+		if not known_ids.has(candidate.skill_id):
+			eligible.append(candidate)
+
+	if eligible.is_empty():
+		_log("%s already knows everything %s has to teach." % [_display_name(actor), _display_name(target)])
+		return
+
+	var learned: SkillData = eligible[randi() % eligible.size()]
+	s.learned_skill_ids.append(learned.skill_id)
+	_log("%s learns %s from %s!" % [_display_name(actor), learned.display_name, _display_name(target)])
+
 func _signed_str(amount: float) -> String:
 	return "+%d" % int(amount) if amount >= 0.0 else str(int(amount))
 
@@ -552,7 +585,12 @@ func _show_skill_menu(actor: StringName) -> void:
 	back.pressed.connect(func(): _player_command_menu(actor))
 	_action_area.add_child(back)
 	var desc_lbl := _make_description_label()
-	for skill: SkillData in student.student_class.skill_ids:
+	var known_skills: Array[SkillData] = student.student_class.skill_ids.duplicate()
+	for id in student.learned_skill_ids:
+		var learned := ContentDatabase.get_skill(id)
+		if learned != null:
+			known_skills.append(learned)
+	for skill: SkillData in known_skills:
 		var can_afford: bool = student.current_mp >= skill.mp_cost
 		var btn := Button.new()
 		btn.text = "%s (MP %d)" % [skill.display_name, skill.mp_cost]
@@ -605,6 +643,8 @@ func _cast_skill(actor: StringName, skill: SkillData, targets: Array) -> void:
 					_log("%s uses %s on %s (%s %s for %d rounds)." % [_display_name(actor), skill.display_name,
 							_display_name(t), String(skill.debuff_stat_affected).to_upper(),
 							_signed_str(-skill.debuff_amount), skill.debuff_duration])
+				SkillData.EffectType.LEARN_SKILL:
+					_try_learn_skill(actor, t, skill)
 
 	_end_player_turn()
 

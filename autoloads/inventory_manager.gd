@@ -4,7 +4,7 @@ extends Node
 ## with an area's distance from the university and is discounted by any
 ## unlocked bus-repair upgrades.
 
-var supplies: int = 50
+var supplies: int = 100
 var items: Dictionary = {}
 
 func add_supplies(amount: int) -> void:

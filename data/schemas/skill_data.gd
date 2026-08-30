@@ -3,7 +3,7 @@ class_name SkillData
 extends Resource
 
 enum TargetType { SINGLE_ENEMY, ALL_ENEMIES, SINGLE_ALLY, ALL_ALLIES, SELF }
-enum EffectType { DAMAGE, HEAL, BUFF, DEBUFF }
+enum EffectType { DAMAGE, HEAL, BUFF, DEBUFF, LEARN_SKILL }
 enum DamageSchool { PHYSICAL, MAGICAL }
 
 @export var skill_id: StringName
@@ -21,4 +21,7 @@ enum DamageSchool { PHYSICAL, MAGICAL }
 @export var buff_duration: int = 0
 @export var buff_stat_affected: String = Stat.NONE
 @export var accuracy: float = 1.0
+## Meaningful only when LEARN_SKILL is in effect_type: 0.0-1.0 chance the
+## caster learns a random skill from the target enemy's skill_pool.
+@export var learn_chance: float = 0.0
 @export var icon_color: Color = Color.WHITE
