@@ -11,6 +11,7 @@
 - Add a boss
 - Add status effects
 - Add skills which inflict those status effects
+- Add other cell types to dungeon builder (events, safe zones, etc)
 
 ## Possible but minor-ish undertaking ##
 

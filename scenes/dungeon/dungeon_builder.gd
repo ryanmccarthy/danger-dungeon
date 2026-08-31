@@ -22,6 +22,10 @@ static func build(parent: Node3D, area: AreaData) -> void:
 				_add_floor(parent, world_pos, tile_size, theme)
 				if not theme or theme.has_ceiling:
 					_add_ceiling(parent, world_pos, tile_size, theme)
+				if ch == "S":
+					_add_safe_zone(parent, world_pos, tile_size, theme)
+				if ch == "E":
+					_add_event_marker(parent, world_pos, tile_size, theme)
 				if ch == "R":
 					_add_exit_marker(parent, world_pos, tile_size, theme)
 
@@ -57,6 +61,16 @@ static func _add_ceiling(parent: Node3D, pos: Vector3, size: float, theme: Dunge
 	if theme and theme.ceiling_material:
 		box.material = theme.ceiling_material
 	parent.add_child(box)
+
+static func _add_safe_zone(parent: Node3D, pos: Vector3, size: float, theme: DungeonVisualThemeData) -> void:
+	"""
+	A tile on which no encounters can occur
+	"""
+
+static func _add_event_marker(parent: Node3D, pos: Vector3, size: float, theme: DungeonVisualThemeData) -> void:
+	"""
+	A tile that triggers a scripted event or story encounter
+	"""
 
 static func _add_exit_marker(parent: Node3D, pos: Vector3, size: float, theme: DungeonVisualThemeData) -> void:
 	var marker := CSGCylinder3D.new()

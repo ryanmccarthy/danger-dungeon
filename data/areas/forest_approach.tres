@@ -10,14 +10,14 @@ display_name = "Forest of White"
 distance_from_university = 0
 grid_layout = Array[String](
     ["#########",
-     "#R......#",
-     "#.#####.#",
-     "#.#...#.#",
-     "#.#.#.#.#",
-     "#.#...#.#",
-     "#.#...#.#",
-     "#.......#",
-     "#########"]
+	 "#R      #",
+	 "# ##### #",
+	 "# #   # #",
+	 "# # # # #",
+	 "# #   # #",
+	 "# #   # #",
+	 "#       #",
+	 "#########"]
 )
 spawn_coord = Vector2i(2, 1)
 spawn_facing = Vector2i(1, 0)
