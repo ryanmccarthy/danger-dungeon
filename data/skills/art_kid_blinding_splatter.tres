@@ -6,11 +6,14 @@
 script = ExtResource("1")
 skill_id = &"art_kid_blinding_splatter"
 display_name = "Blinding Splatter"
-description = "A messy spray that gets in their eyes and slows them down."
+description = "A messy spray straight into their eyes. They can barely aim, and they're slow with it."
 mp_cost = 5
 power = 0.0
-effect_type = [3]
+effect_type = [3, 5]
 debuff_stat_affected = "spd"
 debuff_amount = 4
 debuff_duration = 3
+status_to_inflict = &"blind"
+status_chance = 0.75
+status_duration = 3
 icon_color = Color(0.95, 0.45, 0.15, 1.0)

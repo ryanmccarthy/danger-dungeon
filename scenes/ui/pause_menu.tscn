@@ -44,7 +44,7 @@ theme_override_constants/separation = 20
 
 [node name="PartyGrid" type="GridContainer" parent="Root/MainPanel/MainMargin/MainVBox" unique_id=370370155]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 6
 size_flags_stretch_ratio = 4.5
 theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 16

@@ -11,7 +11,7 @@
 script = ExtResource("1_o0fcc")
 class_id = &"cheerleader"
 class_name_display = "Cheerleader"
-archetype_tag = "Support"
+archetype_tag = "Buff/Heal"
 
 hp_per_level = 4.5
 mp_per_level = 2.5

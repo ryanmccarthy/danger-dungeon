@@ -96,6 +96,9 @@ func _try_move(direction: Vector2i) -> void:
 	_busy = false
 
 	HungerSystem.tick_step(PartyManager.get_active_party_ids())
+	# Statuses flagged persists_after_battle (poison) bleed and decay per
+	# tile step out here, the way they do per round inside a battle.
+	PartyManager.tick_persistent_statuses()
 	_refresh_hud()
 	_refresh_automap()
 

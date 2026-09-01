@@ -15,6 +15,11 @@ signal player_returned_to_university()
 signal hunger_changed(student_id: StringName, new_value: float)
 signal hunger_hit_zero(student_id: StringName)
 
+## Party-only. Enemy statuses are battle-local (enemies are array indices,
+## not ids), so they never travel over the bus.
+signal status_applied(student_id: StringName, status_id: StringName)
+signal status_removed(student_id: StringName, status_id: StringName)
+
 signal student_downed(student_id: StringName)
 signal student_revived(student_id: StringName)
 signal student_died(student_id: StringName)

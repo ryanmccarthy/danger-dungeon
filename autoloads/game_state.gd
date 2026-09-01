@@ -74,6 +74,11 @@ func return_to_university() -> bool:
 	var cost := InventoryManager.get_travel_cost(current_area)
 	if not InventoryManager.spend_supplies(cost):
 		return false
+	# Getting back inside is the reliable cure for anything that followed the
+	# party out of the dungeon; without it persistent poison has no way out.
+	for id in PartyManager.get_active_party_ids():
+		PartyManager.clear_statuses(id)
+
 	EventBus.player_returned_to_university.emit()
 	change_mode(GameMode.HUB)
 	return true

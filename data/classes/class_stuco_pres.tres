@@ -11,7 +11,7 @@
 script = ExtResource("1")
 class_id = &"stuco_pres"
 class_name_display = "Student Council President"
-archetype_tag = "Commander"
+archetype_tag = "Buffer"
 
 hp_per_level = 4.4
 mp_per_level = 2.6

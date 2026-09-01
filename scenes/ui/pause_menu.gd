@@ -136,7 +136,7 @@ func _make_party_card(s: StudentData) -> Control:
 	info.add_child(stat_lbl)
 
 	var status_lbl := Label.new()
-	status_lbl.text = "Status: %s" % ", ".join(s.status_effects)
+	status_lbl.text = "Status: %s" % _status_summary(s)
 	status_lbl.add_theme_font_size_override("font_size", 20)
 	info.add_child(status_lbl)
 
@@ -787,7 +787,7 @@ func _make_ident_grid(student: StudentData) -> GridContainer:
 	grid.add_child(condition_lbl)
 
 	var effects_lbl := Label.new()
-	effects_lbl.text = "Status: %s" % ", ".join(student.status_effects)
+	effects_lbl.text = "Status: %s" % _status_summary(student)
 	effects_lbl.add_theme_font_size_override("font_size", 18)
 	effects_lbl.add_theme_color_override("font_color", DIM_TEXT)
 	grid.add_child(effects_lbl)
@@ -1100,3 +1100,16 @@ func _style_nav_button(btn: Button) -> void:
 	var pressed_sb: StyleBoxFlat = normal.duplicate()
 	pressed_sb.bg_color = Color(0.22, 0.19, 0.1, 1.0)
 	btn.add_theme_stylebox_override("pressed", pressed_sb)
+
+func _status_summary(character: CharacterData) -> String:
+	## status_effects holds ids; resolve them to display names. Empty is
+	## healthy -- there is no "Fine" sentinel stored on the character.
+	if character == null or character.status_effects.is_empty():
+		return "Fine"
+
+	var parts: Array[String] = []
+	for status_id in character.status_effects:
+		var data := ContentDatabase.get_status_effect(status_id)
+		parts.append(data.display_name if data != null else String(status_id))
+
+	return ", ".join(parts)

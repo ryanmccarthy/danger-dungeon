@@ -24,6 +24,8 @@ func save_game(slot: int = 0) -> bool:
 			"mp": s.current_mp, "max_mp": s.max_mp,
 			"hunger": s.current_hunger, "status": s.status,
 			"learned_skills": s.learned_skill_ids,
+			"statuses": s.status_effects,
+			"status_durations": PartyManager.status_durations.get(s.student_id, {}),
 		}
 	var f := FileAccess.open(SAVE_DIR + "slot_%d.json" % slot, FileAccess.WRITE)
 	if f == null:
@@ -70,4 +72,15 @@ func load_game(slot: int = 0) -> bool:
 		s.current_hunger = sd.get("hunger", s.current_hunger)
 		s.status = sd.get("status", s.status)
 		s.learned_skill_ids.assign(sd.get("learned_skills", []))
+		# Same JSON round-trip caveat as the equipment loadouts above: both the
+		# array entries and the duration keys come back as plain Strings.
+		s.status_effects.assign(sd.get("statuses", []))
+		var clocks: Dictionary = {}
+		for status_id in sd.get("status_durations", {}).keys():
+			clocks[StringName(status_id)] = int(sd["status_durations"][status_id])
+
+		if clocks.is_empty():
+			PartyManager.status_durations.erase(s.student_id)
+		else:
+			PartyManager.status_durations[s.student_id] = clocks
 	return true

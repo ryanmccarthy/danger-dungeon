@@ -6,12 +6,15 @@
 script = ExtResource("1")
 skill_id = &"photographer_flash_blind"
 display_name = "Flash Blind"
-description = "A point-blank flash that leaves it stumbling around, slower to react."
+description = "A point-blank flash that burns a white hole into their vision and leaves them stumbling."
 mp_cost = 5
 power = 0.0
-effect_type = [3]
+effect_type = [3, 5]
 debuff_stat_affected = "spd"
 debuff_amount = 5
 debuff_duration = 2
 accuracy = 0.9
+status_to_inflict = &"blind"
+status_chance = 0.85
+status_duration = 2
 icon_color = Color(0.8, 0.8, 0.85, 1.0)

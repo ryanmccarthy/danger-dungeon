@@ -12,6 +12,10 @@ const MAX_BACK := 3
 var roster: Array[StudentData] = []
 var front_row_ids: Array[StringName] = []
 var back_row_ids: Array[StringName] = []
+## student_id -> {status_id: rounds_remaining}. StudentData.status_effects
+## holds which statuses are active (what the UI reads); this holds their
+## clocks. A remaining of 0 means "until cured" and never decays.
+var status_durations: Dictionary = {}
 
 func _ready() -> void:
 	roster = ContentDatabase.get_all_students()
@@ -49,10 +53,16 @@ func get_party() -> Array[StudentData]:
 	return party
 
 func is_in_party(id: StringName) -> bool:
-	if id in front_row_ids or id in back_row_ids:
+	if is_in_front_row(id) or is_in_back_row(id):
 		return true
 
 	return false
+
+func is_in_front_row(id: StringName) -> bool:
+	return front_row_ids.has(id)
+
+func is_in_back_row(id: StringName) -> bool:
+	return back_row_ids.has(id)
 
 func get_living_roster() -> Array[StudentData]:
 	var out: Array[StudentData] = []
@@ -84,9 +94,6 @@ func get_active_party() -> Array[StudentData]:
 			out.append(s)
 
 	return out
-
-func is_in_back_row(id: StringName) -> bool:
-	return back_row_ids.has(id)
 
 func assign_to_party(id: StringName, row: String, slot: int = -1) -> bool:
 	var student := get_student(id)
@@ -161,6 +168,114 @@ func heal_student(id: StringName, amount: int) -> void:
 
 	s.current_hp = min(get_effective_max_hp(id), s.current_hp + amount)
 
+# ------------------------------------------------------------ status effects
+func add_status(id: StringName, status_id: StringName, duration: int = 0) -> bool:
+	## duration of 0 falls back to the status's own default_duration.
+	## Re-applying an active status refreshes its clock rather than stacking.
+	var s := get_student(id)
+	if s == null or not s.is_alive():
+		return false
+
+	var data := ContentDatabase.get_status_effect(status_id)
+	if data == null:
+		push_warning("[PartyManager] unknown status effect '%s'" % status_id)
+		return false
+
+	var turns: int = duration if duration > 0 else data.default_duration
+	if not status_durations.has(id):
+		status_durations[id] = {}
+
+	var clocks: Dictionary = status_durations[id]
+	clocks[status_id] = max(turns, int(clocks.get(status_id, 0)))
+	if s.status_effects.has(status_id):
+		return true
+
+	s.status_effects.append(status_id)
+	EventBus.status_applied.emit(id, status_id)
+	return true
+
+func remove_status(id: StringName, status_id: StringName) -> void:
+	var s := get_student(id)
+	if s == null or not s.status_effects.has(status_id):
+		return
+
+	s.status_effects.erase(status_id)
+	if status_durations.has(id):
+		status_durations[id].erase(status_id)
+		if status_durations[id].is_empty():
+			status_durations.erase(id)
+
+	EventBus.status_removed.emit(id, status_id)
+
+func has_status(id: StringName, status_id: StringName) -> bool:
+	var s := get_student(id)
+	return s != null and s.status_effects.has(status_id)
+
+func get_statuses(id: StringName) -> Array[StringName]:
+	var s := get_student(id)
+	if s == null:
+		return []
+
+	return s.status_effects
+
+func get_status_remaining(id: StringName, status_id: StringName) -> int:
+	return int(status_durations.get(id, {}).get(status_id, 0))
+
+func clear_statuses(id: StringName, temporary_only: bool = false) -> void:
+	## temporary_only leaves anything flagged persists_after_battle in place —
+	## that's the battle-end cleanup. Omit it to cure everything (resting).
+	var s := get_student(id)
+	if s == null:
+		return
+
+	for status_id in s.status_effects.duplicate():
+		if temporary_only:
+			var data := ContentDatabase.get_status_effect(status_id)
+			if data != null and data.persists_after_battle:
+				continue
+
+		remove_status(id, status_id)
+
+func tick_statuses(id: StringName) -> Array[StringName]:
+	## Takes one tick off every timed status; returns the ids that just expired
+	## (already removed). Callers own the logging.
+	var expired: Array[StringName] = []
+	var clocks: Dictionary = status_durations.get(id, {})
+	for status_id in clocks.keys():
+		var remaining: int = int(clocks[status_id])
+		if remaining <= 0:
+			continue
+
+		remaining -= 1
+		if remaining <= 0:
+			expired.append(status_id)
+		else:
+			clocks[status_id] = remaining
+
+	for status_id in expired:
+		remove_status(id, status_id)
+
+	return expired
+
+func tick_persistent_statuses() -> void:
+	## Dungeon tile-step tick: damage-over-time and decay for statuses flagged
+	## persists_after_battle. Battle runs its own per-round tick instead.
+	for id in get_active_party_ids():
+		var s := get_student(id)
+		if s == null or not s.is_alive() or s.is_downed():
+			continue
+
+		var dot: int = 0
+		for status_id in s.status_effects:
+			var data := ContentDatabase.get_status_effect(status_id)
+			if data != null and data.persists_after_battle:
+				dot += data.dot_damage
+
+		if dot > 0:
+			apply_damage(id, dot)
+
+		tick_statuses(id)
+
 func revive_student(id: StringName, hp_amount: int) -> bool:
 	var s := get_student(id)
 	if s == null or not s.is_downed():
@@ -168,6 +283,7 @@ func revive_student(id: StringName, hp_amount: int) -> bool:
 
 	s.status = StudentData.Status.ALIVE
 	s.current_hp = max(1, hp_amount)
+	clear_statuses(id)
 	EventBus.student_revived.emit(id)
 	return true
 
@@ -178,6 +294,7 @@ func kill_student(id: StringName) -> void:
 
 	s.status = StudentData.Status.DEAD
 	s.current_hp = 0
+	clear_statuses(id)
 	remove_from_party(id)
 	EventBus.student_died.emit(id)
 

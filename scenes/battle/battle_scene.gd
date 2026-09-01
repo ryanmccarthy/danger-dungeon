@@ -23,6 +23,7 @@ var party_ids: Array = []
 var _defending: Dictionary = {}
 var _cards: Dictionary = {}
 var _buffs: Dictionary = {} # ref -> Array[{"stat": String, "amount": float, "remaining": int}]
+var _enemy_statuses: Dictionary = {} # enemy_idx -> {status_id: remaining}
 var _turn_order: Array = []
 var _turn_cursor: int = 0
 var _round_num: int = 1
@@ -49,6 +50,7 @@ func enter_state(_context: Dictionary = {}) -> void:
 	_defending.clear()
 	_cards.clear()
 	_buffs.clear()
+	_enemy_statuses.clear()
 
 	var enemy_ids: Array = GameState.pending_encounter.get("enemy_ids", [])
 	for id in enemy_ids:
@@ -131,12 +133,7 @@ func _make_enemy_card(idx: int) -> Control:
 	name_lbl.text = enemies[idx]["name"]
 	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(name_lbl)
-	# box.add_child(_make_portrait(enemies[idx]["data"].portrait))
 	box.add_child(_make_fitted_portrait(enemies[idx]["data"].portrait))
-
-	# var hp_lbl := Label.new()
-	# hp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	# box.add_child(hp_lbl)
 
 	_cards[idx] = {"root": panel, "name_lbl": name_lbl} #, "hp": hp_lbl}
 
@@ -150,7 +147,7 @@ func _refresh_cards() -> void:
 			continue
 
 		card["root"].modulate = Color(1, 1, 1, 1) if e["hp"] > 0 else Color(0.4, 0.4, 0.4, 0.7)
-		card["name_lbl"].text = e["name"] + _buff_tag_string(i)
+		card["name_lbl"].text = e["name"] + _status_tag_string(i) + _buff_tag_string(i)
 
 	_show_roster_list()
 
@@ -196,6 +193,16 @@ func _show_roster_list() -> void:
 		stat_lbl.add_theme_font_size_override("font_size", 13)
 		row.add_child(stat_lbl)
 
+		var status_ids := PartyManager.get_statuses(id)
+		if not status_ids.is_empty():
+			var status_lbl := Label.new()
+			status_lbl.text = _status_tag_string(id).strip_edges()
+			status_lbl.add_theme_font_size_override("font_size", 12)
+			var first := ContentDatabase.get_status_effect(status_ids[0])
+			if first != null:
+				status_lbl.add_theme_color_override("font_color", first.icon_color)
+			row.add_child(status_lbl)
+
 		var alive := student.status == StudentData.Status.ALIVE
 		row.modulate = Color(1, 1, 1, 1) if alive else Color(0.4, 0.4, 0.4, 0.7)
 		list.add_child(row)
@@ -205,7 +212,15 @@ func _start_round() -> void:
 	if _check_battle_end():
 		return
 
-	_tick_buffs()
+	# Round 1 has had no turns yet, so nothing has aged: ticking here would
+	# make every duration one round shorter than it reads.
+	if _round_num > 1:
+		_tick_buffs()
+		_tick_statuses()
+		# Damage-over-time can end the battle before anyone acts.
+		if _check_battle_end():
+			return
+
 	_round_label.text = "Round %d" % _round_num
 	_turn_order.clear()
 	for i in enemies.size():
@@ -245,12 +260,29 @@ func _next_turn() -> void:
 		_clear_action_area()
 		_clear_current_actor_portrait()
 		_show_roster_list()
-		_enemy_act(ref)
+		if _turn_lost_to_status(ref):
+			await get_tree().create_timer(0.6).timeout
+			_next_turn()
+			return
+
+		_enemy_act(ref, _is_confused(ref))
 	else:
 		_action_panel.modulate.a = 1.0
 		_portrait_panel.modulate.a = 1.0
 		_set_current_actor_portrait(ref)
 		_show_roster_list()
+		if _turn_lost_to_status(ref):
+			_clear_action_area()
+			await get_tree().create_timer(0.6).timeout
+			_next_turn()
+			return
+
+		if _is_confused(ref):
+			_clear_action_area()
+			await get_tree().create_timer(0.6).timeout
+			_do_confused_attack(ref)
+			return
+
 		_player_command_menu(ref)
 
 func _check_battle_end() -> bool:
@@ -273,6 +305,9 @@ func _resolve(result: String, live_party: Array) -> void:
 
 	_resolved = true
 	_clear_action_area()
+	# Anything not flagged persists_after_battle wears off with the fight.
+	for id in party_ids:
+		PartyManager.clear_statuses(id, true)
 
 	if result == "WON":
 		var rewards := _roll_rewards(live_party)
@@ -335,6 +370,7 @@ func _get_stat(ref, stat: String) -> int:
 			"def": base = d.def
 			"mag": base = d.mag
 			"res": base = d.res
+			# EnemyData has no luck; 0 is the intended fallback, not an oversight.
 	else:
 		var s := PartyManager.get_student(ref)
 		match stat:
@@ -342,6 +378,7 @@ func _get_stat(ref, stat: String) -> int:
 			"def": base = s.def
 			"mag": base = s.mag
 			"res": base = s.res
+			"luck": base = s.luck
 
 	return max(0, int(round(base + _get_buff_total(ref, stat) + _get_equip_total(ref, stat))))
 
@@ -393,6 +430,195 @@ func _buff_tag_string(ref) -> String:
 		parts.append("%s%s (%d)" % [String(b["stat"]).to_upper(), _signed_str(b["amount"]), int(b["remaining"])])
 
 	return "  " + "; ".join(parts)
+
+# ---------------------------------------------------------------- statuses
+## Party statuses live in PartyManager (so the persistent ones survive the
+## battle and reach the dungeon/save); enemy statuses live here, keyed by
+## turn-queue index. They must never be written to EnemyData.status_effects --
+## ContentDatabase hands out one shared resource per enemy *type*, so two fog
+## wisps in one encounter would share (and leak) each other's conditions.
+func _get_statuses(ref) -> Array:
+	if _is_enemy_ref(ref):
+		return _enemy_statuses.get(ref, {}).keys()
+
+	return PartyManager.get_statuses(ref)
+
+func _status_data(ref) -> Array[StatusEffectData]:
+	var out: Array[StatusEffectData] = []
+	for status_id in _get_statuses(ref):
+		var data := ContentDatabase.get_status_effect(status_id)
+		if data != null:
+			out.append(data)
+
+	return out
+
+func _has_status(ref, status_id: StringName) -> bool:
+	return _get_statuses(ref).has(status_id)
+
+func _status_remaining(ref, status_id: StringName) -> int:
+	if _is_enemy_ref(ref):
+		return int(_enemy_statuses.get(ref, {}).get(status_id, 0))
+
+	return PartyManager.get_status_remaining(ref, status_id)
+
+func _add_status(ref, status_id: StringName, duration: int = 0) -> bool:
+	var data := ContentDatabase.get_status_effect(status_id)
+	if data == null:
+		return false
+
+	if not _is_enemy_ref(ref):
+		return PartyManager.add_status(ref, status_id, duration)
+
+	var turns: int = duration if duration > 0 else data.default_duration
+	if not _enemy_statuses.has(ref):
+		_enemy_statuses[ref] = {}
+
+	var clocks: Dictionary = _enemy_statuses[ref]
+	clocks[status_id] = max(turns, int(clocks.get(status_id, 0)))
+	return true
+
+func _remove_status(ref, status_id: StringName) -> void:
+	if not _is_enemy_ref(ref):
+		PartyManager.remove_status(ref, status_id)
+		return
+
+	if _enemy_statuses.has(ref):
+		_enemy_statuses[ref].erase(status_id)
+
+func _all_refs() -> Array:
+	var out: Array = []
+	for i in enemies.size():
+		out.append(i)
+
+	out.append_array(party_ids)
+	return out
+
+func _tick_one(ref) -> Array:
+	## One tick off this combatant's clocks; returns the ids that just expired
+	## (already removed). A remaining of 0 means "until cured" and never decays.
+	if not _is_enemy_ref(ref):
+		return PartyManager.tick_statuses(ref)
+
+	var expired: Array = []
+	var clocks: Dictionary = _enemy_statuses.get(ref, {})
+	for status_id in clocks.keys():
+		var remaining: int = int(clocks[status_id])
+		if remaining <= 0:
+			continue
+
+		remaining -= 1
+		if remaining <= 0:
+			expired.append(status_id)
+		else:
+			clocks[status_id] = remaining
+
+	for status_id in expired:
+		clocks.erase(status_id)
+
+	return expired
+
+func _tick_statuses() -> void:
+	for ref in _all_refs():
+		if not _is_alive(ref):
+			continue
+
+		var dot := 0
+		for data in _status_data(ref):
+			dot += data.dot_damage
+
+		if dot > 0:
+			_apply_damage(ref, dot)
+			_log("%s takes %d from their condition." % [_display_name(ref), dot])
+
+		for status_id in _tick_one(ref):
+			_log("%s is no longer %s." % [_display_name(ref), _status_name(status_id)])
+
+func _status_name(status_id: StringName) -> String:
+	var data := ContentDatabase.get_status_effect(status_id)
+	return data.display_name if data != null else String(status_id)
+
+func _status_tag_string(ref) -> String:
+	var ids: Array = _get_statuses(ref)
+	if ids.is_empty():
+		return ""
+
+	var parts: Array[String] = []
+	for status_id in ids:
+		var remaining := _status_remaining(ref, status_id)
+		if remaining > 0:
+			parts.append("%s (%d)" % [_status_name(status_id), remaining])
+		else:
+			parts.append(_status_name(status_id))
+
+	return "  " + "; ".join(parts)
+
+# ---------------------------------------------------------- accuracy / rolls
+func _get_accuracy_mult(ref) -> float:
+	var mult := 1.0
+	for data in _status_data(ref):
+		mult *= data.accuracy_mult
+
+	return mult
+
+func _rolls_hit(attacker, base_accuracy: float) -> bool:
+	## No evasion stat exists yet, so only the attacker's own accuracy and
+	## conditions matter (documented future extension: target evasion).
+	return randf() < CombatMath.compute_hit_chance(base_accuracy, _get_accuracy_mult(attacker))
+
+func _is_offensive(skill: SkillData) -> bool:
+	## Only skills aimed at the other side can miss; a blinded healer still heals.
+	if skill.target_type == SkillData.TargetType.SINGLE_ENEMY:
+		return true
+
+	return skill.target_type == SkillData.TargetType.ALL_ENEMIES
+
+func _try_inflict_status(actor, target, skill: SkillData) -> void:
+	var data := ContentDatabase.get_status_effect(skill.status_to_inflict)
+	if data == null:
+		push_warning("[Battle] %s names unknown status '%s'" % [skill.skill_id, skill.status_to_inflict])
+		return
+
+	var base: float = skill.status_chance if skill.status_chance > 0.0 else 1.0
+	var chance := CombatMath.compute_status_land_chance(base, _get_stat(target, "res"), _get_stat(actor, "luck"))
+	if randf() >= chance:
+		_log("%s shrugs off %s." % [_display_name(target), data.display_name])
+		return
+
+	if _add_status(target, skill.status_to_inflict, skill.status_duration):
+		_log("%s is %s!" % [_display_name(target), data.display_name])
+		_refresh_cards()
+
+func _try_cure_status(target, skill: SkillData) -> void:
+	if skill.status_to_inflict == &"":
+		# No status named: a general-purpose cleanse.
+		if _is_enemy_ref(target):
+			_enemy_statuses.erase(target)
+		else:
+			PartyManager.clear_statuses(target)
+		_log("%s is cleansed." % _display_name(target))
+	elif _has_status(target, skill.status_to_inflict):
+		_remove_status(target, skill.status_to_inflict)
+		_log("%s is no longer %s." % [_display_name(target), _status_name(skill.status_to_inflict)])
+	else:
+		_log("%s is not %s." % [_display_name(target), _status_name(skill.status_to_inflict)])
+
+	_refresh_cards()
+
+func _turn_lost_to_status(ref) -> bool:
+	for data in _status_data(ref):
+		if data.skip_turn_chance > 0.0 and randf() < data.skip_turn_chance:
+			_log("%s is %s and cannot move!" % [_display_name(ref), data.display_name])
+			return true
+
+	return false
+
+func _is_confused(ref) -> bool:
+	for data in _status_data(ref):
+		if data.confuse_chance > 0.0 and randf() < data.confuse_chance:
+			_log("%s is %s and turns on their own side!" % [_display_name(ref), data.display_name])
+			return true
+
+	return false
 
 # -------------------------------------------------------------- learning
 func _try_learn_skill(actor: StringName, target, skill: SkillData) -> void:
@@ -497,26 +723,41 @@ func _living_party() -> Array:
 	return out
 
 # -------------------------------------------------------------- enemy AI
-func _enemy_act(ref: int) -> void:
+func _enemy_act(ref: int, confused: bool = false) -> void:
 	var data: EnemyData = enemies[ref]["data"]
-	var targets := _living_party()
-	if targets.is_empty():
+	# A charmed enemy turns on its own side instead.
+	var pool: Array = _living_enemies() if confused else _living_party()
+	if confused:
+		pool.erase(ref)
+
+	if pool.is_empty():
 		_next_turn()
 		return
 
-	var target = targets[randi() % targets.size()]
+	var target = pool[randi() % pool.size()]
 	if data.skill_pool.is_empty():
-		var dmg := _deal_damage(ref, target, 1.0, SkillData.DamageSchool.PHYSICAL)
-		_log("%s hits %s for %d." % [_display_name(ref), _display_name(target), dmg])
+		if _rolls_hit(ref, 1.0):
+			var dmg := _deal_damage(ref, target, 1.0, SkillData.DamageSchool.PHYSICAL)
+			_log("%s hits %s for %d." % [_display_name(ref), _display_name(target), dmg])
+		else:
+			_log("%s lunges at %s and misses." % [_display_name(ref), _display_name(target)])
 	else:
 		var skill: SkillData = data.skill_pool[randi() % data.skill_pool.size()]
-		if skill.target_type == SkillData.TargetType.ALL_ENEMIES:
-			for t in _living_party():
+		var hits: Array = pool if skill.target_type == SkillData.TargetType.ALL_ENEMIES else [target]
+		for t in hits:
+			if not _rolls_hit(ref, skill.accuracy):
+				_log("%s uses %s on %s, but misses." % [_display_name(ref), skill.display_name, _display_name(t)])
+				continue
+
+			# Damage is gated on power, not on effect_type: enemy skills have
+			# never declared DAMAGE and some are mis-tagged, so reading
+			# effect_type here would silently turn them into no-ops.
+			if skill.power > 0.0:
 				var dmg := _deal_damage(ref, t, skill.power, skill.damage_school)
 				_log("%s uses %s on %s for %d." % [_display_name(ref), skill.display_name, _display_name(t), dmg])
-		else:
-			var dmg := _deal_damage(ref, target, skill.power, skill.damage_school)
-			_log("%s uses %s on %s for %d." % [_display_name(ref), skill.display_name, _display_name(target), dmg])
+
+			if skill.effect_type.has(SkillData.EffectType.INFLICT_STATUS):
+				_try_inflict_status(ref, t, skill)
 
 	await get_tree().create_timer(0.5).timeout
 	_next_turn()
@@ -548,10 +789,29 @@ func _add_action_button(parent: Control, text: String, cb: Callable, disabled: b
 	btn.pressed.connect(cb)
 	parent.add_child(btn)
 
-func _do_attack(actor, target) -> void:
-	var dmg := _deal_damage(actor, target, 1.0, SkillData.DamageSchool.PHYSICAL)
-	_log("%s attacks %s for %d." % [_display_name(actor), _display_name(target), dmg])
+func _do_attack(actor_name, target) -> void:
+	var actor = ContentDatabase.get_actor(actor_name)
+	# Calculate basic melee attack chance
+	var actor_accuracy: float = (actor.spd + actor.luck)/100.0
+
+	if _rolls_hit(actor_name, actor_accuracy):
+		var dmg := _deal_damage(actor_name, target, 1.0, SkillData.DamageSchool.PHYSICAL)
+		_log("%s attacks %s for %d." % [_display_name(actor_name), _display_name(target), dmg])
+	else:
+		_log("%s attacks %s, but misses." % [_display_name(actor_name), _display_name(target)])
+
 	_end_player_turn()
+
+func _do_confused_attack(actor: StringName) -> void:
+	## Charmed party member: swings at a random ally instead of taking a
+	## command. Falls back to a normal turn if there is nobody else standing.
+	var allies: Array = _living_party()
+	allies.erase(actor)
+	if allies.is_empty():
+		_player_command_menu(actor)
+		return
+
+	_do_attack(actor, allies[randi() % allies.size()])
 
 func _do_defend(actor) -> void:
 	_defending[actor] = true
@@ -581,17 +841,19 @@ func _show_skill_menu(actor: StringName) -> void:
 	_clear_action_area()
 
 	var student := PartyManager.get_student(actor)
+	var back_row := PartyManager.is_in_back_row(actor)
 	var back := Button.new()
 	back.text = "< Back"
 	back.pressed.connect(func(): _player_command_menu(actor))
 	_action_area.add_child(back)
 	var desc_lbl := _make_description_label()
 	var known_skills: Array[SkillData] = student.student_class.skill_ids.duplicate()
+
 	for id in student.learned_skill_ids:
 		var learned := ContentDatabase.get_skill(id)
 		if learned != null:
 			known_skills.append(learned)
-	var back_row := PartyManager.is_in_back_row(actor)
+
 	for skill: SkillData in known_skills:
 		var can_afford: bool = student.current_mp >= skill.mp_cost
 		var row_blocked: bool = skill.is_melee and back_row
@@ -601,6 +863,7 @@ func _show_skill_menu(actor: StringName) -> void:
 		btn.pressed.connect(func(): _use_skill(actor, skill))
 		btn.mouse_entered.connect(func(): desc_lbl.text = skill.description)
 		_action_area.add_child(btn)
+
 	_action_area.add_child(desc_lbl)
 
 func _use_skill(actor: StringName, skill: SkillData) -> void:
@@ -627,6 +890,12 @@ func _cast_skill(actor: StringName, skill: SkillData, targets: Array) -> void:
 
 	s.current_mp -= skill.mp_cost
 	for t in targets:
+		# Rolled once per target, so a multi-target skill can hit some and
+		# miss others. Only offensive skills can miss at all.
+		if _is_offensive(skill) and not _rolls_hit(actor, skill.accuracy):
+			_log("%s uses %s on %s, but misses." % [_display_name(actor), skill.display_name, _display_name(t)])
+			continue
+
 		for effect: SkillData.EffectType in skill.effect_type:
 			match effect:
 				SkillData.EffectType.DAMAGE:
@@ -648,6 +917,10 @@ func _cast_skill(actor: StringName, skill: SkillData, targets: Array) -> void:
 							_signed_str(-skill.debuff_amount), skill.debuff_duration])
 				SkillData.EffectType.LEARN_SKILL:
 					_try_learn_skill(actor, t, skill)
+				SkillData.EffectType.INFLICT_STATUS:
+					_try_inflict_status(actor, t, skill)
+				SkillData.EffectType.CURE_STATUS:
+					_try_cure_status(t, skill)
 
 	_end_player_turn()
 
@@ -660,7 +933,7 @@ func _show_item_menu(actor: StringName) -> void:
 	_action_area.add_child(back)
 
 	var desc_lbl := _make_description_label()
-	var usable_ids: Array = [&"item_bandage", &"item_energy_drink", &"item_trail_mix"]
+	var usable_ids: Array = [&"item_bandage", &"item_energy_drink", &"item_trail_mix", &"item_antidote"]
 	var any := false
 
 	for id in usable_ids:

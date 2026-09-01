@@ -7,12 +7,18 @@ enum UseEffect {
 	NONE, HEAL_HP, HEAL_MP, CURE_HUNGER, BUFF_FOOD, HEAL_SAN,
 	REDUCE_HP, REDUCE_MP, INCREASE_HUNGER, DEBUFF_FOOD, REDUCE_SAN,
 	REVIVE,
+	## Clears cure_status_id, or every status when that field is empty.
+	## Serialized as raw ints in the item .tres files -- only ever append.
+	CURE_STATUS,
 }
 
 @export var item_category: Category = Category.CONSUMABLE
 @export var stack_size: int = 99
 @export var use_effect: UseEffect = UseEffect.NONE
 @export var use_value: float = 0.0
+
+## Meaningful with CURE_STATUS: which status id to clear. Empty cures all.
+@export var cure_status_id: StringName = &""
 
 @export var bonus_effect: UseEffect = UseEffect.NONE
 @export var bonus_value: float = 0.0
@@ -40,6 +46,19 @@ func use_item(target: CharacterData) -> bool:
 			if not target.is_student or target.current_hunger >= target.max_hunger:
 				return false
 			HungerSystem.restore_hunger(target.student_id, int(use_value))
+
+		ItemData.UseEffect.CURE_STATUS:
+			if not target.is_student:
+				return false
+
+			if cure_status_id == &"":
+				if target.status_effects.is_empty():
+					return false
+				PartyManager.clear_statuses(target.student_id)
+			else:
+				if not PartyManager.has_status(target.student_id, cure_status_id):
+					return false
+				PartyManager.remove_status(target.student_id, cure_status_id)
 
 		ItemData.UseEffect.REVIVE:
 			if not target.is_student or not target.is_downed:

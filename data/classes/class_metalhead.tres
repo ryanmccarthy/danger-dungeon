@@ -11,7 +11,7 @@
 script = ExtResource("1")
 class_id = &"metalhead"
 class_name_display = "Metalhead"
-archetype_tag = "Chaos Debuffer"
+archetype_tag = "Melee Debuffer"
 
 hp_per_level = 3.6
 mp_per_level = 2.4

@@ -4,7 +4,9 @@ extends Resource
 
 @export var portrait: CompressedTexture2D = preload("res://data/assets/generic.png")
 @export var standing_portrait: CompressedTexture2D = null
-@export var status_effects: Array[String] = [StatusEffects.FINE]
+## Active status effect ids (see data/status_effects/). Empty means healthy —
+## there is no "Fine" sentinel; UI renders the empty case as "Fine".
+@export var status_effects: Array[StringName] = []
 @export var display_name: String
 @export var is_student: bool = false
 

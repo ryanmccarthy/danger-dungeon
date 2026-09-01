@@ -11,7 +11,7 @@
 script = ExtResource("1")
 class_id = &"stoner"
 class_name_display = "Stoner"
-archetype_tag = "Slacker Support"
+archetype_tag = "Item Support/Healer"
 
 hp_per_level = 4.0
 mp_per_level = 2.0

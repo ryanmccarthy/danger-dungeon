@@ -11,7 +11,7 @@
 script = ExtResource("1")
 class_id = &"prep"
 class_name_display = "Prep"
-archetype_tag = "Item Support"
+archetype_tag = "Charmer"
 
 hp_per_level = 4.5
 mp_per_level = 2.0

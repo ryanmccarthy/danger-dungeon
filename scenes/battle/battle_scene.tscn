@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bvkaumikcr7of"]
 
-[ext_resource type="Script" path="res://scenes/battle/battle_scene.gd" id="1_3hov6"]
-[ext_resource type="AudioStream" path="res://data/assets/music/battle.ogg" id="2_6iigb"]
-[ext_resource type="Texture2D" path="res://data/assets/backgrounds/forest_battle.png" id="3_forestBg"]
+[ext_resource type="Script" uid="uid://48y2br5nddrk" path="res://scenes/battle/battle_scene.gd" id="1_3hov6"]
+[ext_resource type="AudioStream" uid="uid://iew7yi30hbgp" path="res://data/assets/music/battle.ogg" id="2_6iigb"]
+[ext_resource type="Texture2D" uid="uid://cet27fwyjsib1" path="res://data/assets/backgrounds/forest_battle.png" id="3_forestBg"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_mhx8t"]
 
@@ -61,7 +61,7 @@ autowrap_mode = 3
 max_lines_visible = 1
 
 [node name="BottomRow" type="HBoxContainer" parent="MainMargin/MainVBox" unique_id=302981447]
-custom_minimum_size = Vector2(0, 170)
+custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 theme_override_constants/separation = 14
 

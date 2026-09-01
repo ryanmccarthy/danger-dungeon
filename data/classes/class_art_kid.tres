@@ -11,7 +11,7 @@
 script = ExtResource("1")
 class_id = &"art_kid"
 class_name_display = "Art Kid"
-archetype_tag = "Painter"
+archetype_tag = "Buffer/Debuffer"
 
 hp_per_level = 3.4
 mp_per_level = 2.6

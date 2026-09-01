@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="StatusEffectData" format=3]
+
+[ext_resource type="Script" path="res://data/schemas/status_effect_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+status_id = &"charm"
+display_name = "Charmed"
+description = "No longer sure whose side they're on. May strike their own allies."
+icon_color = Color(0.9, 0.45, 0.7, 1)
+default_duration = 2
+persists_after_battle = false
+accuracy_mult = 1.0
+dot_damage = 0
+skip_turn_chance = 0.0
+confuse_chance = 0.5

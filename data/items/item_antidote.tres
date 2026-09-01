@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" uid="uid://dao4thtco7yfv" path="res://data/schemas/item_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"item_antidote"
+display_name = "Antidote"
+description = "Chalky tablets from the nurse's office. Draws whatever it is back out of the blood."
+effect_summary = "Cures Poisoned"
+in_shop = true
+buy_price = 18
+sell_price = 6
+stack_size = 20
+use_effect = 12
+cure_status_id = &"poison"
+icon_color = Color(0.45, 0.8, 0.35, 1)

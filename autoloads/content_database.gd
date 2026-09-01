@@ -14,6 +14,7 @@ var _quests: Dictionary = {}
 var _recipes: Dictionary = {}
 var _upgrades: Dictionary = {}
 var _equipment: Dictionary = {}
+var _status_effects: Dictionary = {}
 
 func _ready() -> void:
 	_load_all()
@@ -29,15 +30,18 @@ func _load_all() -> void:
 	_index_dir("res://data/recipes", _recipes, "recipe_id")
 	_index_dir("res://data/upgrades", _upgrades, "upgrade_id")
 	_index_dir("res://data/equipment", _equipment, "id")
+	_index_dir("res://data/status_effects", _status_effects, "status_id")
+
 	# Items and equipment share one flat id namespace (both live in
 	# InventoryManager.items), so a duplicate would silently shadow —
 	# get_inventory_item resolves items first.
 	for dup in _items.keys().filter(func(k): return _equipment.has(k)):
 		push_warning("[ContentDatabase] id '%s' is both an item and equipment" % dup)
-	print("[ContentDatabase] students=%d classes=%d skills=%d items=%d enemies=%d areas=%d quests=%d recipes=%d upgrades=%d equipment=%d" % [
+
+	print("[ContentDatabase] students=%d classes=%d skills=%d items=%d enemies=%d areas=%d quests=%d recipes=%d upgrades=%d equipment=%d status_effects=%d" % [
 		_students.size(), _classes.size(), _skills.size(), _items.size(),
 		_enemies.size(), _areas.size(), _quests.size(), _recipes.size(), _upgrades.size(),
-		_equipment.size()
+		_equipment.size(), _status_effects.size()
 	])
 
 func _index_dir(dir_path: String, target: Dictionary, id_field: String) -> void:
@@ -58,6 +62,12 @@ func _index_dir(dir_path: String, target: Dictionary, id_field: String) -> void:
 					target[id] = res
 		file_name = dir.get_next()
 	dir.list_dir_end()
+
+func get_actor(id: StringName) -> CharacterData:
+	if id in _students.keys():
+		return get_student(id)
+
+	return get_enemy(id)
 
 func get_student(id: StringName) -> StudentData:
 	return _students.get(id)
@@ -147,15 +157,25 @@ func get_all_upgrades() -> Array[UpgradeData]:
 
 	return out
 
-func get_equipment(id: StringName) -> EquipmentData:
-	return _equipment.get(id)
-
 ## Resolves any id that can occupy an InventoryManager stack, whichever kind
 ## it is. Use this instead of get_item() anywhere the id came from inventory,
 ## a shop list, or a drop table — those can all be gear.
 func get_inventory_item(id: StringName) -> InventoryItemData:
 	var item: InventoryItemData = _items.get(id)
 	return item if item != null else _equipment.get(id)
+
+func get_status_effect(id: StringName) -> StatusEffectData:
+	return _status_effects.get(id)
+
+func get_all_status_effects() -> Array[StatusEffectData]:
+	var out: Array[StatusEffectData] = []
+	for v in _status_effects.values():
+		out.append(v)
+
+	return out
+
+func get_equipment(id: StringName) -> EquipmentData:
+	return _equipment.get(id)
 
 func get_all_equipment() -> Array[EquipmentData]:
 	var out: Array[EquipmentData] = []

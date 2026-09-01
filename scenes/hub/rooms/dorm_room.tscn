@@ -1,16 +1,16 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://c0fej8urrcaiv"]
 
-[ext_resource type="Script" path="res://scenes/hub/rooms/dorm_room.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://data/assets/backgrounds/dorm.png" id="2_bg"]
+[ext_resource type="Script" uid="uid://ckbv148p251u" path="res://scenes/hub/rooms/dorm_room.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://csex1rf0dr53c" path="res://data/assets/backgrounds/dorm.png" id="2_bg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_contentbg"]
-bg_color = Color(0, 0, 0, 0.6901961)
 content_margin_left = 24.0
 content_margin_top = 20.0
 content_margin_right = 24.0
 content_margin_bottom = 20.0
+bg_color = Color(0, 0, 0, 0.6901961)
 
-[node name="DormRoom" type="Control"]
+[node name="DormRoom" type="Control" unique_id=1596735063]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,7 +19,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1609181910]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -27,7 +27,7 @@ texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="MainMargin" type="MarginContainer" parent="."]
+[node name="MainMargin" type="MarginContainer" parent="." unique_id=684761046]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,45 +39,45 @@ theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 24
 
-[node name="ContentPanel" type="PanelContainer" parent="MainMargin"]
+[node name="ContentPanel" type="PanelContainer" parent="MainMargin" unique_id=680056215]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_contentbg")
 
-[node name="MainVBox" type="VBoxContainer" parent="MainMargin/ContentPanel"]
+[node name="MainVBox" type="VBoxContainer" parent="MainMargin/ContentPanel" unique_id=830580311]
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="TitleLabel" type="Label" parent="MainMargin/ContentPanel/MainVBox"]
+[node name="TitleLabel" type="Label" parent="MainMargin/ContentPanel/MainVBox" unique_id=242820575]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8784314, 0.75686276, 0.2901961, 1)
 theme_override_font_sizes/font_size = 28
 text = "Dorm — Party Formation"
 horizontal_alignment = 2
 
-[node name="HUDLabel" type="Label" parent="MainMargin/ContentPanel/MainVBox"]
+[node name="HUDLabel" type="Label" parent="MainMargin/ContentPanel/MainVBox" unique_id=1890533463]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7882353, 0.76862746, 0.84705883, 1)
 theme_override_font_sizes/font_size = 16
 text = "Supplies: 50   |   Roster: 26 / 26 alive"
 horizontal_alignment = 2
 
-[node name="PopupScroll" type="ScrollContainer" parent="MainMargin/ContentPanel/MainVBox"]
+[node name="PopupScroll" type="ScrollContainer" parent="MainMargin/ContentPanel/MainVBox" unique_id=988378374]
 custom_minimum_size = Vector2(0, 340)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PopupContent" type="VBoxContainer" parent="MainMargin/ContentPanel/MainVBox/PopupScroll"]
+[node name="PopupContent" type="VBoxContainer" parent="MainMargin/ContentPanel/MainVBox/PopupScroll" unique_id=1618232436]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
-[node name="StatusLabel" type="Label" parent="MainMargin/ContentPanel/MainVBox"]
+[node name="StatusLabel" type="Label" parent="MainMargin/ContentPanel/MainVBox" unique_id=1583137909]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.56078434, 0.83137256, 0.56078434, 1)
 
-[node name="BackButton" type="Button" parent="MainMargin/ContentPanel/MainVBox"]
+[node name="BackButton" type="Button" parent="MainMargin/ContentPanel/MainVBox" unique_id=1900051434]
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 8

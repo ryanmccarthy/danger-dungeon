@@ -6,7 +6,7 @@
 script = ExtResource("1_nuddm")
 skill_id = &"valedictorian_analyze"
 display_name = "Analyze"
-description = "Studies exactly how they fight, sometimes closely enough to pick up the trick too."
+description = "Study your enemies and learn exactly how they fight. You may just pick up their tricks."
 mp_cost = 5
 power = 0.0
 effect_type = [4]
