@@ -9,4 +9,5 @@ display_name = "Sucker Punch"
 description = "Didn't wait for a fair fight."
 mp_cost = 2
 accuracy = 0.9
+is_melee = true
 icon_color = Color(0.35, 0.4, 0.3, 1.0)

@@ -9,4 +9,5 @@ display_name = "Quick Slash"
 description = "A fast, low-effort slash off a skateboard's edge."
 mp_cost = 3
 accuracy = 0.97
+is_melee = true
 icon_color = Color(0.9490196, 0.6627451, 0.23529412, 1)

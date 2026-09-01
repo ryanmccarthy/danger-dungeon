@@ -10,4 +10,5 @@ description = "A heavy tool, swung with real intent."
 mp_cost = 3
 power = 1.1
 accuracy = 0.92
+is_melee = true
 icon_color = Color(0.55, 0.35, 0.15, 1.0)

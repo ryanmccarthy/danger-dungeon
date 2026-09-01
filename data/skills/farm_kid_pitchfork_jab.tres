@@ -9,4 +9,5 @@ display_name = "Pitchfork Jab"
 description = "Farm tools work just fine out here, too."
 mp_cost = 3
 accuracy = 0.93
+is_melee = true
 icon_color = Color(0.45, 0.6, 0.25, 1.0)

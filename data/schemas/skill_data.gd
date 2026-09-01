@@ -21,6 +21,11 @@ enum DamageSchool { PHYSICAL, MAGICAL }
 @export var buff_duration: int = 0
 @export var buff_stat_affected: String = Stat.NONE
 @export var accuracy: float = 1.0
+## True for physical, contact-range attacks (basic Attack is always melee
+## too, but that's hardcoded rather than a SkillData). False for anything
+## with no meaningful range concept — heals, buffs, debuffs, magic, etc.
+## Melee skills can't be used by a party member in the back row.
+@export var is_melee: bool = false
 ## Meaningful only when LEARN_SKILL is in effect_type: 0.0-1.0 chance the
 ## caster learns a random skill from the target enemy's skill_pool.
 @export var learn_chance: float = 0.0

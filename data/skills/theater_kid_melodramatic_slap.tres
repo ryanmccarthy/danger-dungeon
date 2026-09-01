@@ -10,4 +10,5 @@ description = "A slap performed with real commitment to the bit."
 mp_cost = 3
 power = 0.9
 accuracy = 0.9
+is_melee = true
 icon_color = Color(0.75, 0.2, 0.55, 1.0)

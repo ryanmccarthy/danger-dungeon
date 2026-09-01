@@ -11,4 +11,5 @@ mp_cost = 12
 target_type = 1
 power = 0.6
 accuracy = 0.88
+is_melee = true
 icon_color = Color(0.45, 0.6, 0.25, 1.0)

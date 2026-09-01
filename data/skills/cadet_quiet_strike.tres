@@ -9,4 +9,5 @@ display_name = "Quiet Strike"
 description = "No warning. No wasted motion."
 mp_cost = 3
 accuracy = 0.95
+is_melee = true
 icon_color = Color(0.25, 0.28, 0.35, 1.0)

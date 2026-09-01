@@ -10,4 +10,5 @@ description = "One shot. Has to count."
 mp_cost = 8
 power = 1.8
 accuracy = 0.6
+is_melee = true
 icon_color = Color(0.25, 0.28, 0.35, 1.0)

@@ -10,4 +10,5 @@ description = "Grinds past a foe, landing a fast hit on the way through."
 mp_cost = 5
 power = 0.9
 accuracy = 0.95
+is_melee = true
 icon_color = Color(0.9490196, 0.6627451, 0.23529412, 1)

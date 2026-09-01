@@ -535,15 +535,16 @@ func _player_command_menu(actor: StringName) -> void:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 10)
 	_action_area.add_child(row)
-	_add_action_button(row, "Attack", func(): _begin_target_select(actor, func(t): _do_attack(actor, t)))
+	_add_action_button(row, "Attack", func(): _begin_target_select(actor, func(t): _do_attack(actor, t)), PartyManager.is_in_back_row(actor))
 	_add_action_button(row, "Skill", func(): _show_skill_menu(actor))
 	_add_action_button(row, "Item", func(): _show_item_menu(actor))
 	_add_action_button(row, "Defend", func(): _do_defend(actor))
 	_add_action_button(row, "Flee", func(): _do_flee())
 
-func _add_action_button(parent: Control, text: String, cb: Callable) -> void:
+func _add_action_button(parent: Control, text: String, cb: Callable, disabled: bool = false) -> void:
 	var btn := Button.new()
 	btn.text = text
+	btn.disabled = disabled
 	btn.pressed.connect(cb)
 	parent.add_child(btn)
 
@@ -590,11 +591,13 @@ func _show_skill_menu(actor: StringName) -> void:
 		var learned := ContentDatabase.get_skill(id)
 		if learned != null:
 			known_skills.append(learned)
+	var back_row := PartyManager.is_in_back_row(actor)
 	for skill: SkillData in known_skills:
 		var can_afford: bool = student.current_mp >= skill.mp_cost
+		var row_blocked: bool = skill.is_melee and back_row
 		var btn := Button.new()
 		btn.text = "%s (MP %d)" % [skill.display_name, skill.mp_cost]
-		btn.disabled = not can_afford
+		btn.disabled = not can_afford or row_blocked
 		btn.pressed.connect(func(): _use_skill(actor, skill))
 		btn.mouse_entered.connect(func(): desc_lbl.text = skill.description)
 		_action_area.add_child(btn)

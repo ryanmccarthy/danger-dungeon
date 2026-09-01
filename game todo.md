@@ -2,7 +2,6 @@
 
 ## Major priority ##
 
-- Finish adding character portraits
 - Finish adding character standing portraits
 
 ## Minor priority ##
@@ -17,7 +16,6 @@
 
 - Add sound effects
 - Add aggro mechanic (tanks draw it with skills; other classes can lower theirs; attacking/skills add to it)
-- Prevent melee attacks from back row (need to add 'is_ranged' to skills and prevent false if character is Back)
 
 ## Possible but major undertaking ##
 

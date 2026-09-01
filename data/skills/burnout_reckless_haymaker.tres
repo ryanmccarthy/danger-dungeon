@@ -10,4 +10,5 @@ description = "Swings with everything, holds nothing back."
 mp_cost = 7
 power = 1.7
 accuracy = 0.65
+is_melee = true
 icon_color = Color(0.35, 0.4, 0.3, 1.0)

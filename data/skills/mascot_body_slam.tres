@@ -10,4 +10,5 @@ description = "The mascot suit takes another hit for the team — on someone els
 mp_cost = 4
 power = 1.2
 accuracy = 0.95
+is_melee = true
 icon_color = Color(0.8509804, 0.30980393, 0.30980393, 1)

@@ -10,4 +10,5 @@ description = "A full-body varsity tackle."
 mp_cost = 3
 power = 1.1
 accuracy = 0.95
+is_melee = true
 icon_color = Color(0.2901961, 0.5647059, 0.8509804, 1)
