@@ -2,7 +2,7 @@
 class_name CharacterData
 extends Resource
 
-@export var portrait: CompressedTexture2D = preload("res://data/assets/enemies/generic.png")
+@export var portrait: CompressedTexture2D = preload("res://data/assets/generic.png")
 @export var standing_portrait: CompressedTexture2D = null
 @export var status_effects: Array[String] = [StatusEffects.FINE]
 @export var display_name: String
