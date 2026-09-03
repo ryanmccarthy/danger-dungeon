@@ -2,9 +2,9 @@
 
 ## Major priority ##
 
-- Finish adding character standing portraits
-- Give characters a skill list that they learn from on level up if level==skill_level
-  - So just two skills to start, put the other two already-existing skills into the list
+- Finish adding character standing portraits for all characters
+- Polish UI elements (health bars, skill icons, status effect indicators)
+- Balance enemy stats and skill pools across difficulty tiers
 
 ## Minor priority ##
 
