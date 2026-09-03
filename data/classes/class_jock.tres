@@ -23,6 +23,11 @@ spd_per_level = 0.3
 luck_per_level = 0.2
 
 preferred_row = 0
-skill_ids = Array[ExtResource("2_2ahgy")]([ExtResource("3_um4ke"), ExtResource("4_1do44"), ExtResource("5_e5b4e"), ExtResource("6_78uxn")])
+skill_ids = Array[ExtResource("2_2ahgy")]([ExtResource("4_1do44"), ExtResource("5_e5b4e"),])
 icon_color = Color(0.2901961, 0.5647059, 0.8509804, 1)
 flavor_text = "Soaks up hits so nobody else has to."
+
+skill_level_up_table = {
+	2: ExtResource("3_um4ke"),
+	4: ExtResource("6_78uxn"),
+}

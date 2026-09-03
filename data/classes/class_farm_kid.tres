@@ -23,6 +23,11 @@ spd_per_level = 0.3
 luck_per_level = 0.4
 
 preferred_row = 0
-skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
+skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"),])
 icon_color = Color(0.45, 0.6, 0.25, 1.0)
 flavor_text = "Raised chickens, cattle, and one very large pig. None of that prepared them for this."
+
+skill_level_up_table = {
+	2: ExtResource("5"),
+	4: ExtResource("6"),
+}

@@ -621,7 +621,7 @@ func _is_confused(ref) -> bool:
 	return false
 
 # -------------------------------------------------------------- learning
-func _try_learn_skill(actor: StringName, target, skill: SkillData) -> void:
+func _try_learn_skill(actor: StringName, target) -> void:
 	if not _is_enemy_ref(target):
 		return
 
@@ -630,28 +630,27 @@ func _try_learn_skill(actor: StringName, target, skill: SkillData) -> void:
 		_log("%s finds nothing to learn from %s." % [_display_name(actor), _display_name(target)])
 		return
 
-	if randf() >= skill.learn_chance:
-		_log("%s studies %s, but doesn't pick up anything new." % [_display_name(actor), _display_name(target)])
-		return
 
 	var s := PartyManager.get_student(actor)
-	var known_ids: Array = []
-	for known in s.student_class.skill_ids:
-		known_ids.append(known.skill_id)
-	known_ids.append_array(s.learned_skill_ids)
-
 	var eligible: Array[SkillData] = []
 	for candidate in enemy_data.skill_pool:
-		if not known_ids.has(candidate.skill_id):
+		# is learnable and isn't already learned
+		if candidate.is_learnable() and \
+			not s.student_class.skill_ids.has(candidate.skill_id) and \
+			not s.learned_skill_ids.has(candidate.skill_id):
 			eligible.append(candidate)
 
 	if eligible.is_empty():
 		_log("%s already knows everything %s has to teach." % [_display_name(actor), _display_name(target)])
 		return
 
-	var learned: SkillData = eligible[randi() % eligible.size()]
-	s.learned_skill_ids.append(learned.skill_id)
-	_log("%s learns %s from %s!" % [_display_name(actor), learned.display_name, _display_name(target)])
+	for skill in eligible:
+		if randf() < skill.learn_chance:
+			s.learned_skill_ids.append(skill.skill_id)
+			_log("%s learns %s from %s!" % [_display_name(actor), skill.display_name, _display_name(target)])
+			return
+
+	_log("%s studies %s, but doesn't pick up anything new." % [_display_name(actor), _display_name(target)])
 
 func _signed_str(amount: float) -> String:
 	return "+%d" % int(amount) if amount >= 0.0 else str(int(amount))
@@ -916,7 +915,7 @@ func _cast_skill(actor: StringName, skill: SkillData, targets: Array) -> void:
 							_display_name(t), String(skill.debuff_stat_affected).to_upper(),
 							_signed_str(-skill.debuff_amount), skill.debuff_duration])
 				SkillData.EffectType.LEARN_SKILL:
-					_try_learn_skill(actor, t, skill)
+					_try_learn_skill(actor, t)
 				SkillData.EffectType.INFLICT_STATUS:
 					_try_inflict_status(actor, t, skill)
 				SkillData.EffectType.CURE_STATUS:

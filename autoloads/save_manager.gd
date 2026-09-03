@@ -18,6 +18,7 @@ func save_game(slot: int = 0) -> bool:
 		"equipment": EquipmentManager.loadouts,
 		"students": {},
 	}
+
 	for s in PartyManager.roster:
 		data["students"][s.student_id] = {
 			"level": s.level, "hp": s.current_hp, "max_hp": s.max_hp,
@@ -27,9 +28,11 @@ func save_game(slot: int = 0) -> bool:
 			"statuses": s.status_effects,
 			"status_durations": PartyManager.status_durations.get(s.student_id, {}),
 		}
+
 	var f := FileAccess.open(SAVE_DIR + "slot_%d.json" % slot, FileAccess.WRITE)
 	if f == null:
 		return false
+
 	f.store_string(JSON.stringify(data))
 	return true
 
@@ -37,18 +40,20 @@ func load_game(slot: int = 0) -> bool:
 	var path := SAVE_DIR + "slot_%d.json" % slot
 	if not FileAccess.file_exists(path):
 		return false
+
 	var f := FileAccess.open(path, FileAccess.READ)
 	var data = JSON.parse_string(f.get_as_text())
 	if data == null:
 		return false
+
 	InventoryManager.supplies = data.get("supplies", InventoryManager.supplies)
 	InventoryManager.items = data.get("items", {})
 	PartyManager.front_row_ids.assign(data.get("front_row", []))
 	PartyManager.back_row_ids.assign(data.get("back_row", []))
 	QuestManager.completed_quest_ids.assign(data.get("completed_quests", []))
 	UpgradeManager.unlocked_upgrade_ids.assign(data.get("unlocked_upgrades", []))
-	# Unlike the Array[StringName] fields above (which Godot converts on
-	# assign), Dictionary keys/values come back from JSON as plain Strings —
+
+	# Dictionary keys/values come back from JSON as plain Strings —
 	# convert explicitly so EquipmentManager's &"" comparisons keep working.
 	EquipmentManager.loadouts.clear()
 	for id in data.get("equipment", {}).keys():
@@ -59,10 +64,12 @@ func load_game(slot: int = 0) -> bool:
 			"accessory_1": StringName(slots.get("accessory_1", "")),
 			"accessory_2": StringName(slots.get("accessory_2", "")),
 		}
+
 	for id in data.get("students", {}).keys():
 		var s: StudentData = PartyManager.get_student(id)
 		if s == null:
 			continue
+
 		var sd: Dictionary = data["students"][id]
 		s.level = sd.get("level", s.level)
 		s.current_hp = sd.get("hp", s.current_hp)
@@ -72,7 +79,8 @@ func load_game(slot: int = 0) -> bool:
 		s.current_hunger = sd.get("hunger", s.current_hunger)
 		s.status = sd.get("status", s.status)
 		s.learned_skill_ids.assign(sd.get("learned_skills", []))
-		# Same JSON round-trip caveat as the equipment loadouts above: both the
+
+		# Same JSON caveat as the equipment loadouts above: both the
 		# array entries and the duration keys come back as plain Strings.
 		s.status_effects.assign(sd.get("statuses", []))
 		var clocks: Dictionary = {}
@@ -83,4 +91,5 @@ func load_game(slot: int = 0) -> bool:
 			PartyManager.status_durations.erase(s.student_id)
 		else:
 			PartyManager.status_durations[s.student_id] = clocks
+			
 	return true

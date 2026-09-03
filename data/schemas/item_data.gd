@@ -34,7 +34,6 @@ func use_item(target: CharacterData) -> bool:
 		ItemData.UseEffect.HEAL_HP:
 			if target.current_hp >= target.max_hp:
 				return false
-
 			target.restore_health(int(use_value))
 
 		ItemData.UseEffect.HEAL_MP:
@@ -61,8 +60,9 @@ func use_item(target: CharacterData) -> bool:
 				PartyManager.remove_status(target.student_id, cure_status_id)
 
 		ItemData.UseEffect.REVIVE:
-			if not target.is_student or not target.is_downed:
+			if not target.is_student or not target.is_downed():
 				return false
+
 			if not PartyManager.revive_student(target.student_id, int(use_value)):
 				return false
 

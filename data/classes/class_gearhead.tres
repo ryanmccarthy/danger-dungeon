@@ -23,6 +23,11 @@ spd_per_level = 0.3
 luck_per_level = 0.3
 
 preferred_row = 0
-skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
+skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("5"),])
 icon_color = Color(0.55, 0.35, 0.15, 1.0)
 flavor_text = "Fixed the bus engine twice already. Still doesn't trust the fog."
+
+skill_level_up_table = {
+	2: ExtResource("4"),
+	4: ExtResource("6"),
+}

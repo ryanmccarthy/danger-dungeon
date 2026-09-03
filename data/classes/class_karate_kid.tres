@@ -23,6 +23,11 @@ spd_per_level = 1.0
 luck_per_level = 0.4
 
 preferred_row = 2
-skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
+skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"),])
 icon_color = Color(0.2, 0.75, 0.85, 1.0)
 flavor_text = "Can solve complex equations such as 'How many kicks does it take to get to the center of a fog monster?'"
+
+skill_level_up_table = {
+	2: ExtResource("5"),
+	4: ExtResource("6"),
+}

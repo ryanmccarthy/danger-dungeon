@@ -23,6 +23,11 @@ spd_per_level = 0.2
 luck_per_level = 0.6
 
 preferred_row = 0
-skill_ids = Array[ExtResource("2_tvn5c")]([ExtResource("3_usa3s"), ExtResource("4_bwy21"), ExtResource("5_xjbvl"), ExtResource("6_hwyjp")])
+skill_ids = Array[ExtResource("2_tvn5c")]([ExtResource("3_usa3s"), ExtResource("5_xjbvl"),])
 icon_color = Color(0.8509804, 0.30980393, 0.30980393, 1)
 flavor_text = "Huge, goofy, and somehow the reason anyone survives."
+
+skill_level_up_table = {
+	2: ExtResource("6_hwyjp"),
+	4: ExtResource("4_bwy21"),
+}

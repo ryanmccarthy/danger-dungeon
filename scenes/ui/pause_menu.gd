@@ -284,7 +284,7 @@ func _make_inventory_row(item: ItemData, count: int) -> Control:
 	return row
 
 # Shown when "Use" is pressed on an inventory item — picks which roster
-# member (ALIVE or DOWNED, same pool as the Status tab's get_usable_roster)
+# member (ALIVE or DOWNED, same pool as the Status tab's get_living_roster)
 # receives the item's effect, then consumes it and returns to the refreshed
 # inventory list.
 func _show_use_target_select(item: ItemData) -> void:
@@ -312,7 +312,7 @@ func _show_use_target_select(item: ItemData) -> void:
 	list.add_theme_constant_override("separation", 6)
 	scroll.add_child(list)
 
-	var roster := PartyManager.get_usable_roster()
+	var roster := PartyManager.get_living_roster()
 	if roster.is_empty():
 		list.add_child(_make_dim_label("No one to use this on."))
 		return
@@ -384,7 +384,7 @@ func _show_equip_student_select(eq: EquipmentData) -> void:
 	list.add_theme_constant_override("separation", 6)
 	scroll.add_child(list)
 
-	var roster := PartyManager.get_usable_roster()
+	var roster := PartyManager.get_living_roster()
 	if roster.is_empty():
 		list.add_child(_make_dim_label("No one to equip this on."))
 		return
@@ -465,7 +465,7 @@ func _build_equipment(focus_id: StringName = &"") -> void:
 	detail.add_theme_constant_override("separation", 6)
 	detail_scroll.add_child(detail)
 
-	var roster := PartyManager.get_usable_roster()
+	var roster := PartyManager.get_living_roster()
 	if roster.is_empty():
 		detail.add_child(_make_dim_label("No party members available."))
 		return
@@ -673,7 +673,7 @@ func _build_status() -> void:
 	portrait_panel.add_theme_stylebox_override("panel", _portrait_style())
 	hbox.add_child(portrait_panel)
 
-	var roster := PartyManager.get_usable_roster()
+	var roster := PartyManager.get_living_roster()
 	if roster.is_empty():
 		var lbl := Label.new()
 		lbl.text = "No party members available."

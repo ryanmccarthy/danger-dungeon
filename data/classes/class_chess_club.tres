@@ -23,6 +23,11 @@ spd_per_level = 0.5
 luck_per_level = 0.4
 
 preferred_row = 1
-skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
+skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"),])
 icon_color = Color(0.15, 0.2, 0.45, 1.0)
 flavor_text = "Already mapped six exit routes out of the dungeon. On paper, anyway."
+
+skill_level_up_table = {
+	2: ExtResource("5"),
+	4: ExtResource("6"),
+}

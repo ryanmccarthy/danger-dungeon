@@ -22,6 +22,7 @@ enum DamageSchool { PHYSICAL, MAGICAL }
 @export var buff_amount: int = 0
 @export var buff_duration: int = 0
 @export var buff_stat_affected: String = Stat.NONE
+
 ## 0.0-1.0 chance this skill connects at all. Multiplied by the caster's
 ## status effects (blind halves it), so a 1.0 here still never misses.
 @export var accuracy: float = 1.0
@@ -38,7 +39,9 @@ enum DamageSchool { PHYSICAL, MAGICAL }
 ## False for everything else — heals, buffs, debuffs, magic, etc.
 ## Melee skills can't be used by a party member in the back row.
 @export var is_melee: bool = false
-## Meaningful only when LEARN_SKILL is in effect_type: 0.0-1.0 chance the
-## caster learns a random skill from the target enemy's skill_pool.
+## Meaningful only for enemy skills
 @export var learn_chance: float = 0.0
 @export var icon_color: Color = Color.WHITE
+
+func is_learnable() -> bool:
+	return learn_chance > 0.0

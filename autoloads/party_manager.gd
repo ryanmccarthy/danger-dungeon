@@ -72,14 +72,6 @@ func get_living_roster() -> Array[StudentData]:
 
 	return out
 
-func get_usable_roster() -> Array[StudentData]:
-	var out: Array[StudentData] = []
-	for s in roster:
-		if s.is_usable():
-			out.append(s)
-
-	return out
-
 func get_active_party_ids() -> Array[StringName]:
 	var out: Array[StringName] = []
 	out.append_array(front_row_ids)
@@ -97,7 +89,7 @@ func get_active_party() -> Array[StudentData]:
 
 func assign_to_party(id: StringName, row: String, slot: int = -1) -> bool:
 	var student := get_student(id)
-	if student == null or not student.is_usable():
+	if student == null or not student.is_alive():
 		return false
 
 	remove_from_party(id)

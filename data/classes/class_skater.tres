@@ -23,6 +23,12 @@ spd_per_level = 1.1
 luck_per_level = 0.5
 
 preferred_row = 0
-skill_ids = Array[ExtResource("2_vv5cp")]([ExtResource("3_05r8p"), ExtResource("4_bj4vm"), ExtResource("5_5ar5l"), ExtResource("6_hewk5")])
+skill_ids = Array[ExtResource("2_vv5cp")]([ExtResource("3_05r8p"), ExtResource("4_bj4vm"),])
 icon_color = Color(0.9490196, 0.6627451, 0.23529412, 1)
 flavor_text = "Fast and reckless, they're first to the fight and first to flee."
+
+skill_level_up_table = {
+	2: ExtResource("5_5ar5l"),
+	4: ExtResource("6_hewk5"),
+}
+

@@ -23,6 +23,11 @@ spd_per_level = 0.7
 luck_per_level = 0.4
 
 preferred_row = 1
-skill_ids = Array[ExtResource("2_kj2jj")]([ExtResource("3_pv2tx"), ExtResource("4_slo7e"), ExtResource("5_3s8kt"), ExtResource("6_mtd0p")])
+skill_ids = Array[ExtResource("2_kj2jj")]([ExtResource("3_pv2tx"), ExtResource("4_slo7e"),])
 icon_color = Color(1, 0.43529412, 0.68235296, 1)
 flavor_text = "Keeps spirits (and stats) high from the back row."
+
+skill_level_up_table = {
+	2: ExtResource("5_3s8kt"),
+	4: ExtResource("6_mtd0p"),
+}

@@ -26,5 +26,17 @@ enum RowPreference { FRONT, BACK, EITHER }
 @export_group("Presentation")
 @export var preferred_row: RowPreference = RowPreference.EITHER
 @export var skill_ids: Array[SkillData] = []
+# Maps level (int) -> skill_id (StringName) for skills auto-learned on level up
+@export var skill_level_up_table: Dictionary[int, SkillData] = {}
 @export var icon_color: Color = Color.WHITE
 @export_multiline var flavor_text: String = ""
+
+func learn_level_up_skill(level: int) -> void:
+	"""
+	Check if a skill can be learned at the given level.
+	If so, learn it.
+	"""
+	if level in skill_level_up_table:
+		var skill_id = skill_level_up_table[level]
+		if skill_id not in skill_ids:
+			skill_ids.append(skill_id)

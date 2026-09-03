@@ -23,6 +23,11 @@ spd_per_level = 0.5
 luck_per_level = 0.6
 
 preferred_row = 1
-skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
+skill_ids = Array[ExtResource("2")]([ExtResource("3"), ExtResource("5"),])
 icon_color = Color(0.8, 0.8, 0.85, 1.0)
 flavor_text = "Documenting everything for a yearbook that will probably never get printed."
+
+skill_level_up_table = {
+	2: ExtResource("4"),
+	4: ExtResource("6"),
+}

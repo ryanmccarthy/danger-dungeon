@@ -8,11 +8,25 @@ extends CharacterData
 ## DEAD is permanent and only ever caused by TPK.
 enum Status { ALIVE, DOWNED, DEAD }
 
+const experience_table = {
+	1: 100,
+	2: 200,
+	3: 350,
+	4: 550,
+	5: 800,
+	6: 1100,
+	7: 1450,
+	8: 1850,
+	9: 2300,
+	10: 2800,
+}
+
 @export var student_id: StringName
 @export var student_class: StudentClassData
 ## Skills learned on top of student_class.skill_ids (e.g. via the
 ## Valedictorian's Analyze). Stored as ids, not resources.
 @export var learned_skill_ids: Array[StringName] = []
+
 @export var level: int = 1
 @export var experience: int = 0
 @export var xp_to_next_level: int = 100
@@ -41,11 +55,6 @@ enum Status { ALIVE, DOWNED, DEAD }
 
 func _init():
 	is_student = true
-
-func is_usable() -> bool:
-	## Need to just refactor this out as it's always evaluated to the same thing
-	## as is_alive(), but that sounds like a headache so TODO
-	return is_alive()
 
 func is_downed() -> bool:
 	return status == Status.DOWNED
@@ -88,18 +97,7 @@ func level_up():
 		if randf()*100 < luck:
 			luck += int(student_class.luck_per_level * roll * luck)
 
-const experience_table = {
-	1: 100,
-	2: 200,
-	3: 350,
-	4: 550,
-	5: 800,
-	6: 1100,
-	7: 1450,
-	8: 1850,
-	9: 2300,
-	10: 2800,
-}
+		student_class.learn_level_up_skill(level)
 
 func restore_mp(amount: int):
 	current_mp = min(current_mp + amount, max_mp)

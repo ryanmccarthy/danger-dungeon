@@ -22,6 +22,11 @@ spd_per_level = 0.3
 luck_per_level = 0.4
 
 preferred_row = 1
-skill_ids = Array[ExtResource("2_nrlu0")]([ExtResource("3_eg2e7"), ExtResource("4_7mmjm"), ExtResource("5_14ilg"), ExtResource("6_48bgw")])
+skill_ids = Array[ExtResource("2_nrlu0")]([ExtResource("3_eg2e7"), ExtResource("4_7mmjm"),])
 icon_color = Color(0.29803923, 0.7882353, 0.627451, 1)
 flavor_text = "Wins every argument whether the opponent understands or not."
+
+skill_level_up_table = {
+	2: ExtResource("6_48bgw"),
+	4: ExtResource("5_14ilg"),
+}
