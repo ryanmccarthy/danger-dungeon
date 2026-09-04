@@ -34,11 +34,22 @@ jobs:
           mkdir -p "$template_dir"
           mv templates/* "$template_dir/"
 
+      # The godot MCP bridge is a local editor convenience living in the
+      # gitignored addons/ folder, so it is absent on a clean checkout. Strip both
+      # references from the project file: the _mcp_game_helper autoload would
+      # otherwise be baked into the export and fail at game startup. The final grep
+      # fails the job loudly if these patterns ever stop matching.
+      - name: Strip editor-only godot_ai integration
+        run: |
+          sed -i '/^_mcp_game_helper=/d' project.godot
+          sed -i 's|^enabled=PackedStringArray(.*)$|enabled=PackedStringArray()|' project.godot
+          ! grep -n "addons/godot_ai" project.godot
+
       # Exporting a Windows build from Linux needs rcedit (a Windows exe run under
       # wine) to stamp the icon and version fields. Nothing to stamp here, so turn
       # it off rather than installing wine.
       - name: Disable Windows resource stamping
-        run: sed -i 's/^application\/modify_resources=true$/application\/modify_resources=false/' export_presets.cfg
+        run: sed -i 's|^application/modify_resources=true$|application/modify_resources=false|' export_presets.cfg
 
       - name: Import resources
         run: godot --headless --import

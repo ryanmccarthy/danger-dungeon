@@ -28,7 +28,6 @@ EquipmentManager="*res://autoloads/equipment_manager.gd"
 ShopManager="*res://autoloads/shop_manager.gd"
 GameState="*res://autoloads/game_state.gd"
 SaveManager="*res://autoloads/save_manager.gd"
-_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [display]
 
