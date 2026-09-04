@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Script" uid="uid://dao4thtco7yfv" path="res://data/schemas/item_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"item_smelling_salts"
+display_name = "Smelling Salts"
+description = "Releases a blast of ammonia directly into a downed friend's face to shock them onto their feet."
+effect_summary = "Revices a downed party member"
+in_shop = true
+buy_price = 20
+sell_price = 10
+stack_size = 20
+use_effect = 11
+use_value = 5.0
+icon_color = Color(0.45, 0.8, 0.35, 1)

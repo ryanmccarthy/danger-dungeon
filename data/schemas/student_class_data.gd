@@ -31,12 +31,20 @@ enum RowPreference { FRONT, BACK, EITHER }
 @export var icon_color: Color = Color.WHITE
 @export_multiline var flavor_text: String = ""
 
-func learn_level_up_skill(level: int) -> void:
+func check_level_skills(level: int) -> SkillData:
 	"""
 	Check if a skill can be learned at the given level.
-	If so, learn it.
+	If yes, return that skill; otherwise null.
 	"""
 	if level in skill_level_up_table:
-		var skill_id = skill_level_up_table[level]
-		if skill_id not in skill_ids:
-			skill_ids.append(skill_id)
+		return skill_level_up_table[level]
+
+	return null
+
+func learn_level_up_skill(level: int) -> void:
+	"""
+	Learn the skill gained at the given level, if any.
+	"""
+	var skill = check_level_skills(level)
+	if skill and skill not in skill_ids:
+		skill_ids.append(skill)

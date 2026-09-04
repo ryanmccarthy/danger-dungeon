@@ -1,7 +1,6 @@
 # Godot 4+ specific ignores
 .godot/
 .nomedia
-.claude
 
 # Godot-specific ignores
 .import/
@@ -19,3 +18,6 @@ release/
 .mono/
 data_*/
 mono_crash.*.json
+
+#general ignores
+.claude
