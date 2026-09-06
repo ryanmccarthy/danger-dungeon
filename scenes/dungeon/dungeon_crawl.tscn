@@ -4,6 +4,9 @@
 [ext_resource type="Environment" uid="uid://eptm4p0w8vxp" path="res://materials/fog_environment.tres" id="2_0oasr"]
 [ext_resource type="Script" uid="uid://d16jqiojykmtl" path="res://scenes/dungeon/automap.gd" id="3_wqcs3"]
 [ext_resource type="AudioStream" uid="uid://bl2kbs5y6dplk" path="res://data/assets/music/Forest of White.ogg" id="4_0oasr"]
+[ext_resource type="AudioStream" uid="uid://bo0sx2pc48rjq" path="res://data/assets/sfx/footstep1.mp3" id="5_ftst1"]
+[ext_resource type="AudioStream" uid="uid://dtl43vup4kip7" path="res://data/assets/sfx/footstep2.mp3" id="6_ftst2"]
+[ext_resource type="AudioStream" uid="uid://b2emgobfvwk3p" path="res://data/assets/sfx/footstep3.mp3" id="7_ftst3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5x0sj"]
 radius = 0.4
@@ -11,6 +14,7 @@ height = 1.7
 
 [node name="DungeonCrawl" type="Node3D" unique_id=1338917730]
 script = ExtResource("1_orpjh")
+footstep_sounds = Array[AudioStream]([ExtResource("5_ftst1"), ExtResource("6_ftst2"), ExtResource("7_ftst3")])
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1179382527]
 environment = ExtResource("2_0oasr")
@@ -71,3 +75,6 @@ script = ExtResource("3_wqcs3")
 process_mode = 3
 stream = ExtResource("4_0oasr")
 volume_db = -6.0
+
+[node name="FootstepPlayer" type="AudioStreamPlayer" parent="." unique_id=560179021]
+volume_db = -8.0

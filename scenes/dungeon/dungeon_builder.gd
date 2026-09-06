@@ -62,12 +62,12 @@ static func _add_ceiling(parent: Node3D, pos: Vector3, size: float, theme: Dunge
 		box.material = theme.ceiling_material
 	parent.add_child(box)
 
-static func _add_safe_zone(parent: Node3D, pos: Vector3, size: float, theme: DungeonVisualThemeData) -> void:
+static func _add_safe_zone(_parent: Node3D, _pos: Vector3, _size: float, _theme: DungeonVisualThemeData) -> void:
 	"""
 	A tile on which no encounters can occur
 	"""
 
-static func _add_event_marker(parent: Node3D, pos: Vector3, size: float, theme: DungeonVisualThemeData) -> void:
+static func _add_event_marker(_parent: Node3D, _pos: Vector3, _size: float, _theme: DungeonVisualThemeData) -> void:
 	"""
 	A tile that triggers a scripted event or story encounter
 	"""

@@ -7,8 +7,14 @@ extends Node3D
 
 const MOVE_TIME := 0.18
 const TURN_TIME := 0.13
+## Footsteps get a small random pitch shift so repeated steps do not sound looped.
+const FOOTSTEP_PITCH_RANGE := Vector2(0.92, 1.08)
+
+## Assigned in dungeon_crawl.tscn; one is picked at random per step.
+@export var footstep_sounds: Array[AudioStream] = []
 
 @onready var _music: AudioStreamPlayer = $MusicPlayer
+@onready var _footsteps: AudioStreamPlayer = $FootstepPlayer
 @onready var _player: CharacterBody3D = $Player
 @onready var _geometry_root: Node3D = $GeometryRoot
 @onready var _info_label: Label = $UILayer/HUD/InfoLabel
@@ -20,6 +26,7 @@ var facing: Vector2i
 var visited: Dictionary = {}
 var _busy: bool = false
 var _tile_size: float = 4.0
+var _last_footstep_index: int = -1
 
 # Adjustable weight for random encounter start event
 # Currently just prevents edge cases like successive encounters or zero encounters
@@ -57,6 +64,10 @@ func _process(_delta: float) -> void:
 		_turn(_turn_left(facing))
 	elif Input.is_action_just_pressed("turn_right"):
 		_turn(_turn_right(facing))
+	elif Input.is_action_just_pressed("strafe_left"):
+		_try_move(_turn_left(facing))
+	elif Input.is_action_just_pressed("strafe_right"):
+		_try_move(_turn_right(facing))
 
 func _is_walkable(coord: Vector2i) -> bool:
 	if coord.y < 0 or coord.y >= area.grid_layout.size():
@@ -91,6 +102,7 @@ func _try_move(direction: Vector2i) -> void:
 
 	var tween := create_tween()
 	tween.tween_property(_player, "position", _world_pos(grid_position), MOVE_TIME)
+	_play_footstep()
 	await tween.finished
 
 	_busy = false
@@ -112,6 +124,20 @@ func _try_move(direction: Vector2i) -> void:
 
 	if ch == TileTypes.ENCOUNTER and _check_for_encounter():
 		_start_encounter()
+
+func _play_footstep() -> void:
+	if footstep_sounds.is_empty():
+		return
+
+	var index := randi() % footstep_sounds.size()
+	if footstep_sounds.size() > 1 and index == _last_footstep_index:
+		# avoid playing same sound twice in a row
+		index = (index + 1) % footstep_sounds.size()
+
+	_last_footstep_index = index
+	_footsteps.stream = footstep_sounds[index]
+	_footsteps.pitch_scale = randf_range(FOOTSTEP_PITCH_RANGE.x, FOOTSTEP_PITCH_RANGE.y)
+	_footsteps.play()
 
 func _check_for_encounter() -> bool:
 	_encounter_weight -= 0.1
