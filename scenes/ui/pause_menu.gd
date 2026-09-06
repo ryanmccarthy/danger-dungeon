@@ -61,6 +61,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed("ui_cancel"):
 		return
 
+	# _is_open only flips once the screen is covered, so without this a second
+	# Esc mid-transition would re-enter _open().
+	if ScreenTransition.is_busy:
+		return
+
 	if _is_open:
 		_close()
 		get_viewport().set_input_as_handled()
@@ -70,15 +75,24 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_mode_changed(_old_mode, new_mode, _context: Dictionary) -> void:
 	if _is_open and not (new_mode in OPEN_MODES):
-		_close()
+		_close_instant()
 
 func _open() -> void:
+	await ScreenTransition.cover(ScreenTransition.Effect.FADE, ScreenTransition.DUR_MENU)
 	_is_open = true
 	_root.visible = true
 	_show_main()
 	get_tree().paused = true
+	await ScreenTransition.uncover(ScreenTransition.Effect.FADE, ScreenTransition.DUR_MENU)
 
 func _close() -> void:
+	await ScreenTransition.cover(ScreenTransition.Effect.FADE, ScreenTransition.DUR_MENU)
+	_close_instant()
+	await ScreenTransition.uncover(ScreenTransition.Effect.FADE, ScreenTransition.DUR_MENU)
+
+## Teardown without the dip, for when something else owns the transition
+## (a mode change) or is about to start one.
+func _close_instant() -> void:
 	_is_open = false
 	_root.visible = false
 	get_tree().paused = false
@@ -1017,7 +1031,8 @@ func _on_load_pressed(slot: int) -> void:
 		# Dungeon position/mode aren't part of the save payload, so drop back
 		# to the Hub (fresh scene instance) to reflect the loaded state
 		# cleanly rather than leaving stale Dungeon geometry on screen.
-		_close()
+		await ScreenTransition.cover(ScreenTransition.Effect.DISSOLVE, ScreenTransition.DUR_TRAVEL)
+		_close_instant()
 		GameState.change_mode(GameState.GameMode.HUB)
 		return
 	_save_load_status_text = "Failed to load Slot %d." % (slot + 1)
@@ -1052,7 +1067,8 @@ func _build_options() -> void:
 	vbox.add_child(quit_btn)
 
 func _on_quit_to_title() -> void:
-	_close()
+	await ScreenTransition.cover(ScreenTransition.Effect.DISSOLVE, ScreenTransition.DUR_TRAVEL)
+	_close_instant()
 	GameState.change_mode(GameState.GameMode.TITLE)
 
 # --------------------------------------------------------------------styles

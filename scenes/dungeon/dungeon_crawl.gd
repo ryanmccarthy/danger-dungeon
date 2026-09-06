@@ -53,7 +53,10 @@ func enter_state(_context: Dictionary = {}) -> void:
 	_refresh_automap()
 
 func _process(_delta: float) -> void:
-	if _busy or area == null:
+	# ScreenTransition check keeps steps (and their hunger ticks / encounter
+	# rolls) from landing during a transition — _busy is already false by the
+	# time an encounter hands off to the battle scene.
+	if _busy or area == null or ScreenTransition.is_busy:
 		return
 
 	if Input.is_action_just_pressed("move_forward"):

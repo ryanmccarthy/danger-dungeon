@@ -51,7 +51,8 @@ func enter_state(context: Dictionary = {}) -> void:
 	_refresh_hud()
 	if context.get("forced", false):
 		_status_label.text = "The whole team went down out there. Reassign who's exploring next."
-		_enter_room(DORM_ROOM)
+		# Screen is already covered by GameRoot's mode transition.
+		_enter_room(DORM_ROOM, false)
 
 func _on_party_wiped() -> void:
 	_status_label.text = "Party wiped! Forced back to campus — pick a new team at the Dorm."
@@ -72,9 +73,18 @@ func _on_depart_pressed() -> void:
 	else:
 		_status_label.text = "Not enough supplies to depart (need %d)." % InventoryManager.get_travel_cost(area)
 
-func _enter_room(scene: PackedScene) -> void:
+## animate is false when something else already owns the covered screen —
+## enter_state()'s forced Dorm visit happens mid-mode-change, behind GameRoot's
+## own transition. The busy guard has to stay inside the animate branch so that
+## call isn't silently swallowed.
+func _enter_room(scene: PackedScene, animate: bool = true) -> void:
 	if _current_room != null:
 		return
+
+	if animate:
+		if ScreenTransition.is_busy:
+			return
+		await ScreenTransition.cover(ScreenTransition.Effect.WIPE, ScreenTransition.DUR_ROOM)
 
 	_current_room = scene.instantiate()
 	_current_room.back_requested.connect(_exit_room)
@@ -83,7 +93,15 @@ func _enter_room(scene: PackedScene) -> void:
 	_background.visible = false
 	_map_root.visible = false
 
-func _exit_room() -> void:
+	if animate:
+		await ScreenTransition.uncover(ScreenTransition.Effect.WIPE, ScreenTransition.DUR_ROOM)
+
+func _exit_room(animate: bool = true) -> void:
+	if animate:
+		if ScreenTransition.is_busy:
+			return
+		await ScreenTransition.cover(ScreenTransition.Effect.WIPE, ScreenTransition.DUR_ROOM)
+
 	if _current_room != null:
 		_current_room.queue_free()
 		_current_room = null
@@ -92,3 +110,6 @@ func _exit_room() -> void:
 	_background.visible = true
 	_map_root.visible = true
 	_refresh_hud()
+
+	if animate:
+		await ScreenTransition.uncover(ScreenTransition.Effect.WIPE, ScreenTransition.DUR_ROOM)
