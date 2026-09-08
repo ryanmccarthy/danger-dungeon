@@ -41,12 +41,14 @@ func enter_state(_context: Dictionary = {}) -> void:
 	if area == null:
 		push_warning("[DungeonCrawl] entered with no current_area set")
 		return
+
 	_tile_size = area.visual_theme.tile_size if area.visual_theme else 4.0
 	DungeonBuilder.build(_geometry_root, area)
 	grid_position = GameState.current_dungeon_position
 	facing = GameState.current_dungeon_facing
 	if facing == Vector2i.ZERO:
 		facing = Vector2i(0, -1)
+
 	visited[grid_position] = true
 	_place_player_instant()
 	_refresh_hud()
@@ -105,7 +107,7 @@ func _try_move(direction: Vector2i) -> void:
 
 	var tween := create_tween()
 	tween.tween_property(_player, "position", _world_pos(grid_position), MOVE_TIME)
-	_play_footstep()
+	_play_footstep() # Play before awaiting so sound about matches with movement
 	await tween.finished
 
 	_busy = false

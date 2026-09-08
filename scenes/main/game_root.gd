@@ -39,13 +39,16 @@ func _on_mode_changed(old_mode, new_mode, context: Dictionary) -> void:
 func _cover_effect_for(old_mode, new_mode) -> int:
 	if new_mode == GameState.GameMode.BATTLE:
 		return ScreenTransition.Effect.SWIRL
+
 	if old_mode == GameState.GameMode.BATTLE:
 		return ScreenTransition.Effect.PIXELATE
+
 	return ScreenTransition.Effect.DISSOLVE
 
 func _uncover_effect_for(old_mode, new_mode) -> int:
 	if new_mode == GameState.GameMode.BATTLE:
 		return ScreenTransition.Effect.FADE
+
 	return _cover_effect_for(old_mode, new_mode)
 
 func _on_game_over() -> void:
@@ -55,6 +58,7 @@ func _swap_to(mode: int, context: Dictionary) -> void:
 	if _current != null:
 		_current.queue_free()
 		_current = null
+
 	var scene: PackedScene
 	match mode:
 		GameState.GameMode.TITLE:
@@ -65,8 +69,10 @@ func _swap_to(mode: int, context: Dictionary) -> void:
 			scene = DUNGEON_SCENE
 		GameState.GameMode.BATTLE:
 			scene = BATTLE_SCENE
+
 	if scene == null:
 		return
+
 	_current = scene.instantiate()
 	_holder.add_child(_current)
 	if _current.has_method("enter_state"):
