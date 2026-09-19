@@ -30,11 +30,13 @@ func _draw() -> void:
 				continue
 
 			var ch := row[x]
-			var color := Color("#2a2733") if ch == "#" else Color("#5c5468")
-			if ch == "R":
+			var color := Color("#2a2733") if ch == TileTypes.WALL else Color("#5c5468")
+			if ch == TileTypes.RETURN:
 				color = Color("#e0c14a")
-			elif ch == ".":
-				color = Color("#7a4a4a")
+			elif ch == TileTypes.STAIR_DOWN:
+				color = Color("#f27a4d")
+			elif ch == TileTypes.STAIR_UP:
+				color = Color("#6bc7ff")
 
 			draw_rect(Rect2(x * CELL + 8, y * CELL + 8, CELL - 1, CELL - 1), color)
 

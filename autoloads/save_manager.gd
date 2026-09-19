@@ -15,6 +15,7 @@ func save_game(slot: int = 0) -> bool:
 		"back_row": PartyManager.back_row_ids,
 		"completed_quests": QuestManager.completed_quest_ids,
 		"unlocked_upgrades": UpgradeManager.unlocked_upgrade_ids,
+		"discovered_areas": ExplorationManager.discovered_area_ids,
 		"equipment": EquipmentManager.loadouts,
 		"students": {},
 	}
@@ -52,6 +53,15 @@ func load_game(slot: int = 0) -> bool:
 	PartyManager.back_row_ids.assign(data.get("back_row", []))
 	QuestManager.completed_quest_ids.assign(data.get("completed_quests", []))
 	UpgradeManager.unlocked_upgrade_ids.assign(data.get("unlocked_upgrades", []))
+
+	# JSON hands these back as plain Strings, and ExplorationManager compares
+	# against StringName area ids — same caveat as the equipment loadouts below.
+	# An absent key leaves the empty default: floor-1 areas unlock unconditionally,
+	# so saves written before this existed still show an entrance.
+	if data.has("discovered_areas"):
+		ExplorationManager.discovered_area_ids.clear()
+		for area_id in data["discovered_areas"]:
+			ExplorationManager.discovered_area_ids.append(StringName(area_id))
 
 	# Dictionary keys/values come back from JSON as plain Strings —
 	# convert explicitly so EquipmentManager's &"" comparisons keep working.

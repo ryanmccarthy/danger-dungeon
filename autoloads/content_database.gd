@@ -127,6 +127,62 @@ func get_all_areas() -> Array[AreaData]:
 
 	return out
 
+## The floor at the given depth of the given dungeon, or null if there isn't one.
+func get_floor(dungeon_id: StringName, floor_number: int) -> AreaData:
+	for v in _areas.values():
+		if v.dungeon_id == dungeon_id and v.floor_number == floor_number:
+			return v
+
+	return null
+
+## Every floor of one dungeon, shallowest first.
+func get_dungeon_floors(dungeon_id: StringName) -> Array[AreaData]:
+	var out: Array[AreaData] = []
+	for v in _areas.values():
+		if v.dungeon_id == dungeon_id:
+			out.append(v)
+
+	out.sort_custom(func(a: AreaData, b: AreaData) -> bool: return a.floor_number < b.floor_number)
+	return out
+
+## Dungeon ids in departure-board order: shallowest dungeon first (by the lowest
+## distance_from_university among its floors), ties broken on the id itself —
+## _areas insertion order is DirAccess order, which is not guaranteed. Areas with
+## no dungeon_id are skipped rather than forming a nameless group.
+func get_dungeon_ids() -> Array[StringName]:
+	var depths: Dictionary = {}
+	var unassigned: Array[String] = []
+	for v in _areas.values():
+		if v.dungeon_id == StringName():
+			unassigned.append(String(v.area_id))
+			continue
+		if not depths.has(v.dungeon_id) or v.distance_from_university < int(depths[v.dungeon_id]):
+			depths[v.dungeon_id] = v.distance_from_university
+
+	if not unassigned.is_empty():
+		push_warning("[ContentDatabase] area(s) with no dungeon_id, unreachable from the departure board: %s" % ", ".join(unassigned))
+
+	var out: Array[StringName] = []
+	out.assign(depths.keys())
+	out.sort_custom(func(a: StringName, b: StringName) -> bool:
+		if int(depths[a]) != int(depths[b]):
+			return int(depths[a]) < int(depths[b])
+		return String(a) < String(b))
+
+	return out
+
+## Where a stair tile leads, or null when there is no floor on the other side.
+func get_stair_target(area: AreaData, stair_char: String) -> AreaData:
+	if area == null:
+		return null
+
+	var going_up := stair_char == TileTypes.STAIR_UP
+	var override: StringName = area.stair_up_target_id if going_up else area.stair_down_target_id
+	if override != StringName():
+		return get_area(override)
+
+	return get_floor(area.dungeon_id, area.floor_number + (-1 if going_up else 1))
+
 func get_quest(id: StringName) -> QuestData:
 	return _quests.get(id)
 

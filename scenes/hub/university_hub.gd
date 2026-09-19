@@ -7,8 +7,6 @@ extends Control
 ## freed while browsing a room (GameState.current_mode stays HUB throughout),
 ## so music and the HUD keep running uninterrupted.
 
-const HOME_AREA_ID := &"forest_approach"
-
 const CAFETERIA_ROOM := preload("res://scenes/hub/rooms/cafeteria_room.tscn")
 const NURSE_ROOM := preload("res://scenes/hub/rooms/nurse_room.tscn")
 const LIBRARY_ROOM := preload("res://scenes/hub/rooms/library_room.tscn")
@@ -16,6 +14,7 @@ const SHOP_ROOM := preload("res://scenes/hub/rooms/shop_room.tscn")
 const DORM_ROOM := preload("res://scenes/hub/rooms/dorm_room.tscn")
 const GARAGE_ROOM := preload("res://scenes/hub/rooms/garage_room.tscn")
 const QUEST_BOARD_ROOM := preload("res://scenes/hub/rooms/quest_board_room.tscn")
+const DEPART_ROOM := preload("res://scenes/hub/rooms/depart_room.tscn")
 
 @onready var _music: AudioStreamPlayer = $MusicPlayer
 @onready var _hud_label: Label = $MainMargin/MainVBox/HUDLabel
@@ -34,7 +33,7 @@ func _ready() -> void:
 	$MainMargin/MainVBox/FacilityGrid/BtnDorm.pressed.connect(func(): _enter_room(DORM_ROOM))
 	$MainMargin/MainVBox/FacilityGrid/BtnGarage.pressed.connect(func(): _enter_room(GARAGE_ROOM))
 	$MainMargin/MainVBox/FacilityGrid/BtnQuestBoard.pressed.connect(func(): _enter_room(QUEST_BOARD_ROOM))
-	$MainMargin/MainVBox/FacilityGrid/BtnDepart.pressed.connect(_on_depart_pressed)
+	$MainMargin/MainVBox/FacilityGrid/BtnDepart.pressed.connect(func(): _enter_room(DEPART_ROOM))
 
 	EventBus.supplies_changed.connect(func(_v): _refresh_hud())
 	EventBus.inventory_changed.connect(func(_id, _v): _refresh_hud())
@@ -49,29 +48,19 @@ func _ready() -> void:
 
 func enter_state(context: Dictionary = {}) -> void:
 	_refresh_hud()
-	if context.get("forced", false):
-		_status_label.text = "The whole team went down out there. Reassign who's exploring next."
+	if context.get("forced", false) and PartyManager.get_party().is_empty():
+		_status_label.text = "The whole team was lost out there — no one made it back. Assign a new team to keep exploring."
 		# Screen is already covered by GameRoot's mode transition.
 		_enter_room(DORM_ROOM, false)
+	else:
+		_status_label.text = ""
 
 func _on_party_wiped() -> void:
-	_status_label.text = "Party wiped! Forced back to campus — pick a new team at the Dorm."
+	_status_label.text = "The team was lost out there. Forced back to campus — pick a new team at the Dorm."
 
 func _refresh_hud() -> void:
 	var alive := PartyManager.get_living_roster().size()
 	_hud_label.text = "Supplies: %d   |   Roster: %d / 26 alive" % [InventoryManager.supplies, alive]
-
-func _on_depart_pressed() -> void:
-	var area: AreaData = ContentDatabase.get_area(HOME_AREA_ID)
-
-	if PartyManager.get_active_party().is_empty():
-		_status_label.text = "You need at least one student in your party to depart."
-	elif PartyManager.get_living_roster().is_empty():
-		_status_label.text = "Game Over: All students have perished."
-	elif GameState.depart_university(area):
-		_status_label.text = "Departed for %s." % area.display_name
-	else:
-		_status_label.text = "Not enough supplies to depart (need %d)." % InventoryManager.get_travel_cost(area)
 
 ## animate is false when something else already owns the covered screen —
 ## enter_state()'s forced Dorm visit happens mid-mode-change, behind GameRoot's
@@ -110,6 +99,7 @@ func _exit_room(animate: bool = true) -> void:
 	_background.visible = true
 	_map_root.visible = true
 	_refresh_hud()
+	_status_label.text = ""
 
 	if animate:
 		await ScreenTransition.uncover(ScreenTransition.Effect.WIPE, ScreenTransition.DUR_ROOM)

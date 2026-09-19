@@ -95,7 +95,7 @@ text = "Quest Board"
 [node name="BtnDepart" type="Button" parent="MainMargin/MainVBox/FacilityGrid" unique_id=1161857833]
 custom_minimum_size = Vector2(220, 56)
 layout_mode = 2
-text = "Depart: Fog-Wreathed Approach"
+text = "Depart"
 
 [node name="StatusLabel" type="Label" parent="MainMargin/MainVBox" unique_id=1419259943]
 layout_mode = 2

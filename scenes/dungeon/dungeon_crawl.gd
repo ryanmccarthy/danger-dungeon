@@ -27,6 +27,9 @@ var visited: Dictionary = {}
 var _busy: bool = false
 var _tile_size: float = 4.0
 var _last_footstep_index: int = -1
+## One-line feedback for a tile that did nothing (a caved-in stair, an
+## unaffordable trip home). Shown on the HUD until the party moves again.
+var _note_text: String = ""
 
 # Adjustable weight for random encounter start event
 # Currently just prevents edge cases like successive encounters or zero encounters
@@ -49,7 +52,11 @@ func enter_state(_context: Dictionary = {}) -> void:
 	if facing == Vector2i.ZERO:
 		facing = Vector2i(0, -1)
 
+	# Fog of war is kept per floor on GameState, since this whole scene is rebuilt
+	# from scratch on every floor change and every battle return.
+	visited = GameState.visited_by_area.get(area.area_id, {})
 	visited[grid_position] = true
+	GameState.visited_by_area[area.area_id] = visited
 	_place_player_instant()
 	_refresh_hud()
 	_refresh_automap()
@@ -100,6 +107,7 @@ func _try_move(direction: Vector2i) -> void:
 		return
 
 	_busy = true
+	_note_text = ""
 
 	grid_position = target
 	visited[grid_position] = true
@@ -120,15 +128,46 @@ func _try_move(direction: Vector2i) -> void:
 	_refresh_automap()
 
 	if PartyManager.is_party_wiped():
-		return # GameState's own listener handles the forced switch to Hub.
+		PartyManager.resolve_field_wipe()
+		return # GameState's own listener (on party_wiped) handles the forced switch to Hub.
 
 	var ch := _tile_char(grid_position)
 	if ch == TileTypes.RETURN:
-		GameState.return_to_university()
+		_leave_dungeon()
+		return
+
+	if ch == TileTypes.STAIR_UP or ch == TileTypes.STAIR_DOWN:
+		_take_stairs(ch)
 		return
 
 	if ch == TileTypes.ENCOUNTER and _check_for_encounter():
 		_start_encounter()
+
+## You arrive on the destination floor's mirrored stair, so the tile you left is
+## the tile you come back to. Tile effects only ever fire from _try_move, never
+## from enter_state() — that is what stops an arrival bouncing straight back.
+## Returning right after the call matters: the node is freed at the transition's
+## midpoint, exactly as on the RETURN path.
+func _take_stairs(stair_char: String) -> void:
+	var target := ContentDatabase.get_stair_target(area, stair_char)
+	if target == null:
+		# Stairs are strictly floor-to-floor; R is the only way back to campus.
+		push_warning("[DungeonCrawl] %s has a '%s' with no floor on the other side" % [area.area_id, stair_char])
+		_note("The stairway is caved in.")
+		return
+
+	var arrival := TileTypes.STAIR_DOWN if stair_char == TileTypes.STAIR_UP else TileTypes.STAIR_UP
+	GameState.travel_to_floor(target, arrival)
+
+## return_to_university() spends supplies scaled by how deep the party is and can
+## simply fail. Unreported, as it was, the exit tile just reads as broken.
+func _leave_dungeon() -> void:
+	if not GameState.return_to_university():
+		_note("Not enough supplies for the trip home (need %d)." % InventoryManager.get_travel_cost(area))
+
+func _note(text: String) -> void:
+	_note_text = text
+	_refresh_hud()
 
 func _play_footstep() -> void:
 	if footstep_sounds.is_empty():
@@ -243,6 +282,8 @@ func _refresh_hud() -> void:
 			hunger_text += "%s: %d\n" % [s.display_name, int(s.current_hunger)]
 
 	_info_label.text = "%s\nSupplies: %d\n%s" % [area.display_name, InventoryManager.supplies, hunger_text]
+	if _note_text != "":
+		_info_label.text += "\n" + _note_text
 
 func _refresh_automap() -> void:
 	if _automap.has_method("set_state"):

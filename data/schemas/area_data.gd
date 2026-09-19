@@ -13,6 +13,18 @@ extends Resource
 @export var display_name: String
 @export var distance_from_university: int = 1
 
+@export_group("Dungeon")
+## Floors of one dungeon share dungeon_id; floor_number is 1-based counting
+## downward (B1F, B2F...). A stair leads to floor_number -/+ 1 within the same
+## dungeon_id unless the matching override below is set. Only the shallowest
+## listed floor's dungeon_display_name is read by the departure board.
+## Author one '<' and at most one '>' per floor; R stays the way back to campus.
+@export var dungeon_id: StringName
+@export var dungeon_display_name: String
+@export var floor_number: int = 1
+@export var stair_up_target_id: StringName
+@export var stair_down_target_id: StringName
+
 @export_group("Layout")
 @export var grid_layout: Array[String] = [] # see above
 @export var spawn_coord: Vector2i = Vector2i.ZERO
@@ -25,3 +37,12 @@ extends Resource
 
 @export_group("Presentation")
 @export var visual_theme: DungeonVisualThemeData
+
+## First match in scan order; Vector2i(-1, -1) when the char is absent.
+func find_tile(ch: String) -> Vector2i:
+	for y in grid_layout.size():
+		var x := grid_layout[y].find(ch)
+		if x != -1:
+			return Vector2i(x, y)
+
+	return Vector2i(-1, -1)

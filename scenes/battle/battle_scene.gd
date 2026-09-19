@@ -692,7 +692,7 @@ func _apply_damage(ref, amount: int) -> void:
 	if _is_enemy_ref(ref):
 		enemies[ref]["hp"] = max(0, enemies[ref]["hp"] - amount)
 	else:
-		PartyManager.apply_damage(ref, amount, false)
+		PartyManager.apply_damage(ref, amount)
 
 	_refresh_cards()
 

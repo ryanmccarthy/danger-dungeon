@@ -1,8 +1,10 @@
 extends Node
 
 ## 26-student roster, front/back formation, and battle-relevant status
-## transitions. DOWNED = battle KO, revivable at the Nurse's Office.
-## DEAD = permanent, only ever caused by hunger-zero damage over time.
+## transitions. DOWNED = any KO (battle, hunger, or lingering poison),
+## revivable at the Nurse's Office. DEAD = permanent — the whole active
+## party ending up DOWNED at once while away from the University, with
+## nobody conscious left to carry anyone home.
 
 signal party_changed()
 
@@ -44,7 +46,7 @@ func get_student(id: StringName) -> StudentData:
 	return null
 
 func get_party() -> Array[StudentData]:
-	var party = []
+	var party: Array[StudentData] = []
 	for s in front_row_ids:
 		party.append(get_student(s))
 	for s in back_row_ids:
@@ -123,18 +125,15 @@ func swap_party_slots(a: StringName, b: StringName) -> void:
 	(front_row_ids if b_front else back_row_ids)[b_idx] = a
 	party_changed.emit()
 
-func apply_damage(id: StringName, amount: int, is_hunger_dot: bool = false) -> void:
+func apply_damage(id: StringName, amount: int) -> void:
 	var s := get_student(id)
 	if s == null or not s.is_alive():
 		return
 
 	s.current_hp = max(0, s.current_hp - amount)
-	if s.current_hp == 0:
-		if is_hunger_dot:
-			kill_student(id)
-		elif not s.is_downed():
-			s.status = StudentData.Status.DOWNED
-			EventBus.student_downed.emit(id)
+	if s.current_hp == 0 and not s.is_downed():
+		s.status = StudentData.Status.DOWNED
+		EventBus.student_downed.emit(id)
 
 func get_effective_max_hp(id: StringName) -> int:
 	## Base growth (StudentData.max_hp) plus any equipped max-HP bonuses.
@@ -284,21 +283,37 @@ func kill_student(id: StringName) -> void:
 	if s == null or not s.is_alive():
 		return
 
+	_mark_dead(id, s)
+	_check_roster_wipe()
+
+## Called when the whole active party has been downed away from the
+## University (dungeon exploration or a lost battle) — nobody's left
+## conscious to carry anyone home, so it's permanent.
+func resolve_field_wipe() -> void:
+	for id in get_active_party_ids():
+		var s := get_student(id)
+		if s != null and s.is_downed():
+			_mark_dead(id, s)
+
+	_check_roster_wipe()
+
+func _mark_dead(id: StringName, s: StudentData) -> void:
 	s.status = StudentData.Status.DEAD
 	s.current_hp = 0
 	clear_statuses(id)
 	remove_from_party(id)
 	EventBus.student_died.emit(id)
 
+func _check_roster_wipe() -> void:
 	if get_living_roster().is_empty():
 		EventBus.game_over.emit()
 	elif is_party_wiped():
 		EventBus.party_wiped.emit()
 
 func is_party_wiped() -> bool:
-	## True when either every party slot is DOWNED (battle loss) or when the
-	## party has been whittled down to nobody (hunger deaths) — either way
-	## there's no one left able to act.
+	## True when every active party slot is DOWNED or the party has been
+	## emptied out entirely (post-TPK) — either way there's no one left able
+	## to act.
 	for id in get_active_party_ids():
 		var s := get_student(id)
 		if s != null and s.status == StudentData.Status.ALIVE:

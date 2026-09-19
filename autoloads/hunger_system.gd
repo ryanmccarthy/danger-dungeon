@@ -1,7 +1,9 @@
 extends Node
 
 ## Hunger depletes with every dungeon tile step. At 0 the student takes
-## repeated damage each further step until they die (permanent DEAD).
+## repeated damage each further step until they're downed (same KO as a
+## battle loss) — see PartyManager.resolve_field_wipe() for what happens
+## if that ends up downing the whole active party at once.
 
 var hunger_depletion_per_tile: int = 1
 var dot_damage_per_tile: int = 4
@@ -19,7 +21,7 @@ func tick_step(active_party_ids: Array) -> void:
 					EquipmentManager.get_passive_value(id, EquipmentData.PassiveEffect.REDUCED_HUNGER_DECAY), 0.0, 1.0)
 			reduce_hunger(id, hunger_depletion_per_tile * (1.0 - reduction))
 		else:
-			PartyManager.apply_damage(id, dot_damage_per_tile, true)
+			PartyManager.apply_damage(id, dot_damage_per_tile)
 
 func restore_hunger(id: StringName, amount: int) -> void:
 	var s: StudentData = PartyManager.get_student(id)

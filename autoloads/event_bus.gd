@@ -38,3 +38,8 @@ signal upgrade_unlocked(upgrade_id: StringName)
 signal equipment_changed(student_id: StringName)
 
 signal dungeon_tile_moved(coord: Vector2i, facing: Vector2i)
+
+## A floor the party had never set foot on is now a departure-board destination.
+signal area_discovered(area_id: StringName)
+## Stair traversal. from_area_id is empty on the very first floor of a session.
+signal dungeon_floor_changed(area_id: StringName, from_area_id: StringName)

@@ -3,7 +3,7 @@ extends HubRoomBase
 ## Dorm: assign the party's front row, back row, and bench.
 
 func _build() -> void:
-	_add_header("Front row: %d/3   Back row: %d/3  " % [PartyManager.front_row_ids.size(), PartyManager.MAX_BACK])
+	_add_header("Front row: %d/3   Back row: %d/3  " % [PartyManager.front_row_ids.size(), PartyManager.back_row_ids.size()])
 
 	for s in PartyManager.get_living_roster():
 		var label := "%s (%s - %s) HP %d/%d" % [s.display_name, s.student_class.class_name_display, s.student_class.archetype_tag, s.current_hp, s.max_hp]

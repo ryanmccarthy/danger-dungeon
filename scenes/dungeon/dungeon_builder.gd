@@ -16,18 +16,22 @@ static func build(parent: Node3D, area: AreaData) -> void:
 		for x in row.length():
 			var ch := row[x]
 			var world_pos := Vector3(x * tile_size, 0.0, y * tile_size)
-			if ch == "#":
+			if ch == TileTypes.WALL:
 				_add_wall(parent, world_pos, tile_size, theme)
 			else:
 				_add_floor(parent, world_pos, tile_size, theme)
 				if not theme or theme.has_ceiling:
 					_add_ceiling(parent, world_pos, tile_size, theme)
-				if ch == "S":
+				if ch == TileTypes.SAFE:
 					_add_safe_zone(parent, world_pos, tile_size, theme)
-				if ch == "E":
+				if ch == TileTypes.EVENT:
 					_add_event_marker(parent, world_pos, tile_size, theme)
-				if ch == "R":
+				if ch == TileTypes.RETURN:
 					_add_exit_marker(parent, world_pos, tile_size, theme)
+				if ch == TileTypes.STAIR_UP:
+					_add_stair_up(parent, world_pos, tile_size, theme)
+				if ch == TileTypes.STAIR_DOWN:
+					_add_stair_down(parent, world_pos, tile_size, theme)
 
 static func _add_wall(parent: Node3D, pos: Vector3, size: float, theme: DungeonVisualThemeData) -> void:
 	var box := CSGBox3D.new()
@@ -85,3 +89,39 @@ static func _add_exit_marker(parent: Node3D, pos: Vector3, size: float, theme: D
 	mat.emission_energy_multiplier = 1.5
 	marker.material = mat
 	parent.add_child(marker)
+
+## Stairs deliberately get no StaticBody3D: grid_layout is the authority on
+## walkability, and the party has to be able to stand on the tile for the stair to
+## fire. Nothing here rises above ~0.6 either, so it can't climb into the view of
+## a party standing on it — the camera sits at y = 1.6.
+static func _add_stair_up(parent: Node3D, pos: Vector3, size: float, theme: DungeonVisualThemeData) -> void:
+	var col: Color = theme.stair_up_color if theme else Color(0.42, 0.78, 1.0)
+	# Footprint narrows as it rises: a small ziggurat that reads as climbing.
+	_add_stair_step(parent, pos, size * 0.80, 0.30, 0.15, col, 1.2)
+	_add_stair_step(parent, pos, size * 0.55, 0.30, 0.30, col, 1.2)
+	_add_stair_step(parent, pos, size * 0.30, 0.30, 0.45, col, 1.2)
+
+static func _add_stair_down(parent: Node3D, pos: Vector3, size: float, theme: DungeonVisualThemeData) -> void:
+	var col: Color = theme.stair_down_color if theme else Color(0.95, 0.45, 0.3)
+	# Flat concentric rings darkening to black at the centre, so it reads as a
+	# shaft rather than a mound. The widest, brightest plate sits lowest and each
+	# smaller/darker one stacks on top, which is what keeps all three visible —
+	# a wide plate on top would simply hide the rest (true CSG subtraction would
+	# need a CSGCombiner3D, which isn't worth it for primitive art).
+	_add_stair_step(parent, pos, size * 0.80, 0.06, 0.03, col, 1.5)
+	_add_stair_step(parent, pos, size * 0.55, 0.06, 0.06, col.darkened(0.6), 0.4)
+	_add_stair_step(parent, pos, size * 0.30, 0.06, 0.09, Color.BLACK, 0.0)
+
+static func _add_stair_step(parent: Node3D, pos: Vector3, footprint: float, height: float, y: float, col: Color, glow: float) -> void:
+	var box := CSGBox3D.new()
+	box.size = Vector3(footprint, height, footprint)
+	box.position = pos + Vector3(0, y, 0)
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = col
+	if glow > 0.0:
+		mat.emission_enabled = true
+		mat.emission = col
+		mat.emission_energy_multiplier = glow
+
+	box.material = mat
+	parent.add_child(box)
